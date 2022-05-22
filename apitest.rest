@@ -1,0 +1,41 @@
+get http://localhost:5000/user
+
+###
+POST http://localhost:5000/
+Content-Type: application/json
+
+{
+  "nama" : "zirion",
+  "kelas" : "15RPLA"
+}
+
+###
+POST http://localhost:5000/user/register
+Content-Type: application/json
+
+{
+  "name" : "tes",
+  "email" : "tes12@mail.com",
+  "password": "123456",
+  "confirmpass": "123456"
+}
+
+###
+//Login
+POST http://localhost:5000/user/login
+Content-Type: application/json
+
+{
+  "email" : "tes1@mail.com",
+  "password": "123456"
+}
+
+###
+
+GET http://localhost:5000/user/get
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzZXIiOjQsIm5hbWUiOiJ0ZXMiLCJlbWFpbCI6InRlczFAbWFpbC5jb20iLCJpYXQiOjE2NTMwMTM5NzgsImV4cCI6MTY1MzEwMDM3OH0.HSh2sg-GzcIAVeNojmAcJuriZo_-5iR6f_5HtpFsm9Q
+
+###
+
+get http://localhost:5000/quans
+
