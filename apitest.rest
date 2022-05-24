@@ -39,3 +39,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzZXIiOjQsIm5hb
 
 get http://localhost:5000/quans
 
+###
+get http://localhost:5000/quans/showquans/?id=1
+
+###
+get http://localhost:5000/quans/popular
+
+###
+get http://localhost:5000/quans/search/?q=ghj&filter=all
+
+###
+get http://localhost:5000/tag/
+
+###
+get http://localhost:5000/quans/questionList/?userid=4
+
+###
+get http://localhost:5000/quans/answerList/?userid=5
+
+###
+POST http://localhost:5000/quans/addAnswer/
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "id_parent" : "2",
+  "answer" : "ini tes jawaban aja"
+}
+
