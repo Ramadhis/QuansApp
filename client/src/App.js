@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Row, Container, Card, Badge } from "react-bootstrap";
+//
+import Quans from "./components/pages/Quans";
+import Login from "./components/pages/Login";
+import Register from "./components/pages/Register";
+import MainContentsearch from "./components/layouts/searchQuansLayout/index";
+import Notfound from "./components/pages/404page";
+
+// import Sidebar from "./components/widgets/sidebar/Sidebar";
+import Header from "./components/widgets/Header";
+import Sidebar from "./components/widgets/sidebar/Sidebar";
+//
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="quans"
+          element={
+            <main>
+              <Header />
+              <Sidebar />
+            </main>
+          }
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Route path="dashboard" index element={<Quans />}></Route>
+          <Route path="search" element={<MainContentsearch />}></Route>
+          <Route index element={<Quans />} />
+          <Route path="*" element={<Notfound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

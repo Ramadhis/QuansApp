@@ -6,11 +6,13 @@ import quans from "./route/quans.js";
 import Tag from "./route/tag.js";
 import auth from "./middleware/auth.js";
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 app.use(cookiepar());
 app.use(express.json());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 app.use("/", index);
 app.use("/user", user);
