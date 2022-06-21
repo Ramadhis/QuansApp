@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from ".././utils/db.js";
+import Tag_quans from "./tag_quansModel.js";
 const { DataTypes } = Sequelize;
 
 const Tag = db.define(
@@ -15,5 +16,8 @@ const Tag = db.define(
     freezeTableName: true,
   }
 );
+
+// Tag.hasOne(Tag_quans, { foreignKey: "id_tags" });
+// Tag_quans.belongsTo(Tag, { foreignKey: "id" });
 
 export default Tag;

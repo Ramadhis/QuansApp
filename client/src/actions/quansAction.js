@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const GET_LIST_QUANS = "GET_LIST_QUANS";
 
-export const getListQuans = () => {
+export const getListQuans = (id) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
@@ -18,7 +18,7 @@ export const getListQuans = () => {
     //get API
     axios({
       method: "GET",
-      url: "http://localhost:5000/quans",
+      url: "http://localhost:5000/quans/showquans/?id=" + id,
       timeout: 120000,
     })
       .then((response) => {

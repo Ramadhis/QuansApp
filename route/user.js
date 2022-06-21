@@ -85,4 +85,12 @@ router.post("/register", async (req, res) => {
   console.log("User's auto-generated ID:", insert);
 });
 
+router.delete("/logout", async (req, res) => {
+  // const refreshToken = req.cookies.refreshToken;
+  // if (!refreshToken) {
+  //   return res.status(204).json({ msg: "no content" });
+  // }
+  return res.json({ msg: "berhasil logout" });
+});
+
 export default router;

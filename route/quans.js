@@ -9,20 +9,27 @@ let router = express.Router();
 router.get("/", async (req, res) => {
   let a = await quans.findAll({
     include: [{ model: like_log }, { model: tag_quans, include: [{ model: tag }] }],
+    attributes: { include: [[Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"]] },
   });
   return res.json(a);
 });
 
 router.get("/showquans/", async (req, res) => {
   let id = req.query.id;
-  if (id === "" || id === null) {
+  if (id === "" || id === "null" || id === null) {
     return res.status(404).json({ msg: "data yang dicari tidak ada" });
   }
   let a = "";
   try {
     a = await quans.findAll({
-      where: { [Op.or]: [{ id: id }, { id_parent: id }] },
-      attributes: { include: [[Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"]] },
+      where: { [Op.or]: { [Op.and]: [{ id: id }, { id_parent: "0" }], id_parent: id } },
+      // where: {},
+      attributes: {
+        include: [
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"],
+          [Sequelize.literal(`(SELECT name FROM user where user.id = quans.id_user)`), "user_name"],
+        ],
+      },
       include: [{ model: tag_quans, include: [{ model: tag }] }],
     });
   } catch (error) {

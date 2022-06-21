@@ -10,9 +10,9 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(cookiepar());
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 app.use("/", index);
 app.use("/user", user);

@@ -55,7 +55,8 @@ get http://localhost:5000/tag/
 get http://localhost:5000/quans/questionList/?userid=4
 
 ###
-get http://localhost:5000/quans/answerList/?userid=5
+get http://localhost:5000/quans/answerList/?userid=4
+
 
 ###
 POST http://localhost:5000/quans/addAnswer/

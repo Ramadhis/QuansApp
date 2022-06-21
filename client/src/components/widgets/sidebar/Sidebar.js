@@ -7,6 +7,7 @@ import { Container, Row } from "react-bootstrap";
 
 const Sidebar = () => {
   //let idle = "bg-light border border-2 border-dark border-end-0";
+
   let [idle, setIdle] = useState("");
   let [down, isdown] = useState("");
   let [down2, isdown2] = useState("");

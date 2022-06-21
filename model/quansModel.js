@@ -4,6 +4,7 @@ import { Sequelize } from "sequelize";
 import Like_log from "./like_logModel.js";
 import Tag_quans from "./tag_quansModel.js";
 import db from ".././utils/db.js";
+import Tag from "./tagModel.js";
 
 const { DataTypes } = Sequelize;
 
