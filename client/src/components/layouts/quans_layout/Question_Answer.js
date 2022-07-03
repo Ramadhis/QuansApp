@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Row } from "react-bootstrap";
-import { BsHandThumbsUp, BsChatLeftDots } from "react-icons/bs";
+import { BsHandThumbsUp } from "react-icons/bs";
 
 const Question = (props) => {
   return (
@@ -14,7 +14,7 @@ const Question = (props) => {
                 <BsHandThumbsUp className="h3" />
               </div>
 
-              <div className="col-md-12 h5 text-center">{props.count_like}</div>
+              <div className="col-md-12 text-center">{props.count_like}</div>
             </div>
             <div className="col-md-11 col-11">{props.answer}</div>
           </div>
@@ -44,7 +44,7 @@ const Question = (props) => {
             </div>
           </div>
         </Row>
-        <hr className="mt-2 mb-4" />
+        <hr className="mt-2 mb-4" style={{ color: "#198754", opacity: "0.5" }} />
       </section>
       {/*Answer.Component.js*/}
     </div>

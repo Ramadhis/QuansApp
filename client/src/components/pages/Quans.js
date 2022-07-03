@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../widgets/sidebar/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-
-import { Row, Container, Card, Badge, Button } from "react-bootstrap";
-import MainContent from ".././layouts/quans_layout/index";
+import { Row, Card, Badge, Button } from "react-bootstrap";
+//layout
 import QA from "../layouts/quans_layout/Question_Answer";
-import { BsHandThumbsUp, BsChatLeftDots } from "react-icons/bs";
-
+import Rightsidebar from "../widgets/Rightsidebar";
+//endlayout
+import { BsChatLeftDots } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getListQuans } from "../../actions/quansAction";
 
@@ -24,8 +23,6 @@ const Quans = () => {
     dispatch(getListQuans(id));
   }, [dispatch]);
 
-  let [main, setmain] = useState(false);
-  let [search, setSearch] = useState(true);
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   //buat judul question/ question pertama
@@ -34,16 +31,17 @@ const Quans = () => {
   let quans_date = "";
   let quans_tag = [];
   quans_arr.map((q) => {
-    if (q.id_parent == 0) {
+    if (q.id_parent === 0) {
       quans_par = q.quans;
       const date_q = new Date(q.createdAt);
       quans_date = date_q.getDate() + " " + months[date_q.getMonth()] + " " + date_q.getFullYear();
       q.tag_quans.map((j) => {
-        quans_tag.push(j.tag.name);
+        return quans_tag.push(j.tag.name);
       });
     }
   });
   //--------------------------------------
+
   console.log(quans_tag);
   return (
     <div className="col-lg-10 mt-5 p-4 g-0 pt-4" style={{ marginTop: `100px` }}>
@@ -59,7 +57,7 @@ const Quans = () => {
         );
       })}
 
-      <hr />
+      <hr style={{ color: "#198754", opacity: "0.5" }} />
       <Row>
         <div className="col-lg-12">
           <div className="col-md-9">
@@ -77,13 +75,10 @@ const Quans = () => {
           </div>
         </div>
         <div className="col-lg-9">
-          {/* {arr.map((item, i) => {
-            return item;
-          })} */}
           {getListQuansResult ? (
             getListQuansResult.map((q) => {
               const date = new Date(q.createdAt);
-              if (q.id_parent != 0) {
+              if (q.id_parent !== 0) {
                 return <QA key={q.id} name_creator={q.user_name} answer={q.quans} count_like={q.like_count} date={date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()} />;
               }
             })
@@ -93,18 +88,8 @@ const Quans = () => {
             <p>{getListQuansError ? getListQuansError : "data kosong"}</p>
           )}
         </div>
-        <div className="col-lg-3">
-          <h5>Related</h5>
-          <Card>
-            <Card.Body>
-              <Card.Text>Some quick example text to build on the card title and make up the bulk of the card's content.</Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-              <Card.Link href="#">Another Link</Card.Link>
-            </Card.Body>
-          </Card>
-        </div>
+        <Rightsidebar />
       </Row>
-      {/* {console.log(getListQuansResult)} */}
     </div>
   );
 };

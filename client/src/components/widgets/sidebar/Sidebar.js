@@ -15,7 +15,7 @@ const Sidebar = () => {
   let reset = () => {
     isdown("");
     isdown2("");
-    isdown3("");
+    // isdown3("");
   };
   let getsegment1 = () => {
     let url = window.location.pathname;
@@ -26,8 +26,9 @@ const Sidebar = () => {
     if (idle === "dashboard") {
       isdown("bg-light border border-2 border-dark border-end-0");
     } else if (idle === "tag") {
+      isdown2("bg-light border border-2 border-dark border-end-0");
     } else if (idle === "search") {
-      isdown3("bg-light border border-2 border-dark border-end-0");
+      // isdown3("bg-light border border-2 border-dark border-end-0");
     } else {
       isdown("bg-light border border-2 border-dark border-end-0");
     }
@@ -63,12 +64,12 @@ const Sidebar = () => {
                       reset();
                       isdown2("bg-light border border-2 border-dark border-end-0");
                     }}
-                    to="/tag"
+                    to="tag"
                   >
                     Tag
                   </Link>
                 </li>
-                <li className={`nav-item ${down3}`}>
+                {/* <li className={`nav-item ${down3}`}>
                   <Link
                     className="nav-link active text-decoration-none text-dark"
                     aria-current="page"
@@ -80,7 +81,7 @@ const Sidebar = () => {
                   >
                     Search
                   </Link>
-                </li>
+                </li> */}
                 <li className="nav-item d-flex align-items-end">
                   {/* <Card className="me-1 ">
               <Card.Body>
