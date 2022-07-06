@@ -4,13 +4,19 @@ import { Card } from "react-bootstrap";
 const Rightsidebar = () => {
   return (
     <div className="col-lg-3">
-      <h5>Related</h5>
+      <h5>Popular this Month</h5>
 
       <Card>
         <Card.Body>
-          <Card.Text>Some quick example text to build on the card title and make up the bulk of the card's content.</Card.Text>
-          <Card.Link href="#">Card Link</Card.Link>
-          <Card.Link href="#">Another Link</Card.Link>
+          <Card.Text style={{ fontSize: "14px" }} className="my-1">
+            1. Mengapa bumi berbentuk bola ?.
+          </Card.Text>
+          <Card.Text style={{ fontSize: "14px" }} className="my-1">
+            2. Apa nama hewan berawalan X ?.
+          </Card.Text>
+          <Card.Text style={{ fontSize: "14px" }} className="my-1">
+            3. platipus bertelur atau beranak ?.
+          </Card.Text>
         </Card.Body>
       </Card>
     </div>

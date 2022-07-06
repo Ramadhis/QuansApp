@@ -4,6 +4,7 @@ import { Row, Card, Badge, Button } from "react-bootstrap";
 //layout
 import QA from "../layouts/quans_layout/Question_Answer";
 import Rightsidebar from "../widgets/Rightsidebar";
+import Modal_answer from "../layouts/quans_layout/Modal_answer";
 //endlayout
 import { BsChatLeftDots } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -66,10 +67,11 @@ const Quans = () => {
                 <h5 className="g-0">Answer</h5>
               </div>
               <div className="col-md-9 col-6 d-flex flex-row-reverse">
-                <Button className="btn btn-success btn-sm me-1 text-center" style={{ display: "inline-block" }}>
+                {/* <Button className="btn btn-success btn-sm me-1 text-center" style={{ display: "inline-block" }}>
                   <BsChatLeftDots className="h5 mb-0 me-1" />
                   Add Your Answer
-                </Button>
+                </Button> */}
+                <Modal_answer />
               </div>
             </Row>
           </div>
