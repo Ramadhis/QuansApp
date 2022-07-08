@@ -9,10 +9,10 @@ const Dashboard = () => {
     <div className="col-lg-10 mt-5 p-4 g-0 pt-4" style={{ marginTop: `100px` }}>
       <div className="row">
         <div className="col-lg-9 mt-2">
-          <div class="input-group">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control form-control-md" placeholder="Search Here"></input>
-              <button type="submit" class="input-group-text btn-success">
+          <div className="input-group">
+            <div className="input-group mb-3">
+              <input type="text" className="form-control form-control-md" placeholder="Search Here"></input>
+              <button type="submit" className="input-group-text btn-success">
                 <BsSearch />
               </button>
             </div>

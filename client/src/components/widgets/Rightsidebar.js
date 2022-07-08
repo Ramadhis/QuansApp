@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 
 const Rightsidebar = () => {
   return (
-    <div className="col-lg-3">
+    <div className="col-lg-3 mt-4 mt-md-1">
       <h5>Popular this Month</h5>
 
       <Card>

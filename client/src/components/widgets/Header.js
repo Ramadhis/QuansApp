@@ -3,6 +3,7 @@ import { Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
 import { urlApi } from "../helpers/Helpers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Profile_card from "./Profile_card";
 
 const Header = () => {
   const URL = urlApi();
@@ -41,7 +42,8 @@ const Header = () => {
               Dank memes
             </Nav.Link> */}
             <NavDropdown title={name} id="collasible-nav-dropdown" align="end">
-              <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
+              {/* <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item> */}
+              <Profile_card />
               {/* <NavDropdown.Item href="#action/3.2">My Question</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">My Answer</NavDropdown.Item> */}
               <NavDropdown.Divider />
