@@ -3,7 +3,7 @@ import Rightsidebar from "../widgets/Rightsidebar";
 import { Card, Form, Tabs, Tab } from "react-bootstrap";
 import List from "../layouts/mydashboard/List";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
-
+import ModalQuestion from "../layouts/mydashboard/ModalQuestion";
 const MyDashboard = () => {
   return (
     <div className="col-lg-10 mt-5 p-4 g-0 pt-4" style={{ marginTop: `100px` }}>
@@ -29,9 +29,14 @@ const MyDashboard = () => {
                       <option>Terbaru</option>
                     </Form.Select>
                   </div>
+                  <div className="col-md-12 mb-2">
+                    <ModalQuestion />
+                  </div>
+                  <div className="col-md-12">
+                    <List />
+                  </div>
                 </div>
               </div>
-              <List />
             </Tab>
             <Tab eventKey="Myanswer" title="MyAnswer">
               <div className="col-md-12 mb-2">

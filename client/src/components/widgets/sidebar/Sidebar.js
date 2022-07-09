@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./sidebar.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
 
 const Sidebar = () => {
   //let idle = "bg-light border border-2 border-dark border-end-0";
+  const history = useNavigate();
 
   let [idle, setIdle] = useState("");
   let [down, isdown] = useState("");
   let [down2, isdown2] = useState("");
   let [down3, isdown3] = useState("");
+  let [press, setPress] = useState(false);
   let reset = () => {
     isdown("");
     isdown2("");
@@ -35,6 +37,12 @@ const Sidebar = () => {
   };
   useEffect(() => {
     getsegment1();
+    window.onpopstate = () => {
+      setPress(true);
+    };
+    if (press == true) {
+      getsegment1();
+    }
   });
   return (
     <Container fluid={true}>
@@ -61,6 +69,7 @@ const Sidebar = () => {
                     className="nav-link active text-decoration-none text-dark"
                     aria-current="page"
                     onClick={(e) => {
+                      // addClass();
                       reset();
                       isdown2("bg-light border border-2 border-dark border-end-0");
                     }}

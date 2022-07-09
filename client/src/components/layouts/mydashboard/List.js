@@ -23,10 +23,10 @@ const List = () => {
           </div>
           <div className="col-md-1 col-2">
             <Row>
-              <Button variant="danger" className="col-8 col-md-8 mb-1 text-center">
+              <Button variant="danger" className="col-8 col-md-7 mb-1 text-center">
                 <BsTrashFill />
               </Button>
-              <Button variant="info" className="col-8 col-md-8 text-center">
+              <Button variant="info" className="col-8 col-md-7 text-center">
                 <BsFillPencilFill style={{ color: "white" }} />
               </Button>
             </Row>

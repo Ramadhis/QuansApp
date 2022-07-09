@@ -4,7 +4,7 @@ import { urlApi } from "../helpers/Helpers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Profile_card from "./Profile_card";
-
+import About from "../pages/About";
 const Header = () => {
   const URL = urlApi();
   const history = useNavigate();
@@ -29,12 +29,11 @@ const Header = () => {
   return (
     <Navbar className="position-fixed w-100" style={{ zIndex: "100" }} collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid={true}>
-        <Navbar.Brand href="#home">Quans</Navbar.Brand>
+        <Navbar.Brand href="/quans/dashboard">Quans</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#features">Home</Nav.Link>
-            <Nav.Link href="#pricing">About</Nav.Link>
+            <About />
           </Nav>
           <Nav>
             {/* <Nav.Link href="#deets">More deets</Nav.Link>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Form, Button, Modal } from "react-bootstrap";
 
-const Tag_card = () => {
+const TagCard = () => {
   return (
     <>
       <Card style={{ width: "13rem" }} className="mx-1 my-1 px-1 py-1">
@@ -15,4 +15,4 @@ const Tag_card = () => {
   );
 };
 
-export default Tag_card;
+export default TagCard;
