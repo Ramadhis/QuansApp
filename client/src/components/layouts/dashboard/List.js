@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BsHandThumbsUp } from "react-icons/bs";
+import ReactPaginate from "react-paginate";
 
 const List = () => {
   let id = 1;

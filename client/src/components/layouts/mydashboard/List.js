@@ -8,11 +8,12 @@ const List = () => {
   return (
     <Card>
       <Card.Body>
-        <Link className="stretched-link" to={`/quans/?id=${id}`} />
         <div className="row">
           <div className="col-md-11 col-10">
             <Card.Text>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus minima libero sapiente voluptas id nam suscipit obcaecati odit quis? Officia, exercitationem quas. Totam magni autem blanditiis itaque soluta? Laborum, commodi
+              <Link to={`/quans/?id=${id}`}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus minima libero sapiente voluptas id nam suscipit obcaecati odit quis? Officia, exercitationem quas. Totam magni autem blanditiis itaque soluta? Laborum, commodi
+              </Link>
             </Card.Text>
             <Badge className="me-1" bg="secondary">
               Javascript

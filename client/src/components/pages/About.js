@@ -18,7 +18,7 @@ const About = (props) => {
           <div className="h-100 col-md-12 d-flex align-content-center justify-content-center flex-wrap">
             <h2 className="mb-5">QUANS PROJECT</h2>
             <div className="px-5">
-              Create By Ramadhiansyah 2022 as personal project, this app is open source ,Check my git for source Code by click this <a href="https://github.com/Ramadhis">Link</a>
+              Created By Ramadhiansyah 2022 as personal project, this app is open source ,Check my git for source Code by click this <a href="https://github.com/Ramadhis">Link</a>
             </div>
           </div>
         </Modal.Body>

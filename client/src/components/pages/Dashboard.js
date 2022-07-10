@@ -1,8 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Rightsidebar from "../widgets/Rightsidebar";
 import { Card, Form } from "react-bootstrap";
 import List from "../layouts/dashboard/List";
 import { BsSearch } from "react-icons/bs";
+import ReactDOM from "react-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import PaginatedItems from "../widgets/pagination/PaginatedItems";
+
+const items = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+  12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+];
+
+const ItemsLoop = ({ currentItems }) => {
+  return (
+    <>
+      {currentItems &&
+        currentItems.map((item) => (
+          <div className="my-1">
+            <List />
+            {/* <h3>Item #{item}</h3> */}
+          </div>
+        ))}
+    </>
+  );
+};
 
 const Dashboard = () => {
   return (
@@ -31,6 +53,7 @@ const Dashboard = () => {
             </div>
           </div>
           <List />
+          <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} />
         </div>
         <Rightsidebar />
       </div>

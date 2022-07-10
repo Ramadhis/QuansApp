@@ -4,6 +4,8 @@ import tag_quans from ".././model/tag_quansModel.js";
 import tag from ".././model/tagModel.js";
 import { Op, Sequelize } from "sequelize";
 import quans from ".././model/quansModel.js";
+import auth from ".././middleware/auth.js";
+
 let router = express.Router();
 
 router.get("/", async (req, res) => {
