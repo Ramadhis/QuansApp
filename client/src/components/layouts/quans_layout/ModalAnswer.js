@@ -3,9 +3,9 @@ import { Card, Form, Button, Modal } from "react-bootstrap";
 import ReactQuill from "react-quill"; // ES6
 import "react-quill/dist/quill.snow.css"; // ES6
 
-const Modal_answer = (props) => {
+const ModalAnswer = (props) => {
   const [show, setShow] = useState(false);
-  const [textAr, setTextAr] = useState(false);
+  const [textAr, setTextAr] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -45,4 +45,4 @@ const Modal_answer = (props) => {
   );
 };
 
-export default Modal_answer;
+export default ModalAnswer;

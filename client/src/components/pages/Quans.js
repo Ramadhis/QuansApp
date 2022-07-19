@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Card, Badge, Button } from "react-bootstrap";
 //layout
-import QA from "../layouts/quans_layout/Question_Answer";
+import QA from "../layouts/quans_layout/QuestionAnswer";
 import Rightsidebar from "../widgets/Rightsidebar";
-import Modal_answer from "../layouts/quans_layout/Modal_answer";
+import ModalAnswer from "../layouts/quans_layout/ModalAnswer";
 //endlayout
 import { BsChatLeftDots } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getListQuans } from "../../actions/quansAction";
+import PaginatedItems from "../widgets/pagination/PaginatedItems";
 
 const Quans = () => {
   const dispatch = useDispatch();
   const { getListQuansResult, getListQuansLoading, getListQuansError } = useSelector((state) => state.QuansReducer);
+
   useEffect(() => {
     //call action getListQuans
     console.log("1. use effect component did mount");
@@ -41,6 +43,28 @@ const Quans = () => {
       });
     }
   });
+
+  //get data quans
+  const items = Array.from(getListQuansResult);
+  //delete parent quans
+  items.splice(0, 1);
+  //sort array desc in like_count
+  items.sort((a, b) => b["like_count"] - a["like_count"]);
+  console.log(items);
+  const ItemsLoop = ({ currentItems }) => {
+    return (
+      <>
+        {currentItems &&
+          currentItems.map((q, i) => (
+            <div className="my-1" key={i}>
+              {/* <List /> */}
+              {/* <h3>Item #{q.user_name}</h3> */}
+              <QA key={q.id} name_creator={q.user_name} answer={q.quans} count_like={q.like_count} date={q.createdAt} />
+            </div>
+          ))}
+      </>
+    );
+  };
   //--------------------------------------
 
   console.log(quans_tag);
@@ -50,9 +74,9 @@ const Quans = () => {
       <h2>{quans_par}</h2>
       <p style={{ fontSize: "14px" }}>Posted On : {quans_date}</p>
 
-      {quans_tag.map((t) => {
+      {quans_tag.map((t, i) => {
         return (
-          <Badge className="me-1" bg="secondary">
+          <Badge key={i} className="me-1" bg="secondary">
             {t}
           </Badge>
         );
@@ -71,13 +95,13 @@ const Quans = () => {
                   <BsChatLeftDots className="h5 mb-0 me-1" />
                   Add Your Answer
                 </Button> */}
-                <Modal_answer />
+                <ModalAnswer />
               </div>
             </Row>
           </div>
         </div>
         <div className="col-lg-9">
-          {getListQuansResult ? (
+          {/* {getListQuansResult ? (
             getListQuansResult.map((q) => {
               const date = new Date(q.createdAt);
               if (q.id_parent !== 0) {
@@ -88,7 +112,9 @@ const Quans = () => {
             <p>loading</p>
           ) : (
             <p>{getListQuansError ? getListQuansError : "data kosong"}</p>
-          )}
+          )} */}
+
+          {getListQuansResult ? <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} /> : getListQuansLoading ? <p>loading</p> : <p>{getListQuansError ? getListQuansError : "data kosong"}</p>}
         </div>
         <Rightsidebar />
       </Row>

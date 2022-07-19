@@ -46,8 +46,12 @@ get http://localhost:5000/quans/showquans/?id=1
 get http://localhost:5000/quans/popular
 
 ###
-get http://localhost:5000/quans/search/?q=ghj&filter=all
+POST http://localhost:5000/quans/search/
+Content-Type: application/json
 
+{
+  "search" : "a"
+}
 ###
 get http://localhost:5000/tag/
 
@@ -67,4 +71,5 @@ Content-Type: application/json
   "id_parent" : "2",
   "answer" : "ini tes jawaban aja"
 }
+
 

@@ -3,6 +3,8 @@ import { Card, Row } from "react-bootstrap";
 import { BsHandThumbsUp } from "react-icons/bs";
 
 const Question = (props) => {
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const date = new Date(props.date);
   return (
     <div>
       {/*Answer.Component.js*/}
@@ -22,7 +24,7 @@ const Question = (props) => {
 
         <Row>
           <div className="col-md-4 col-6 d-flex align-items-end">
-            <span style={{ fontSize: "14px" }}>Posted On : {props.date}</span>
+            <span style={{ fontSize: "14px" }}>Posted On : {date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()}</span>
           </div>
           <div className="col-md-8 col-6 d-flex flex-row-reverse mt-4">
             <div className="col-md-5 col-12">

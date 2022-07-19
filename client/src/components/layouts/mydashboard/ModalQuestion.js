@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css"; // ES6
 const ModalQuestion = (props) => {
   const [show, setShow] = useState(false);
   const [textAr, setTextAr] = useState(false);
+  const [textAr2, setTextAr2] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -17,7 +18,7 @@ const ModalQuestion = (props) => {
 
       <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Your Question</Modal.Title>
+          <Modal.Title>Create Question</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ height: "450px" }}>
           <div className="mt-4">
@@ -26,7 +27,7 @@ const ModalQuestion = (props) => {
           </div>
           <div className="mt-5">
             <Form.Label>First Answer (Optional)</Form.Label>
-            <ReactQuill style={{ height: "120px" }} theme="snow" value={textAr} onChange={setTextAr} />
+            <ReactQuill style={{ height: "120px" }} theme="snow" value={textAr2} onChange={setTextAr2} />
           </div>
           {/* <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">

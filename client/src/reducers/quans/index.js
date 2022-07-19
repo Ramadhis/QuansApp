@@ -1,4 +1,4 @@
-import { getListQuans, GET_LIST_QUANS } from "../../actions/quansAction";
+import { GET_LIST_QUANS } from "../../actions/quansAction";
 const initialState = {
   getListQuansResult: false,
   getListQuansLoading: false,

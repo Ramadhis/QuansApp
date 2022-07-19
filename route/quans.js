@@ -56,16 +56,17 @@ router.get("/popular/", async (req, res) => {
   return res.json(a);
 });
 
-router.get("/search/", async (req, res) => {
-  let q = req.query.q;
-  let filter = req.query.filter;
-  let a = "";
+router.post("/search/", async (req, res) => {
+  let q = req.body.search.trim();
+  let filter = req.body.filter;
+  let a;
   try {
     a = await quans.findAll({
-      where: { quans: { [Op.like]: `%${q}%` } },
-      order: [["id", "desc"]],
+      where: { [Op.and]: { quans: { [Op.like]: `%${q}%` }, id_parent: { [Op.eq]: "0" } } },
+
       attributes: { include: [[Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"]] },
       include: [{ model: tag_quans, include: [{ model: tag }] }],
+      order: [["id", "DESC"]],
     });
   } catch (error) {
     return res.status(404).json({ msg: error });

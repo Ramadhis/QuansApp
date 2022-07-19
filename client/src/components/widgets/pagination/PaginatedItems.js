@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 
@@ -150,7 +150,19 @@ const PaginatedItems = ({ itemsPerPage, items, ItemsLoop }) => {
   return (
     <>
       <ItemsLoop currentItems={currentItems} />
-      <MyPaginate className="pagination page-item" forcePage={0} breakLabel="..." nextLabel="next" onPageChange={handlePageClick} pageRangeDisplayed={3} pageCount={pageCount} previousLabel="previous" renderOnZeroPageCount={null} />
+      <MyPaginate
+        // nextClassName="page-item"
+        // pageClassName="page-item"
+        // className="pagination"
+        // initialPage={initPage}
+        breakLabel="..."
+        nextLabel="next"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        pageCount={pageCount}
+        previousLabel="previous"
+        renderOnZeroPageCount={null}
+      />
     </>
   );
 };
