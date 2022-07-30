@@ -5,8 +5,8 @@ import "react-quill/dist/quill.snow.css"; // ES6
 
 const ModalQuestion = (props) => {
   const [show, setShow] = useState(false);
-  const [textAr, setTextAr] = useState(false);
-  const [textAr2, setTextAr2] = useState(false);
+  const [textAr, setTextAr] = useState("");
+  const [textAr2, setTextAr2] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

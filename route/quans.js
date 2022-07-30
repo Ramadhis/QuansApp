@@ -59,12 +59,18 @@ router.get("/popular/", async (req, res) => {
 router.post("/search/", async (req, res) => {
   let q = req.body.search.trim();
   let filter = req.body.filter;
+  let idUser = 4;
   let a;
   try {
     a = await quans.findAll({
       where: { [Op.and]: { quans: { [Op.like]: `%${q}%` }, id_parent: { [Op.eq]: "0" } } },
 
-      attributes: { include: [[Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"]] },
+      attributes: {
+        include: [
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"],
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where (like_log.id_quans = quans.id) AND (like_log.id_user = ${idUser}))`), "likeCheck"],
+        ],
+      },
       include: [{ model: tag_quans, include: [{ model: tag }] }],
       order: [["id", "DESC"]],
     });
@@ -113,9 +119,7 @@ router.get("/answerList/", async (req, res) => {
 });
 
 router.post("/addAnswer/", async (req, res) => {
-  let answer = req.body.answer;
-  let id_parent = req.body.id_parent;
-  let id_user = req.body.id_user;
+  let { answer, id_parent, id_user } = req.body;
   try {
     const insert = await quans.create({ id_user: id_user, id_parent: id_parent, quans: answer });
   } catch (error) {

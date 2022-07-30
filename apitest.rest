@@ -50,10 +50,29 @@ POST http://localhost:5000/quans/search/
 Content-Type: application/json
 
 {
-  "search" : "a"
+  "search" : ""
 }
 ###
 get http://localhost:5000/tag/
+
+###
+get http://localhost:5000/like/
+###
+delete http://localhost:5000/like/delete
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "id_quans" : "5"
+}
+###
+post http://localhost:5000/like/add
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "id_quans" : "5"
+}
 
 ###
 get http://localhost:5000/quans/questionList/?userid=4
