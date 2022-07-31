@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Rightsidebar from "../widgets/Rightsidebar";
 import { Card, Form } from "react-bootstrap";
 import List from "../layouts/dashboard/List";
@@ -6,19 +7,23 @@ import { BsSearch } from "react-icons/bs";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
+import { urlApi } from "../helpers/Helpers";
+import { useSearchParams } from "react-router-dom";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { getListSearch } from "../../actions/searchAction";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  //get query parameter
+  const [searchParams, setSearchParams] = useSearchParams();
   const { getListSearchResult, getListSearchLoading, getListSearchError } = useSelector((state) => state.SearchReducer);
-  const [valSearch, setValSearch] = useState("");
-  // const [items, setItems] = useState(Array.from(getListSearchResult));
+  const [valSearch, setValSearch] = useState(searchParams.get("s") ? searchParams.get("s") : "");
   let [arr, setArr] = useState(1);
   const items = Array.from(getListSearchResult);
-  console.log(items);
+  const URL = urlApi();
   //
   let quans_tag = [];
   useEffect(() => {
@@ -55,30 +60,66 @@ const Dashboard = () => {
       </>
     );
   };
-  // useEffect(() => {
-  //   setItems(Array.from(getListSearchResult));
-  //   console.log(`masuk sini ${items.length}`);
-  // }, []);
 
-  // useEffect(() => {
-  //   // setItems(Array.from(getListSearchResult));
-  //   console.log(`masuk sini ${items.length}`);
-  // }, [items]);
-
-  const addLike = (index) => {
+  //like function
+  const addLike = async (id, index) => {
+    const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
     setArr((prev) => {
       return prev + 1;
     });
-    items[1]["like_count"] = parseInt(items[1]["like_count"]) + 1;
-    items[1]["likeCheck"] = 1;
-    // console.log(arr);
-    console.log(`${index}`);
+    if (items[index]["likeCheck"] == 0) {
+      try {
+        items[index]["like_count"] = parseInt(items[index]["like_count"]) + 1;
+        items[index]["likeCheck"] = 1;
+      } catch (error) {
+        console.log(`${error}, error in array items`);
+      }
+      await axios
+        .post(
+          URL + "/like/add",
+          {
+            id_user: idUser.iduser,
+            id_quans: id,
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          console.log("success liked");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (items[index]["likeCheck"] == 1) {
+      try {
+        items[index]["like_count"] = parseInt(items[index]["like_count"]) - 1;
+        items[index]["likeCheck"] = 0;
+      } catch (error) {
+        console.log(`${error}, error in array items`);
+      }
+      await axios
+        .delete(URL + "/like/delete", {
+          data: {
+            id_user: idUser.iduser,
+            id_quans: id,
+          },
+          headers: { withCredentials: true },
+        })
+        .then((res) => {
+          console.log("success unlike");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   let submitSearch = async (e) => {
+    e.preventDefault();
+    setSearchParams({
+      s: valSearch,
+    });
     try {
       dispatch(getListSearch(valSearch));
-      e.preventDefault();
     } catch (error) {
       console.log(error);
     }
@@ -93,7 +134,7 @@ const Dashboard = () => {
             <form onSubmit={submitSearch} className="w-100">
               <div className="input-group mb-3">
                 <input
-                  type="text"
+                  type="search"
                   className="form-control form-control-md"
                   value={valSearch}
                   onChange={(e) => {
@@ -120,7 +161,19 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          {getListSearchResult ? <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} /> : getListSearchLoading ? <p>loading</p> : <p>{getListSearchError ? getListSearchError : "data kosong"}</p>}
+          {getListSearchResult ? (
+            getListSearchResult.length == 0 ? (
+              <div className="text-center" style={{ fontSize: "15px" }}>
+                data yang anda cari tidak ada
+              </div>
+            ) : (
+              <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} />
+            )
+          ) : getListSearchLoading ? (
+            <p>loading</p>
+          ) : (
+            <p>{getListSearchError ? getListSearchError : "terjadi kesalahan"}</p>
+          )}
           {/* <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} initPage={2} /> */}
         </div>
         <Rightsidebar />

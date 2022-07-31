@@ -20,7 +20,7 @@ router.post("/add", async (req, res) => {
 router.delete("/delete", async (req, res) => {
   try {
     let { id_user, id_quans } = req.body;
-    const insert = await likeLog.destroy({
+    const del = await likeLog.destroy({
       where: { id_user: id_user, id_quans: id_quans },
     });
     return res.status(200).json({ msg: "success" });

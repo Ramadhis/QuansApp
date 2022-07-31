@@ -11,7 +11,7 @@ const List = (props) => {
   let [likeCalculating, setLikeCalculating] = useState(props.likeCount);
 
   const likeAdd = () => {
-    return props.addLike(props.index);
+    return props.addLike(props.id, props.index);
   };
   return (
     <Card>
@@ -19,7 +19,9 @@ const List = (props) => {
         <div className="row">
           <div className="col-md-11 col-9">
             <Card.Text>
-              <Link to={`/quans/?id=${id}`}>{props.question} </Link>
+              <Link style={{ textDecoration: "none", color: "black" }} to={`/quans/?id=${id}`}>
+                {props.question}{" "}
+              </Link>
             </Card.Text>
             {tag &&
               tag.map((t, i) => {
@@ -32,7 +34,7 @@ const List = (props) => {
           </div>
           <div className="col-md-1 col-3">
             <div onClick={likeAdd} className="col-md-12 text-center">
-              {props.likeCheck === 0 ? <BsHandThumbsUp className="h3" /> : <BsHandThumbsUpFill className="h3" />}
+              {props.likeCheck === 0 ? <BsHandThumbsUp className="h3" /> : <BsHandThumbsUpFill style={{ color: "#198754" }} className="h3" />}
             </div>
             <div className="col-md-12 text-center">{likeCalculating}</div>
           </div>
