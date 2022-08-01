@@ -8,13 +8,13 @@ const Rightsidebar = () => {
 
       <Card>
         <Card.Body>
-          <Card.Text style={{ fontSize: "14px" }} className="my-1">
-            1. Mengapa bumi berbentuk bola ?.
+          <Card.Text className="my-1" style={{ fontSize: "14px", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+            1. Mengapa bumi berbentuk bola ,tes tes?.
           </Card.Text>
-          <Card.Text style={{ fontSize: "14px" }} className="my-1">
+          <Card.Text className="my-1" style={{ fontSize: "14px", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
             2. Apa nama hewan berawalan X ?.
           </Card.Text>
-          <Card.Text style={{ fontSize: "14px" }} className="my-1">
+          <Card.Text className="my-1" style={{ fontSize: "14px", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
             3. platipus bertelur atau beranak ?.
           </Card.Text>
         </Card.Body>

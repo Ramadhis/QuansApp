@@ -52,6 +52,55 @@ Content-Type: application/json
 {
   "search" : ""
 }
+
+###
+POST http://localhost:5000/quans/addQuestion/
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "question" : "test create3"
+
+}
+###
+PUT http://localhost:5000/quans/editQuestion/
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "id_quans" : "2",
+  "question" : "after update3"
+
+}
+###
+DELETE http://localhost:5000/quans/deleteQuestion/
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "id_quans" : "21"
+
+}
+###
+PUT http://localhost:5000/quans/editAnswer/
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "id_quans" : "18",
+  "answer" : "after editAnswer"
+
+}
+###
+
+DELETE http://localhost:5000/quans/deleteAnswer/
+Content-Type: application/json
+
+{
+  "id_user" : "5",
+  "id_quans" : "18"
+
+}
 ###
 get http://localhost:5000/tag/
 
@@ -72,6 +121,13 @@ Content-Type: application/json
 {
   "id_user" : "5",
   "id_quans" : "5"
+}
+###
+post http://localhost:5000/tag
+Content-Type: application/json
+
+{
+  "s" : ""
 }
 
 ###

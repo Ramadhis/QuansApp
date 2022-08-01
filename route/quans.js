@@ -118,6 +118,100 @@ router.get("/answerList/", async (req, res) => {
   return res.json(a);
 });
 
+router.post("/myQuestion", async (req, res) => {
+  let q = req.body.search.trim();
+  let filter = req.body.filter;
+  let idUser = 4;
+  let a;
+  try {
+    a = await quans.findAll({
+      where: { [Op.and]: { quans: { [Op.like]: `%${q}%` }, id_parent: { [Op.eq]: "0" }, id_user: { [Op.eq]: idUser } } },
+      attributes: {
+        include: [
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"],
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where (like_log.id_quans = quans.id) AND (like_log.id_user = ${idUser}))`), "likeCheck"],
+        ],
+      },
+      include: [{ model: tag_quans, include: [{ model: tag }] }],
+      order: [["id", "DESC"]],
+    });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+  return res.json(a);
+});
+
+router.post("/addQuestion", async (req, res) => {
+  let { question, id_user } = req.body;
+  try {
+    const insert = await quans.create({ id_user: id_user, id_parent: "0", quans: question });
+    return res.json({ msg: "success", data: insert });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+});
+
+router.delete("/deleteQuestion", async (req, res) => {
+  try {
+    let { id_user, id_quans } = req.body;
+    const del = await quans.destroy({
+      where: { id_parent: "0", id_user: id_user, id: id_quans },
+    });
+    return res.json({ msg: "success" });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+});
+
+router.put("/editQuestion", async (req, res) => {
+  try {
+    let { id_user, id_quans, question } = req.body;
+    await quans
+      .update(
+        { quans: question },
+        {
+          where: {
+            id_parent: "0",
+            id_user: id_user,
+            id: id_quans,
+          },
+        }
+      )
+      .then((result) => {
+        res.status(404).json({ msg: "success" });
+      })
+      .catch((err) => {
+        res.status(404).json({ msg: "gagal" });
+      });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+});
+
+router.post("/myAnswer", async (req, res) => {
+  try {
+    let q = req.body.search.trim();
+    let filter = req.body.filter;
+    let idUser = 4;
+    let a;
+    a = await quans.findAll({
+      where: { [Op.and]: { quans: { [Op.like]: `%${q}%` }, id_parent: { [Op.ne]: "0" }, id_user: { [Op.eq]: idUser } } },
+
+      attributes: {
+        include: [
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"],
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where (like_log.id_quans = quans.id) AND (like_log.id_user = ${idUser}))`), "likeCheck"],
+        ],
+      },
+      include: [{ model: tag_quans, include: [{ model: tag }] }],
+      order: [["id", "DESC"]],
+    });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+  return res.json(a);
+});
+
 router.post("/addAnswer/", async (req, res) => {
   let { answer, id_parent, id_user } = req.body;
   try {
@@ -128,6 +222,41 @@ router.post("/addAnswer/", async (req, res) => {
   return res.json({ msg: "success" });
 });
 
-router.post("/addQuestion/", async (req, res) => {});
+router.delete("/deleteAnswer", async (req, res) => {
+  try {
+    let { id_user, id_quans } = req.body;
+    const del = await quans.destroy({
+      where: { id_parent: { [Op.ne]: "0" }, id_user: id_user, id: id_quans },
+    });
+    return res.status(200).json({ msg: "success" });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+});
+
+router.put("/editAnswer", async (req, res) => {
+  try {
+    let { id_user, id_quans, answer } = req.body;
+    await quans
+      .update(
+        { quans: answer },
+        {
+          where: {
+            id_user: { [Op.ne]: "0" },
+            id_user: id_user,
+            id: id_quans,
+          },
+        }
+      )
+      .then((result) => {
+        res.status(404).json({ msg: "success" });
+      })
+      .catch((err) => {
+        res.status(404).json({ msg: "gagal" });
+      });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+});
 
 export default router;

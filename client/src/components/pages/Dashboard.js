@@ -4,7 +4,6 @@ import Rightsidebar from "../widgets/Rightsidebar";
 import { Card, Form } from "react-bootstrap";
 import List from "../layouts/dashboard/List";
 import { BsSearch } from "react-icons/bs";
-import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
 import { urlApi } from "../helpers/Helpers";
@@ -67,6 +66,7 @@ const Dashboard = () => {
     setArr((prev) => {
       return prev + 1;
     });
+    //like
     if (items[index]["likeCheck"] == 0) {
       try {
         items[index]["like_count"] = parseInt(items[index]["like_count"]) + 1;
@@ -96,6 +96,7 @@ const Dashboard = () => {
       } catch (error) {
         console.log(`${error}, error in array items`);
       }
+      //unlike
       await axios
         .delete(URL + "/like/delete", {
           data: {
