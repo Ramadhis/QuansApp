@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./sidebar.css";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
 
 const Sidebar = () => {
   //let idle = "bg-light border border-2 border-dark border-end-0";
   const history = useNavigate();
+  const location = useLocation();
 
   let [idle, setIdle] = useState("");
   let [down, isdown] = useState("");

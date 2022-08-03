@@ -1,39 +1,44 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Rightsidebar from "../widgets/Rightsidebar";
-import { Card, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import List from "../layouts/dashboard/List";
 import { BsSearch } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
 import { urlApi } from "../helpers/Helpers";
-import { useSearchParams } from "react-router-dom";
-
+import { useSearchParams, useLocation } from "react-router-dom";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { getListSearch } from "../../actions/searchAction";
-import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   //get query parameter
   const [searchParams, setSearchParams] = useSearchParams();
   const { getListSearchResult, getListSearchLoading, getListSearchError } = useSelector((state) => state.SearchReducer);
-  const [valSearch, setValSearch] = useState(searchParams.get("s") ? searchParams.get("s") : "");
+  const [valSearch, setValSearch] = useState("");
   let [arr, setArr] = useState(1);
   const items = Array.from(getListSearchResult);
   const URL = urlApi();
   //
   let quans_tag = [];
-  useEffect(() => {
-    //call action getListQuans
-    console.log("1. use effect component did mount");
+  // useEffect(() => {
+  //   //call action getListQuans
+  //   console.log("1. use effect component did mount");
 
-    // let search = window.location.search;
-    // let params = new URLSearchParams(search);
-    // let id = params.get("id");
-    dispatch(getListSearch(valSearch));
-  }, [dispatch]);
+  //   // let search = window.location.search;
+  //   // let params = new URLSearchParams(search);
+  //   // let id = params.get("id");
+  //   dispatch(getListSearch(valSearch));
+  // }, [dispatch]);
+
+  useEffect(() => {
+    console.log("1. use effect component did mount");
+    setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
+    dispatch(getListSearch(searchParams.get("s") ? searchParams.get("s") : ""));
+  }, [location, dispatch]);
 
   const ItemsLoop = ({ currentItems }) => {
     return (
@@ -67,7 +72,7 @@ const Dashboard = () => {
       return prev + 1;
     });
     //like
-    if (items[index]["likeCheck"] == 0) {
+    if (items[index]["likeCheck"] === 0) {
       try {
         items[index]["like_count"] = parseInt(items[index]["like_count"]) + 1;
         items[index]["likeCheck"] = 1;
@@ -89,7 +94,7 @@ const Dashboard = () => {
         .catch((error) => {
           console.log(error);
         });
-    } else if (items[index]["likeCheck"] == 1) {
+    } else if (items[index]["likeCheck"] === 1) {
       try {
         items[index]["like_count"] = parseInt(items[index]["like_count"]) - 1;
         items[index]["likeCheck"] = 0;
@@ -119,11 +124,6 @@ const Dashboard = () => {
     setSearchParams({
       s: valSearch,
     });
-    try {
-      dispatch(getListSearch(valSearch));
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
@@ -163,7 +163,7 @@ const Dashboard = () => {
             </div>
           </div>
           {getListSearchResult ? (
-            getListSearchResult.length == 0 ? (
+            getListSearchResult.length === 0 ? (
               <div className="text-center" style={{ fontSize: "15px" }}>
                 data yang anda cari tidak ada
               </div>

@@ -14,6 +14,10 @@ const Users = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    job: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,

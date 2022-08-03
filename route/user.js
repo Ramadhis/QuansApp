@@ -93,4 +93,26 @@ router.delete("/logout", async (req, res) => {
   return res.json({ msg: "berhasil logout" });
 });
 
+router.get("/profile", async (req, res) => {
+  try {
+    const id = req.query.id;
+    const get = await Users.findAll({
+      where: { id: id },
+    });
+    return res.json(get);
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+});
+
+router.put("/editProfile", async (req, res) => {
+  try {
+    const { id, name, email, job } = req.body;
+    Users.update({ name: name, email: email, job: job }, { where: { id: id } });
+    res.json({ msg: "success" });
+  } catch (error) {
+    return res.status(404).json({ msg: error });
+  }
+});
+
 export default router;

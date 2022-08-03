@@ -135,10 +135,10 @@ router.post("/myQuestion", async (req, res) => {
       include: [{ model: tag_quans, include: [{ model: tag }] }],
       order: [["id", "DESC"]],
     });
+    return res.json(a);
   } catch (error) {
     return res.status(404).json({ msg: error });
   }
-  return res.json(a);
 });
 
 router.post("/addQuestion", async (req, res) => {
@@ -249,7 +249,7 @@ router.put("/editAnswer", async (req, res) => {
         }
       )
       .then((result) => {
-        res.status(404).json({ msg: "success" });
+        res.json({ msg: "success" });
       })
       .catch((err) => {
         res.status(404).json({ msg: "gagal" });

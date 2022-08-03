@@ -10,6 +10,17 @@ Content-Type: application/json
 }
 
 ###
+PUT http://localhost:5000/user/editProfile
+Content-Type: application/json
+
+{
+  "id": 6,
+  "name" : "zir",
+  "email" : "zir@mail.com",
+  "job" : "testJob"
+}
+
+###
 POST http://localhost:5000/user/register
 Content-Type: application/json
 
@@ -101,8 +112,6 @@ Content-Type: application/json
   "id_quans" : "18"
 
 }
-###
-get http://localhost:5000/tag/
 
 ###
 get http://localhost:5000/like/
