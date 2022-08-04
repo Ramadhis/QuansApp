@@ -1,62 +1,66 @@
+//top
 import React, { useState, useEffect } from "react";
-import { Card, Form } from "react-bootstrap";
-import { BsSearch } from "react-icons/bs";
-import Tagcard from "../layouts/tag/TagCard";
-import { useSearchParams, useLocation } from "react-router-dom";
-import { urlApi } from "../helpers/Helpers";
-import axios from "axios";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
+import { urlApi } from "../helpers/Helpers";
+import { useSearchParams, useLocation } from "react-router-dom";
+import { BsSearch } from "react-icons/bs";
+import { Card, Form } from "react-bootstrap";
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { getListTag } from "../../actions/tagAction";
+
+//optional
+import Tagcard from "../layouts/tag/TagCard";
 
 const Tag = () => {
+  //top
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
+  const { getListTagResult, getListTagLoading, getListTagError } = useSelector((state) => state.TagReducer);
   const [valSearch, setValSearch] = useState("");
   const URL = urlApi();
-  const [loadData, setLoadData] = useState({
-    loading: true,
-    data: false,
-    error: false,
-  });
-  let { loading, data, error } = loadData;
-  const items = loadData.data;
+  let items = Array.from(getListTagResult);
+  // const [loadData, setLoadData] = useState({
+  //   loading: true,
+  //   data: false,
+  //   error: false,
+  // });
+  // let { loading, data, error } = loadData;
 
-  const loadAxios = (param) => {
-    setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
-    axios
-      .post(
-        URL + "/tag",
-        {
-          s: param,
-        },
-        { withCredentials: true }
-      )
-      .then(
-        (result) => {
-          // setLoadData({ ...loadData, loading: false, data: result });
-          return setLoadData((prev) => {
-            return { ...prev, loading: false, data: result.data };
-          });
-        },
-        { withCredentials: true }
-      );
-    console.log("loaded");
-  };
-  useEffect(() => {
-    setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
-    loadAxios(searchParams.get("s") ? searchParams.get("s") : "");
-    loading = loadData.loading;
-    data = loadData.data;
-    error = loadData.error;
-    console.log(data);
-  }, [location]);
+  // const loadAxios = (param) => {
+  //   axios
+  //     .post(
+  //       URL + "/tag",
+  //       {
+  //         s: param,
+  //       },
+  //       { withCredentials: true }
+  //     )
+  //     .then(
+  //       (result) => {
+  //         // setLoadData({ ...loadData, loading: false, data: result });
+  //         return setLoadData((prev) => {
+  //           return { ...prev, loading: false, data: result.data };
+  //         });
+  //       },
+  //       { withCredentials: true }
+  //     )
+  //     .catch((err) => {
+  //       return setLoadData((prev) => {
+  //         return { ...prev, loading: false, error: err.message };
+  //       });
+  //     });
+  //   console.log("loaded");
+  // };
 
-  const ItemsLoop = ({ currentItems }) => {
+  let ItemsLoop = ({ currentItems }) => {
     return (
       <>
         {currentItems &&
-          currentItems.map((item, key) => {
+          currentItems.map((item) => {
             return (
-              <div className={`col-md-auto my-1 dat-${item.id}`} key={key}>
+              <div className={`col-md-auto my-1 dat-${item.id}`} key={item.id}>
                 <Tagcard title={item.name} description={item.description} countQuestion={item.tagQuansCount} />
               </div>
             );
@@ -64,6 +68,17 @@ const Tag = () => {
       </>
     );
   };
+
+  useEffect(() => {
+    console.log("1. use effect component did mount");
+    setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
+    dispatch(getListTag(searchParams.get("s") ? searchParams.get("s") : ""));
+    console.log(getListTagResult);
+    // loadAxios(searchParams.get("s") ? searchParams.get("s") : "");
+    // loading = loadData.loading;
+    // data = loadData.data;
+    // error = loadData.error;
+  }, [location, dispatch]);
 
   let submitSearch = (e) => {
     e.preventDefault();
@@ -105,18 +120,18 @@ const Tag = () => {
 
         <div className="col-md-12">
           <div className="row">
-            {items ? (
-              items.length === 0 ? (
+            {getListTagResult ? (
+              getListTagResult.length === 0 ? (
                 <div className="text-center" style={{ fontSize: "15px" }}>
                   data yang anda cari tidak ada
                 </div>
               ) : (
                 <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} />
               )
-            ) : loading ? (
+            ) : getListTagLoading ? (
               <p>loading</p>
             ) : (
-              <p>{error ? error : "terjadi kesalahan"}</p>
+              <p>{getListTagError ? getListTagError : "terjadi kesalahan"}</p>
             )}
           </div>
         </div>

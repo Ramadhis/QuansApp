@@ -74,10 +74,10 @@ router.post("/search/", async (req, res) => {
       include: [{ model: tag_quans, include: [{ model: tag }] }],
       order: [["id", "DESC"]],
     });
+    return res.json(a);
   } catch (error) {
     return res.status(404).json({ msg: error });
   }
-  return res.json(a);
 });
 
 router.get("/questionList/", async (req, res) => {
@@ -95,10 +95,10 @@ router.get("/questionList/", async (req, res) => {
       },
       include: [{ model: tag_quans, attributes: { exclude: ["createdAt", "updatedAt"] }, include: [{ model: tag, attributes: { exclude: ["createdAt", "updatedAt"] } }] }],
     });
+    return res.json(a);
   } catch (error) {
     return res.status(404).json({ msg: error });
   }
-  return res.json(a);
 });
 
 router.get("/answerList/", async (req, res) => {
@@ -112,14 +112,14 @@ router.get("/answerList/", async (req, res) => {
         include: [[Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"]],
       },
     });
+    return res.json(a);
   } catch (error) {
     return res.status(404).json({ msg: error });
   }
-  return res.json(a);
 });
 
 router.post("/myQuestion", async (req, res) => {
-  let q = req.body.search.trim();
+  let q = req.body.s.trim();
   let filter = req.body.filter;
   let idUser = 4;
   let a;
@@ -178,10 +178,10 @@ router.put("/editQuestion", async (req, res) => {
         }
       )
       .then((result) => {
-        res.status(404).json({ msg: "success" });
+        return res.status(404).json({ msg: "success" });
       })
       .catch((err) => {
-        res.status(404).json({ msg: "gagal" });
+        return res.status(404).json({ msg: "gagal" });
       });
   } catch (error) {
     return res.status(404).json({ msg: error });
@@ -190,7 +190,7 @@ router.put("/editQuestion", async (req, res) => {
 
 router.post("/myAnswer", async (req, res) => {
   try {
-    let q = req.body.search.trim();
+    let q = req.body.s.trim();
     let filter = req.body.filter;
     let idUser = 4;
     let a;
@@ -249,10 +249,10 @@ router.put("/editAnswer", async (req, res) => {
         }
       )
       .then((result) => {
-        res.json({ msg: "success" });
+        return res.json({ msg: "success" });
       })
       .catch((err) => {
-        res.status(404).json({ msg: "gagal" });
+        return res.status(404).json({ msg: "gagal" });
       });
   } catch (error) {
     return res.status(404).json({ msg: error });
