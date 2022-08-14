@@ -78,8 +78,8 @@ PUT http://localhost:5000/quans/editQuestion/
 Content-Type: application/json
 
 {
-  "id_user" : "5",
-  "id_quans" : "2",
+  "id_user" : "4",
+  "id_quans" : "39",
   "question" : "after update3"
 
 }

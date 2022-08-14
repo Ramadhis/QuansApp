@@ -178,7 +178,7 @@ router.put("/editQuestion", async (req, res) => {
         }
       )
       .then((result) => {
-        return res.status(404).json({ msg: "success" });
+        return res.status(200).json({ msg: "success" });
       })
       .catch((err) => {
         return res.status(404).json({ msg: "gagal" });

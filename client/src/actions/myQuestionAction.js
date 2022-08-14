@@ -47,4 +47,38 @@ export const getListMyQuestion = (MyQuestion) => {
   };
 };
 
+export const addMyQuestion = (idUser, quans) => {
+  console.log("2. masuk action");
+  return (dispatch) => {
+    //get API
+    axios
+      .post("http://localhost:5000/quans/addQuestion/", {
+        id_user: `${idUser}`,
+        question: `${quans}`,
+      })
+      .then((response) => {
+        //berhasil
+        // dispatch({
+        //   type: GET_LIST_MYQUESTION,
+        //   payload: {
+        //     loading: false,
+        //     data: response.data,
+        //     errorMessage: false,
+        //   },
+        // });
+      })
+      .catch((error) => {
+        //gagal
+        // dispatch({
+        //   type: GET_LIST_MYQUESTION,
+        //   payload: {
+        //     loading: false,
+        //     data: false,
+        //     errorMessage: error.message,
+        //   },
+        // });
+      });
+  };
+};
+
 export const deleteMyQuestion = () => {};

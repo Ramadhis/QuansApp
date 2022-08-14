@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import PaginatedItems from "../../widgets/pagination/PaginatedItems";
 import { urlApi } from "../../helpers/Helpers";
 import { useSearchParams, useLocation } from "react-router-dom";
-import { Form, Card } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import List from "../mydashboard/List";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalQuestion from "../mydashboard/ModalQuestion";
@@ -11,14 +11,17 @@ import ModalQuestion from "../mydashboard/ModalQuestion";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { getListMyQuestion } from "../../../actions/myQuestionAction";
+import axios from "axios";
 
 const MyQuestion = () => {
   //top
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
   const { getListMyQuestionResult, getListMyQuestionLoading, getListMyQuestionError } = useSelector((state) => state.MyQuestionReducer);
   const [valSearch, setValSearch] = useState("");
+  const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const URL = urlApi();
   let items = Array.from(getListMyQuestionResult);
 
@@ -66,7 +69,28 @@ const MyQuestion = () => {
     }
   };
 
-  const deleteQuestion = () => {};
+  const submitAdd = (question) => {
+    axios
+      .post("http://localhost:5000/quans/addQuestion/", {
+        id_user: `${idUser.iduser}`,
+        question: `${question}`,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setShow(false);
+        setSearchParams({
+          // s: searchParams.get("s"),
+          add: response.data.msg,
+        });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setSearchParams({
+          add: "failed",
+        });
+      });
+    // dispatch(addMyQuestion(idUser.iduser, textAr));
+  };
 
   return (
     <div className="col-md-12 mb-2">
@@ -98,7 +122,23 @@ const MyQuestion = () => {
           </Form.Select>
         </div>
         <div className="col-md-12 mb-2">
-          <ModalQuestion />
+          <Button
+            className="btn btn-success btn-sm me-1 text-center"
+            style={{ float: "right", display: "inline-block" }}
+            variant="primary"
+            onClick={() => {
+              setShow(true);
+            }}
+          >
+            Add Your Question
+          </Button>
+          <ModalQuestion
+            show={show}
+            hide={() => {
+              setShow(false);
+            }}
+            submitForm={submitAdd}
+          />
         </div>
         <div className="col-md-12">
           <div className="row">
