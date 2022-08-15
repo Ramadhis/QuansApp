@@ -95,11 +95,12 @@ const List = (props) => {
               <Card.Text>
                 <Link to={`/quans/?id=${id}`}>{props.quans}</Link>
               </Card.Text>
+              {console.log(tag)}
               {tag &&
                 tag.map((t, i) => {
                   return (
                     <Badge key={i} className="me-1" bg="secondary">
-                      {t}
+                      {t.name}
                     </Badge>
                   );
                 })}
@@ -120,6 +121,8 @@ const List = (props) => {
                   edit={true}
                   question={props.quans}
                   idQuans={id}
+                  tag={tag}
+                  allTag={props.allTag}
                 />
               </Row>
             </div>

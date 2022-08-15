@@ -20,14 +20,14 @@ const ModalQuestion = (props) => {
   const dispatch = useDispatch();
   const handleClose = () => setShow(props.hide);
   const handleShow = () => setShow(true);
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(props.allTag ? props.allTag : []);
   // const options = [
   //   { value: "chocolate", label: "Chocolate" },
   //   { value: "strawberry", label: "Strawberry" },
   //   { value: "vanilla", label: "Vanilla" },
   // ];
 
-  const [selectedOption, setSelectedOption] = useState([{ value: "vanilla", label: "Vanilla" }]);
+  const [selectedOption, setSelectedOption] = useState([]);
 
   let submit = (e) => {
     e.preventDefault();
@@ -36,21 +36,32 @@ const ModalQuestion = (props) => {
   };
 
   useEffect(() => {
+    if (props.tag) {
+      props.tag.map((tag) => {
+        selectedOption.push(`${tag.id}`);
+      });
+    }
     console.log(JSON.stringify(selectedOption));
   }, [selectedOption]);
 
-  useEffect(() => {
-    axios
-      .post(URL + "/tag", {
-        s: "",
-      })
-      .then((result) => {
-        result.data.map((tag) => {
-          options.push({ value: `${tag.id}`, label: tag.name });
-        });
-        console.log(options);
-      });
-  }, [options]);
+  // let loadTag = () => {
+  //   axios
+  //     .post(URL + "/tag", {
+  //       s: "",
+  //     })
+  //     .then((result) => {
+  //       result.data.map((tag) => {
+  //         options.push({ value: `${tag.id}`, label: tag.name });
+  //       });
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (options.length === 0) {
+  //     loadTag();
+  //   }
+  //   console.log(options.length);
+  // }, []);
 
   const submitEdit = (e) => {
     e.preventDefault();
@@ -85,7 +96,7 @@ const ModalQuestion = (props) => {
       <Modal size="lg" show={props.show} onHide={props.hide}>
         <form onSubmit={props.edit ? submitEdit : submit}>
           <Modal.Header closeButton>
-            <Modal.Title>Create Question</Modal.Title>
+            <Modal.Title>{props.edit ? "Edit Question" : "Create Question"}</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ height: "450px" }}>
             <div className="mt-4">

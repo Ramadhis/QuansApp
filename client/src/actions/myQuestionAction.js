@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const GET_LIST_MYQUESTION = "GET_LIST_MYQUESTION";
 
-export const getListMyQuestion = (MyQuestion) => {
+export const getListMyQuestion = (MyQuestion, idUser) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
@@ -19,6 +19,7 @@ export const getListMyQuestion = (MyQuestion) => {
     axios
       .post("http://localhost:5000/quans/myQuestion/", {
         s: `${MyQuestion}`,
+        idUser: `${idUser}`,
       })
       .then((response) => {
         //berhasil

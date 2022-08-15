@@ -122,7 +122,7 @@ router.get("/answerList/", async (req, res) => {
 router.post("/myQuestion", async (req, res) => {
   let q = req.body.s.trim();
   let filter = req.body.filter;
-  let idUser = 4;
+  let idUser = req.body.idUser;
   let a;
   try {
     a = await quans.findAll({
@@ -148,7 +148,9 @@ router.post("/addQuestion", async (req, res) => {
   // return console.log(splitTag);
   try {
     const insert = await quans.create({ id_user: id_user, id_parent: "0", quans: question });
-    for (let i = 0; i <= splitTag.length; i++) {
+
+    for (let i = 0; i <= splitTag.length - 1; i++) {
+      console.log("asdasdasd  " + i);
       await Tag_quans.create({ id_quans: insert.id, id_tags: splitTag[i] });
     }
     return res.json({ msg: "success", data: insert });
@@ -192,6 +194,9 @@ router.put("/editQuestion", async (req, res) => {
       .catch((err) => {
         return res.status(404).json({ msg: "gagal" });
       });
+    // await Tag_quans.destroy({
+    //   where: { id_quans: id_quans },
+    // });
   } catch (error) {
     return res.status(404).json({ msg: error });
   }

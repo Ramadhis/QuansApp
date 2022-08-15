@@ -24,11 +24,25 @@ const MyQuestion = () => {
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const URL = urlApi();
   let items = Array.from(getListMyQuestionResult);
+  const [options, setOptions] = useState([]);
+
+  let loadTag = () => {
+    axios
+      .post(URL + "/tag", {
+        s: "",
+      })
+      .then((result) => {
+        result.data.map((tag) => {
+          options.push({ value: `${tag.id}`, label: tag.name });
+        });
+      });
+  };
 
   useEffect(() => {
     console.log("1. use effect component did mount");
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
-    dispatch(getListMyQuestion(searchParams.get("s") ? searchParams.get("s") : ""));
+    dispatch(getListMyQuestion(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser));
+    loadTag();
     // loadAxios(searchParams.get("s") ? searchParams.get("s") : "");
     // loading = loadData.loading;
     // data = loadData.data;
@@ -46,11 +60,11 @@ const MyQuestion = () => {
                 {item.tag_quans.map((j, i) => {
                   return (
                     <div style={{ display: "none" }} key={i}>
-                      {quans_tag.push(j.tag.name)}
+                      {quans_tag.push({ id: j.tag.id, name: j.tag.name })}
                     </div>
                   );
                 })}
-                <List key={item.id} id={item.id} quans={item.quans} tag={quans_tag} />
+                <List key={item.id} id={item.id} quans={item.quans} tag={quans_tag} allTag={options} />
               </div>
             );
           })}
@@ -138,6 +152,7 @@ const MyQuestion = () => {
             hide={() => {
               setShow(false);
             }}
+            allTag={options}
             submitForm={submitAdd}
           />
         </div>
