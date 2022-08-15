@@ -5,6 +5,7 @@ import tag from ".././model/tagModel.js";
 import { Op, Sequelize } from "sequelize";
 import quans from ".././model/quansModel.js";
 import auth from ".././middleware/auth.js";
+import Tag_quans from ".././model/tag_quansModel.js";
 
 let router = express.Router();
 
@@ -59,7 +60,7 @@ router.get("/popular/", async (req, res) => {
 router.post("/search/", async (req, res) => {
   let q = req.body.search.trim();
   let filter = req.body.filter;
-  let idUser = 4;
+  let idUser = req.body.idUser;
   let a;
   try {
     a = await quans.findAll({
@@ -142,9 +143,14 @@ router.post("/myQuestion", async (req, res) => {
 });
 
 router.post("/addQuestion", async (req, res) => {
-  let { question, id_user } = req.body;
+  let { question, id_user, tag } = req.body;
+  let splitTag = tag.split(",");
+  // return console.log(splitTag);
   try {
     const insert = await quans.create({ id_user: id_user, id_parent: "0", quans: question });
+    for (let i = 0; i <= splitTag.length; i++) {
+      await Tag_quans.create({ id_quans: insert.id, id_tags: splitTag[i] });
+    }
     return res.json({ msg: "success", data: insert });
   } catch (error) {
     return res.status(404).json({ msg: error });
@@ -156,6 +162,9 @@ router.delete("/deleteQuestion", async (req, res) => {
     let { id_user, id_quans } = req.body;
     const del = await quans.destroy({
       where: { id_parent: "0", id_user: id_user, id: id_quans },
+    });
+    await Tag_quans.destroy({
+      where: { id_quans: id_quans },
     });
     return res.json({ msg: "success" });
   } catch (error) {

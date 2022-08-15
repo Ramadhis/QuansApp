@@ -5,12 +5,14 @@ import "react-quill/dist/quill.snow.css"; // ES6
 import { useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import Select from "react-select";
+import { urlApi } from "../../helpers/Helpers";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { addMyQuestion } from "../../../actions/myQuestionAction";
 
 const ModalQuestion = (props) => {
   const [show, setShow] = useState(true);
+  const URL = urlApi();
   const [textAr, setTextAr] = useState(props.question ? props.question : "");
   const [textAr2, setTextAr2] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,27 +20,42 @@ const ModalQuestion = (props) => {
   const dispatch = useDispatch();
   const handleClose = () => setShow(props.hide);
   const handleShow = () => setShow(true);
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [options, setOptions] = useState([]);
+  // const options = [
+  //   { value: "chocolate", label: "Chocolate" },
+  //   { value: "strawberry", label: "Strawberry" },
+  //   { value: "vanilla", label: "Vanilla" },
+  // ];
+
+  const [selectedOption, setSelectedOption] = useState([{ value: "vanilla", label: "Vanilla" }]);
 
   let submit = (e) => {
     e.preventDefault();
-    props.submitForm(textAr);
+    props.submitForm(textAr, selectedOption);
     setTextAr("");
   };
 
   useEffect(() => {
-    console.log(selectedOption);
-  }, []);
+    console.log(JSON.stringify(selectedOption));
+  }, [selectedOption]);
+
+  useEffect(() => {
+    axios
+      .post(URL + "/tag", {
+        s: "",
+      })
+      .then((result) => {
+        result.data.map((tag) => {
+          options.push({ value: `${tag.id}`, label: tag.name });
+        });
+        console.log(options);
+      });
+  }, [options]);
 
   const submitEdit = (e) => {
     e.preventDefault();
     axios
-      .put("http://localhost:5000/quans/editQuestion/", {
+      .put(URL + "/quans/editQuestion/", {
         id_user: `${idUser.iduser}`,
         id_quans: `${props.idQuans}`,
         question: `${textAr}`,
@@ -59,6 +76,10 @@ const ModalQuestion = (props) => {
       });
   };
 
+  const multiSelect = (e) => {
+    setSelectedOption(e.map((val) => val.value));
+  };
+
   return (
     <>
       <Modal size="lg" show={props.show} onHide={props.hide}>
@@ -72,7 +93,8 @@ const ModalQuestion = (props) => {
               <input type="text" className="form-control" value={textAr} onChange={(e) => setTextAr(e.target.value)} />
             </div>
             <div className="mt-4">
-              <Select isMulti={true} defaultValue={selectedOption} onChange={setSelectedOption} options={options} />
+              <Form.Label>Select Tag*</Form.Label>
+              <Select value={options.filter((obj) => selectedOption.includes(obj.value))} isMulti={true} isClearable defaultValue={selectedOption} onChange={multiSelect} options={options} />
             </div>
             {/* <div className="mt-4">
               <Form.Label>Tag*</Form.Label>

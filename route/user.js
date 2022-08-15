@@ -80,7 +80,7 @@ router.post("/register", async (req, res) => {
   const salt = await bcrypt.genSaltSync(10);
   const hash = await bcrypt.hashSync(req.body.password, salt);
 
-  const insert = await Users.create({ name: req.body.name, email: req.body.email, password: hash });
+  const insert = await Users.create({ name: req.body.name, job: req.body.job, email: req.body.email, password: hash });
 
   console.log("User's auto-generated ID:", insert);
 });

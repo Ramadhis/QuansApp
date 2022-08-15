@@ -18,6 +18,7 @@ const Dashboard = () => {
   //get query parameter
   const [searchParams, setSearchParams] = useSearchParams();
   const { getListSearchResult, getListSearchLoading, getListSearchError } = useSelector((state) => state.SearchReducer);
+  const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const [valSearch, setValSearch] = useState("");
   let [arr, setArr] = useState(1);
   const items = Array.from(getListSearchResult);
@@ -37,7 +38,7 @@ const Dashboard = () => {
   useEffect(() => {
     console.log("1. use effect component did mount");
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
-    dispatch(getListSearch(searchParams.get("s") ? searchParams.get("s") : ""));
+    dispatch(getListSearch(searchParams.get("s") ? searchParams.get("s") : "", idUser ? idUser.iduser : null));
   }, [location, dispatch]);
 
   const ItemsLoop = ({ currentItems }) => {

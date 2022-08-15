@@ -41,7 +41,7 @@ const Login = () => {
           let user_dat = { name, iduser, email };
           localStorage.setItem("us_da_prv", JSON.stringify(user_dat));
           console.log(localStorage.getItem("us_da_prv"));
-          history("/quans/", { replace: true });
+          history("/quans/dashboard", { replace: true });
         });
     } catch (error) {
       if (error.response) {

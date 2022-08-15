@@ -21,7 +21,7 @@ const Header = () => {
     try {
       localStorage.clear();
       await axios.delete(URL + "/user/logout");
-      history("/", { replace: true });
+      history("/quans/dashboard", { replace: true });
     } catch (error) {
       console.log(error);
     }

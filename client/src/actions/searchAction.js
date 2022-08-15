@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const GET_LIST_SEARCH = "GET_LIST_SEARCH";
 
-export const getListSearch = (search) => {
+export const getListSearch = (search, idUser) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
@@ -19,6 +19,7 @@ export const getListSearch = (search) => {
     axios
       .post("http://localhost:5000/quans/search/", {
         search: `${search}`,
+        idUser: `${idUser ? idUser : 0}`,
       })
       .then((response) => {
         //berhasil

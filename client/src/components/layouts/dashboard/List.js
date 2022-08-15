@@ -9,6 +9,7 @@ const List = (props) => {
   let [like, setLike] = useState(0);
   let tes = "asd";
   let [likeCalculating, setLikeCalculating] = useState(props.likeCount);
+  const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
 
   const likeAdd = () => {
     return props.addLike(props.id, props.index);
@@ -33,8 +34,8 @@ const List = (props) => {
               })}
           </div>
           <div className="col-md-1 col-3">
-            <div onClick={likeAdd} className="col-md-12 text-center">
-              {props.likeCheck === 0 ? <BsHandThumbsUp className="h3" /> : <BsHandThumbsUpFill style={{ color: "#198754" }} className="h3" />}
+            <div onClick={idUser ? likeAdd : null} className="col-md-12 text-center">
+              {idUser ? props.likeCheck === 0 ? <BsHandThumbsUp className="h3" /> : <BsHandThumbsUpFill style={{ color: "#198754" }} className="h3" /> : <BsHandThumbsUp className="h3" />}
             </div>
             <div className="col-md-12 text-center">{likeCalculating}</div>
           </div>

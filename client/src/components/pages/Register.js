@@ -1,19 +1,35 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { urlApi } from "../helpers/Helpers";
 import "./universal.css";
 const Register = () => {
   const URL = urlApi();
+  const history = useNavigate();
   const [name, setName] = useState("");
+  const [job, setJob] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [cpass, setCpass] = useState("");
 
   let regis = (e) => {
     e.preventDefault();
-
-    axios.post();
+    axios
+      .post(URL + "/user/register", {
+        name: name,
+        job: job,
+        email: email,
+        password: pass,
+        confirmpass: cpass,
+      })
+      .then((result) => {
+        //success
+        history("/login", { replace: true });
+      })
+      .catch((error) => {
+        //error
+      });
   };
 
   return (
@@ -28,12 +44,23 @@ const Register = () => {
                   <Form.Group className="mb-2" controlId="formGroupEmail">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
+                      type="text"
                       value={name}
                       onChange={(e) => {
-                        setName(e.target.name);
+                        setName(e.target.value);
                       }}
+                      placeholder="Enter name"
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-2" controlId="formGroupEmail">
+                    <Form.Label>Job/Passion</Form.Label>
+                    <Form.Control
                       type="text"
-                      placeholder="Enter email"
+                      value={job}
+                      onChange={(e) => {
+                        setJob(e.target.value);
+                      }}
+                      placeholder="Enter your Job/passion"
                     />
                   </Form.Group>
                   <Form.Group className="mb-2" controlId="formGroupEmail">
@@ -41,7 +68,7 @@ const Register = () => {
                     <Form.Control
                       value={email}
                       onChange={(e) => {
-                        setEmail(e.target.email);
+                        setEmail(e.target.value);
                       }}
                       type="email"
                       placeholder="Enter email"
@@ -52,7 +79,7 @@ const Register = () => {
                     <Form.Control
                       value={pass}
                       onChange={(e) => {
-                        setPass(e.target.pass);
+                        setPass(e.target.value);
                       }}
                       type="password"
                       placeholder="Password"
@@ -63,7 +90,7 @@ const Register = () => {
                     <Form.Control
                       value={cpass}
                       onChange={(e) => {
-                        setCpass(e.target.cpass);
+                        setCpass(e.target.value);
                       }}
                       type="password"
                       placeholder="Password"

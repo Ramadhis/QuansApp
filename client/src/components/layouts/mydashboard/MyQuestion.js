@@ -69,11 +69,12 @@ const MyQuestion = () => {
     }
   };
 
-  const submitAdd = (question) => {
+  const submitAdd = (question, tag) => {
     axios
       .post("http://localhost:5000/quans/addQuestion/", {
         id_user: `${idUser.iduser}`,
         question: `${question}`,
+        tag: `${tag}`,
       })
       .then((response) => {
         console.log(response.data);
