@@ -15,12 +15,13 @@ const ModalQuestion = (props) => {
   const URL = urlApi();
   const [textAr, setTextAr] = useState(props.question ? props.question : "");
   const [textAr2, setTextAr2] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams([]);
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const dispatch = useDispatch();
   const handleClose = () => setShow(props.hide);
   const handleShow = () => setShow(true);
   const [options, setOptions] = useState(props.allTag ? props.allTag : []);
+
   // const options = [
   //   { value: "chocolate", label: "Chocolate" },
   //   { value: "strawberry", label: "Strawberry" },
@@ -36,32 +37,13 @@ const ModalQuestion = (props) => {
   };
 
   useEffect(() => {
-    if (props.tag) {
-      props.tag.map((tag) => {
-        selectedOption.push(`${tag.id}`);
-      });
-    }
-    console.log(JSON.stringify(selectedOption));
-  }, [selectedOption]);
+    // console.log("cek");
+    setSelectedOption([]);
+    setTextAr(props.question);
+    setSelectedOption(props.tag ? props.tag : []);
 
-  // let loadTag = () => {
-  //   axios
-  //     .post(URL + "/tag", {
-  //       s: "",
-  //     })
-  //     .then((result) => {
-  //       result.data.map((tag) => {
-  //         options.push({ value: `${tag.id}`, label: tag.name });
-  //       });
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (options.length === 0) {
-  //     loadTag();
-  //   }
-  //   console.log(options.length);
-  // }, []);
+    console.log(selectedOption);
+  }, [props.tag]);
 
   const submitEdit = (e) => {
     e.preventDefault();
@@ -72,17 +54,20 @@ const ModalQuestion = (props) => {
         question: `${textAr}`,
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
+
         setShow(false);
+        setSelectedOption([]);
         setSearchParams({
           // s: searchParams.get("s"),
-          add: response.data.msg,
+          edit: response.data.msg,
         });
       })
       .catch((error) => {
         console.log(error.message);
+        setSelectedOption([]);
         setSearchParams({
-          add: "failed",
+          edit: "failed",
         });
       });
   };
@@ -95,6 +80,8 @@ const ModalQuestion = (props) => {
     <>
       <Modal size="lg" show={props.show} onHide={props.hide}>
         <form onSubmit={props.edit ? submitEdit : submit}>
+          {/* {console.log(props.question)}
+          {console.log(props.tag)} */}
           <Modal.Header closeButton>
             <Modal.Title>{props.edit ? "Edit Question" : "Create Question"}</Modal.Title>
           </Modal.Header>
@@ -105,7 +92,7 @@ const ModalQuestion = (props) => {
             </div>
             <div className="mt-4">
               <Form.Label>Select Tag*</Form.Label>
-              <Select value={options.filter((obj) => selectedOption.includes(obj.value))} isMulti={true} isClearable defaultValue={selectedOption} onChange={multiSelect} options={options} />
+              <Select value={options.filter((obj) => selectedOption.includes(obj.value))} isMulti={true} isClearable onChange={multiSelect} options={options} />
             </div>
             {/* <div className="mt-4">
               <Form.Label>Tag*</Form.Label>

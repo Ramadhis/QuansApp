@@ -7,6 +7,7 @@ import { Form, Button } from "react-bootstrap";
 import List from "../mydashboard/List";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalQuestion from "../mydashboard/ModalQuestion";
+import ModalEditQuestion from "../mydashboard/ModalQuestion";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
@@ -19,12 +20,15 @@ const MyQuestion = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  let [tagEdit, setTagEdit] = useState([]);
   const { getListMyQuestionResult, getListMyQuestionLoading, getListMyQuestionError } = useSelector((state) => state.MyQuestionReducer);
   const [valSearch, setValSearch] = useState("");
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const URL = urlApi();
   let items = Array.from(getListMyQuestionResult);
   const [options, setOptions] = useState([]);
+  const [quansName, setQuans] = useState("");
 
   let loadTag = () => {
     axios
@@ -49,6 +53,27 @@ const MyQuestion = () => {
     // error = loadData.error;
   }, [location, dispatch]);
 
+  const showModalEdit = async (status, idQuans, question) => {
+    setTagEdit([]);
+    setQuans("");
+    setQuans(question);
+    // console.log(quansName);
+    let asd = await axios
+      .get(URL + `/tag/quansTag/?idQuestion=${idQuans}`)
+      .then((result) => {
+        setTagEdit([]);
+        result.data.forEach((tg) => {
+          tagEdit.push(`${tg.tag.id}`);
+        });
+        return tagEdit;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setTagEdit(asd);
+    setShowEdit(status);
+  };
+
   let ItemsLoop = ({ currentItems }) => {
     return (
       <>
@@ -64,7 +89,7 @@ const MyQuestion = () => {
                     </div>
                   );
                 })}
-                <List key={item.id} id={item.id} quans={item.quans} tag={quans_tag} allTag={options} />
+                <List key={item.id} id={item.id} quans={item.quans} tag={quans_tag} allTag={options} editModal={showModalEdit} />
               </div>
             );
           })}
@@ -91,12 +116,13 @@ const MyQuestion = () => {
         tag: `${tag}`,
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setShow(false);
         setSearchParams({
           // s: searchParams.get("s"),
-          add: response.data.msg,
+          add: "success",
         });
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error.message);
@@ -104,11 +130,13 @@ const MyQuestion = () => {
           add: "failed",
         });
       });
+
     // dispatch(addMyQuestion(idUser.iduser, textAr));
   };
 
   return (
     <div className="col-md-12 mb-2">
+      {/* {console.log(tagEdit)} */}
       <div className="row">
         <div className="col-md-9 col-7">
           <form onSubmit={submitSearch}>
@@ -154,6 +182,16 @@ const MyQuestion = () => {
             }}
             allTag={options}
             submitForm={submitAdd}
+          />
+          <ModalEditQuestion
+            show={showEdit}
+            hide={() => {
+              setShowEdit(false);
+            }}
+            edit={true}
+            question={quansName}
+            tag={tagEdit}
+            allTag={options}
           />
         </div>
         <div className="col-md-12">

@@ -20,8 +20,7 @@ const Tag_quans = db.define(
     freezeTableName: true,
   }
 );
-// Tag_quans.hasOne(Tag, { foreignKey: "id_tags" });
-// Tag.belongsTo(Tag_quans, { foreignKey: "id_tags" });
+
 Tag.hasOne(Tag_quans, { foreignKey: "id_tags" });
 Tag_quans.belongsTo(Tag, { foreignKey: "id_tags" });
 export default Tag_quans;

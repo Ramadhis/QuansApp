@@ -13,6 +13,7 @@ const List = (props) => {
   let tag = props.tag;
   const [searchParams, setSearchParams] = useSearchParams();
   const [show, setShow] = useState(false);
+  // const [selectedOption, setSelectedOption] = useState([]);
 
   const del = async () => {
     const MySwal = withReactContent(Swal);
@@ -36,7 +37,7 @@ const List = (props) => {
             },
           })
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setSearchParams({
               // s: searchParams.get("s"),
               delete: response.data.msg,
@@ -56,7 +57,16 @@ const List = (props) => {
   };
 
   const edit = () => {
-    setShow(true);
+    props.editModal(true, id, props.quans);
+    // setSelectedOption([]);
+    // tag.map((t) => {
+    //   selectedOption.push(`${t.id}`);
+    // });
+    // console.log(tag.length);
+    // for (let i = 0; i <= tag.length - 1; i++) {
+    //   selectedOption.push(`${tag[i].id}`);
+    // }
+    // setShow(true);
   };
 
   // const edit = () => {
@@ -95,7 +105,6 @@ const List = (props) => {
               <Card.Text>
                 <Link to={`/quans/?id=${id}`}>{props.quans}</Link>
               </Card.Text>
-              {console.log(tag)}
               {tag &&
                 tag.map((t, i) => {
                   return (
@@ -113,17 +122,6 @@ const List = (props) => {
                 <Button onClick={edit} variant="info" className="col-8 col-md-7 text-center">
                   <BsFillPencilFill style={{ color: "white" }} />
                 </Button>
-                <ModalQuestion
-                  show={show}
-                  hide={() => {
-                    setShow(false);
-                  }}
-                  edit={true}
-                  question={props.quans}
-                  idQuans={id}
-                  tag={tag}
-                  allTag={props.allTag}
-                />
               </Row>
             </div>
           </div>

@@ -157,4 +157,8 @@ Content-Type: application/json
   "answer" : "ini tes jawaban aja"
 }
 
+###
+GET http://localhost:5000/tag/quansTag/?idQuestion=1
+
+
 
