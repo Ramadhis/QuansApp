@@ -30,16 +30,19 @@ const MyQuestion = () => {
   const [options, setOptions] = useState([]);
   const [quansName, setQuans] = useState("");
 
+  let asd = [];
   let loadTag = () => {
-    axios
-      .post(URL + "/tag", {
-        s: "",
-      })
-      .then((result) => {
-        result.data.map((tag) => {
-          options.push({ value: `${tag.id}`, label: tag.name });
+    if (options.length === 0) {
+      axios
+        .post(URL + "/tag", {
+          s: "",
+        })
+        .then((result) => {
+          result.data.map((tag) => {
+            options.push({ value: `${tag.id}`, label: tag.name });
+          });
         });
-      });
+    }
   };
 
   useEffect(() => {
@@ -47,6 +50,7 @@ const MyQuestion = () => {
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
     dispatch(getListMyQuestion(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser));
     loadTag();
+    setTagEdit([]);
     // loadAxios(searchParams.get("s") ? searchParams.get("s") : "");
     // loading = loadData.loading;
     // data = loadData.data;
@@ -58,20 +62,34 @@ const MyQuestion = () => {
     setQuans("");
     setQuans(question);
     // console.log(quansName);
-    let asd = await axios
-      .get(URL + `/tag/quansTag/?idQuestion=${idQuans}`)
-      .then((result) => {
-        setTagEdit([]);
-        result.data.forEach((tg) => {
-          tagEdit.push(`${tg.tag.id}`);
+    if (asd.length === 0) {
+      asd = await axios
+        .get(URL + `/tag/quansTag/?idQuestion=${idQuans}`)
+        .then((result) => {
+          let tag = result.data;
+
+          return Array.from(tag);
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        return tagEdit;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } else {
+      console.log("kosong");
+      asd = [];
+    }
     setTagEdit(asd);
+    asd = [];
     setShowEdit(status);
+  };
+
+  const closeModalEdit = () => {
+    setShowEdit(false);
+  };
+  const resetForModal = () => {
+    console.log("reset");
+    asd = [];
+    closeModalEdit();
+    setTagEdit([]);
   };
 
   let ItemsLoop = ({ currentItems }) => {
@@ -188,6 +206,7 @@ const MyQuestion = () => {
             hide={() => {
               setShowEdit(false);
             }}
+            reset={resetForModal}
             edit={true}
             question={quansName}
             tag={tagEdit}

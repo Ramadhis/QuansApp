@@ -21,6 +21,8 @@ const ModalQuestion = (props) => {
   const handleClose = () => setShow(props.hide);
   const handleShow = () => setShow(true);
   const [options, setOptions] = useState(props.allTag ? props.allTag : []);
+  let loopArrTag = [];
+  let arrTag = props.tag;
 
   // const options = [
   //   { value: "chocolate", label: "Chocolate" },
@@ -41,9 +43,19 @@ const ModalQuestion = (props) => {
     setSelectedOption([]);
     setTextAr(props.question);
     setSelectedOption(props.tag ? props.tag : []);
-
-    console.log(selectedOption);
+    if (arrTag) {
+      arrTag.map((tg) => {
+        return loopArrTag.push(`${tg.tag.id}`);
+      });
+    }
+    console.log(loopArrTag);
+    setSelectedOption(loopArrTag);
+    // console.log(selectedOption);
   }, [props.tag]);
+
+  const hideModal = (bool) => {
+    return bool;
+  };
 
   const submitEdit = (e) => {
     e.preventDefault();
@@ -55,8 +67,6 @@ const ModalQuestion = (props) => {
       })
       .then((response) => {
         // console.log(response.data);
-
-        setShow(false);
         setSelectedOption([]);
         setSearchParams({
           // s: searchParams.get("s"),
@@ -70,6 +80,11 @@ const ModalQuestion = (props) => {
           edit: "failed",
         });
       });
+    console.log(selectedOption);
+    arrTag = [];
+    loopArrTag = [];
+    props.reset();
+    setSelectedOption([]);
   };
 
   const multiSelect = (e) => {
@@ -78,7 +93,7 @@ const ModalQuestion = (props) => {
 
   return (
     <>
-      <Modal size="lg" show={props.show} onHide={props.hide}>
+      <Modal size="lg" show={props.show} onHide={hideModal(props.hide)}>
         <form onSubmit={props.edit ? submitEdit : submit}>
           {/* {console.log(props.question)}
           {console.log(props.tag)} */}
@@ -92,7 +107,7 @@ const ModalQuestion = (props) => {
             </div>
             <div className="mt-4">
               <Form.Label>Select Tag*</Form.Label>
-              <Select value={options.filter((obj) => selectedOption.includes(obj.value))} isMulti={true} isClearable onChange={multiSelect} options={options} />
+              <Select value={options.filter((obj) => selectedOption.includes(obj.value))} isMulti={true} isClearable onChange={multiSelect} options={options}></Select>
             </div>
             {/* <div className="mt-4">
               <Form.Label>Tag*</Form.Label>
