@@ -29,6 +29,7 @@ const MyQuestion = () => {
   let items = Array.from(getListMyQuestionResult);
   const [options, setOptions] = useState([]);
   const [quansName, setQuans] = useState("");
+  const [quansId, setQuansId] = useState(0);
 
   let asd = [];
   let loadTag = () => {
@@ -61,6 +62,7 @@ const MyQuestion = () => {
     setTagEdit([]);
     setQuans("");
     setQuans(question);
+    setQuansId(idQuans);
     // console.log(quansName);
     if (asd.length === 0) {
       asd = await axios
@@ -152,6 +154,33 @@ const MyQuestion = () => {
     // dispatch(addMyQuestion(idUser.iduser, textAr));
   };
 
+  const submitEdit = (idUser, idQuans, question, tags) => {
+    axios
+      .put(
+        URL + "/quans/editQuestion/",
+        {
+          id_user: `${idUser}`,
+          id_quans: `${idQuans}`,
+          question: `${question}`,
+          tag: `${tags}`,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        // console.log(response.data);
+        setSearchParams({
+          // s: searchParams.get("s"),
+          edit: response.data.msg,
+        });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setSearchParams({
+          edit: "failed",
+        });
+      });
+  };
+
   return (
     <div className="col-md-12 mb-2">
       {/* {console.log(tagEdit)} */}
@@ -208,8 +237,10 @@ const MyQuestion = () => {
             }}
             reset={resetForModal}
             edit={true}
+            idQuans={quansId}
             question={quansName}
             tag={tagEdit}
+            submitEdit={submitEdit}
             allTag={options}
           />
         </div>

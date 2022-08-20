@@ -148,10 +148,13 @@ router.post("/addQuestion", async (req, res) => {
   // return console.log(splitTag);
   try {
     const insert = await quans.create({ id_user: id_user, id_parent: "0", quans: question });
-
+    let arrTag = [];
     for (let i = 0; i <= splitTag.length - 1; i++) {
       console.log("asdasdasd  " + i);
-      await Tag_quans.create({ id_quans: insert.id, id_tags: splitTag[i] });
+      arrTag.push({ id_quans: insert.id, id_tags: splitTag[i] });
+    }
+    if (arrTag.length !== 0) {
+      await Tag_quans.bulkCreate(arrTag);
     }
     return res.json({ msg: "success", data: insert });
   } catch (error) {
@@ -176,7 +179,7 @@ router.delete("/deleteQuestion", async (req, res) => {
 
 router.put("/editQuestion", async (req, res) => {
   try {
-    let { id_user, id_quans, question } = req.body;
+    let { id_user, id_quans, question, tag } = req.body;
     await quans
       .update(
         { quans: question },
@@ -189,14 +192,25 @@ router.put("/editQuestion", async (req, res) => {
         }
       )
       .then((result) => {
-        return res.status(200).json({ msg: "success" });
+        return 1;
       })
       .catch((err) => {
         return res.status(404).json({ msg: "gagal" });
       });
-    // await Tag_quans.destroy({
-    //   where: { id_quans: id_quans },
-    // });
+    await Tag_quans.destroy({
+      where: { id_quans: id_quans },
+    });
+    let splitTag = tag.split(",");
+    let arrTag = [];
+
+    if (splitTag.length !== 0) {
+      for (let i = 0; i <= splitTag.length - 1; i++) {
+        arrTag.push({ id_quans: id_quans, id_tags: splitTag[i] });
+      }
+      await Tag_quans.bulkCreate(arrTag);
+    }
+
+    return res.status(200).json({ msg: "success" });
   } catch (error) {
     return res.status(404).json({ msg: error });
   }

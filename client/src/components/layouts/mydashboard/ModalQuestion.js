@@ -57,34 +57,12 @@ const ModalQuestion = (props) => {
     return bool;
   };
 
-  const submitEdit = (e) => {
+  const submitUpdate = (e) => {
     e.preventDefault();
-    axios
-      .put(URL + "/quans/editQuestion/", {
-        id_user: `${idUser.iduser}`,
-        id_quans: `${props.idQuans}`,
-        question: `${textAr}`,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setSelectedOption([]);
-        setSearchParams({
-          // s: searchParams.get("s"),
-          edit: response.data.msg,
-        });
-      })
-      .catch((error) => {
-        console.log(error.message);
-        setSelectedOption([]);
-        setSearchParams({
-          edit: "failed",
-        });
-      });
+    console.log(props.idQuans);
+    props.submitEdit(idUser.iduser, props.idQuans, textAr, selectedOption);
     console.log(selectedOption);
-    arrTag = [];
-    loopArrTag = [];
     props.reset();
-    setSelectedOption([]);
   };
 
   const multiSelect = (e) => {
@@ -94,7 +72,7 @@ const ModalQuestion = (props) => {
   return (
     <>
       <Modal size="lg" show={props.show} onHide={hideModal(props.hide)}>
-        <form onSubmit={props.edit ? submitEdit : submit}>
+        <form onSubmit={props.edit ? submitUpdate : submit}>
           {/* {console.log(props.question)}
           {console.log(props.tag)} */}
           <Modal.Header closeButton>

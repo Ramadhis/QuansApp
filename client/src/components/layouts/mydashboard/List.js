@@ -58,43 +58,7 @@ const List = (props) => {
 
   const edit = () => {
     props.editModal(true, id, props.quans);
-    // setSelectedOption([]);
-    // tag.map((t) => {
-    //   selectedOption.push(`${t.id}`);
-    // });
-    // console.log(tag.length);
-    // for (let i = 0; i <= tag.length - 1; i++) {
-    //   selectedOption.push(`${tag[i].id}`);
-    // }
-    // setShow(true);
   };
-
-  // const edit = () => {
-  //   let idUser = JSON.parse(localStorage.getItem("us_da_prv"));
-  //   axios
-  //     .delete("http://localhost:5000/quans/editQuestion/", {
-  //       // headers: {
-  //       //   Authorization: authorizationToken,
-  //       // },
-  //       data: {
-  //         id_user: `${idUser.iduser}`,
-  //         id_quans: `${id}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setSearchParams({
-  //         // s: searchParams.get("s"),
-  //         delete: response.data.msg,
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.message);
-  //       setSearchParams({
-  //         delete: "failed",
-  //       });
-  //     });
-  // }
 
   return (
     <div className="col-md-12">
