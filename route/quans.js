@@ -220,7 +220,7 @@ router.post("/myAnswer", async (req, res) => {
   try {
     let q = req.body.s.trim();
     let filter = req.body.filter;
-    let idUser = 4;
+    let idUser = req.body.idUser;
     let a;
     a = await quans.findAll({
       where: { [Op.and]: { quans: { [Op.like]: `%${q}%` }, id_parent: { [Op.ne]: "0" }, id_user: { [Op.eq]: idUser } } },
@@ -234,10 +234,10 @@ router.post("/myAnswer", async (req, res) => {
       include: [{ model: tag_quans, include: [{ model: tag }] }],
       order: [["id", "DESC"]],
     });
+    return res.json(a);
   } catch (error) {
     return res.status(404).json({ msg: error });
   }
-  return res.json(a);
 });
 
 router.post("/addAnswer/", async (req, res) => {

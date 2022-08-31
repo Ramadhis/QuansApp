@@ -1,4 +1,4 @@
-import { GET_LIST_MYANSWER } from "../../actions/MyAnswerAction";
+import { GET_LIST_MYANSWER, DEL_MYANSWER } from "../../actions/myAnswerAction";
 
 const initialState = {
   getListMyAnswerResult: false,
@@ -6,7 +6,7 @@ const initialState = {
   getListMyAnswerError: false,
 };
 
-const myanswer = (state = initialState, action) => {
+const myAnswer = (state = initialState, action) => {
   switch (action.type) {
     case GET_LIST_MYANSWER:
       console.log("4. masuk reducer", action);
@@ -16,9 +16,11 @@ const myanswer = (state = initialState, action) => {
         getListMyAnswerLoading: action.payload.loading,
         getListMyAnswerError: action.payload.errorMessage,
       };
+    case DEL_MYANSWER:
+      return 1;
     default:
       return state;
   }
 };
 
-export default myanswer;
+export default myAnswer;
