@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const GET_LIST_MYANSWER = "GET_LIST_MYANSWER";
 export const DEL_MYANSWER = "DEL_MYANSWER";
+export const ADD_MYANSWER = "ADD_MYANSWER";
 
 export const getListMyAnswer = (MyAnswer, idUser) => {
   console.log("2. masuk action");
@@ -53,6 +54,53 @@ export const getListMyAnswer = (MyAnswer, idUser) => {
   };
 };
 
+export const addMyAnswer = (id, idUser, answer) => {
+  //get API
+  return (dispatch) => {
+    //loading
+    dispatch({
+      type: ADD_MYANSWER,
+      payload: {
+        loading: true,
+        statusResponse: false,
+      },
+    });
+
+    axios
+      .post(
+        "http://localhost:5000/quans/addAnswer/",
+        {
+          id_user: `${idUser}`,
+          id_parent: `${id}`,
+          answer: `${answer}`,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        //berhasil
+        console.log("3. berhasil", response);
+        dispatch({
+          type: ADD_MYANSWER,
+          payload: {
+            loading: false,
+            statusResponse: true,
+          },
+        });
+      })
+      .catch((error) => {
+        //gagal
+        console.log("3. gagal", error.message);
+        dispatch({
+          type: ADD_MYANSWER,
+          payload: {
+            loading: false,
+            statusResponse: false,
+          },
+        });
+      });
+  };
+};
+
 export const delMyAnswer = (id, idUser) => {
   console.log("2. masuk action");
   return (dispatch) => {
@@ -80,7 +128,7 @@ export const delMyAnswer = (id, idUser) => {
         //berhasil
         console.log("3. berhasil", response);
         dispatch({
-          type: GET_LIST_MYANSWER,
+          type: DEL_MYANSWER,
           payload: {
             loading: false,
             data: response.data,
@@ -92,7 +140,7 @@ export const delMyAnswer = (id, idUser) => {
         //gagal
         console.log("3. gagal", error.message);
         dispatch({
-          type: GET_LIST_MYANSWER,
+          type: DEL_MYANSWER,
           payload: {
             loading: false,
             data: false,

@@ -8,6 +8,7 @@ import List from "../mydashboard/ListAnswer";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalQuestion from "../mydashboard/ModalQuestion";
 import ModalEditQuestion from "../mydashboard/ModalQuestion";
+import parse from "html-react-parser";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +26,7 @@ const MyAnswer = () => {
   const { getListMyAnswerResult, getListMyAnswerLoading, getListMyAnswerError } = useSelector((state) => state.MyAnswerReducer);
   let items = Array.from(getListMyAnswerResult);
   const showModalEdit = async (status, idQuans, question) => {};
+  let answer = "";
 
   useEffect(() => {
     console.log("1. use effect component did mount");
@@ -53,7 +55,8 @@ const MyAnswer = () => {
                     </div>
                   );
                 })}
-                <List key={item.id} id={item.id} idParent={item.id_parent} quans={item.quans} tag={quans_tag} allTag={options} editModal={showModalEdit} />
+
+                <List key={item.id} id={item.id} idParent={item.id_parent} quans={parse(item.quans)} tag={quans_tag} allTag={options} editModal={showModalEdit} />
               </div>
             );
           })}

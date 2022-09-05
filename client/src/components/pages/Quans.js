@@ -5,26 +5,31 @@ import { Row, Card, Badge, Button } from "react-bootstrap";
 import QA from "../layouts/quans_layout/QuestionAnswer";
 import Rightsidebar from "../widgets/Rightsidebar";
 import ModalAnswer from "../layouts/quans_layout/ModalAnswer";
+import { useSearchParams, useLocation } from "react-router-dom";
 //endlayout
 import { BsChatLeftDots } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getListQuans } from "../../actions/quansAction";
+import { addMyAnswer } from "../../actions/myAnswerAction";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
+import parse from "html-react-parser";
 
 const Quans = () => {
   const dispatch = useDispatch();
-  const { getListQuansResult, getListQuansLoading, getListQuansError } = useSelector((state) => state.QuansReducer);
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { getListQuansResult, getListQuansLoading, getListQuansError, statusResponse } = useSelector((state) => state.QuansReducer);
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
+  let id = params.get("id");
+  let countSplice = 0;
 
   useEffect(() => {
     //call action getListQuans
     console.log("1. use effect component did mount");
 
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
-    let id = params.get("id");
-
     dispatch(getListQuans(id));
-  }, [dispatch]);
+  }, [dispatch, location]);
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -47,7 +52,11 @@ const Quans = () => {
   //get data quans
   const items = Array.from(getListQuansResult);
   //delete parent quans
-  items.splice(0, 1);
+  if (countSplice === 0) {
+    items.splice(0, 1);
+    countSplice = 1;
+  }
+
   //sort array desc in like_count
   items.sort((a, b) => b["like_count"] - a["like_count"]);
   console.log(items);
@@ -59,11 +68,17 @@ const Quans = () => {
             <div className="my-1" key={i}>
               {/* <List /> */}
               {/* <h3>Item #{q.user_name}</h3> */}
-              <QA key={q.id} name_creator={q.user_name} answer={q.quans} count_like={q.like_count} date={q.createdAt} />
+              <QA key={q.id} name_creator={q.user_name} answer={parse(q.quans)} count_like={q.like_count} date={q.createdAt} />
             </div>
           ))}
       </>
     );
+  };
+
+  const addAnswer = (id, idUser, answer) => {
+    dispatch(addMyAnswer(id, idUser, answer));
+    searchParams.set("addStatus", statusResponse ? "SUCCESS" : "FAILED");
+    setSearchParams(searchParams);
   };
   //--------------------------------------
 
@@ -95,7 +110,7 @@ const Quans = () => {
                   <BsChatLeftDots className="h5 mb-0 me-1" />
                   Add Your Answer
                 </Button> */}
-                <ModalAnswer />
+                <ModalAnswer id={params.get("id")} addAnswer={addAnswer} />
               </div>
             </Row>
           </div>
