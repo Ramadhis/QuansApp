@@ -12,20 +12,21 @@ import parse from "html-react-parser";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { getListMyAnswer } from "../../../actions/myAnswerAction";
+import { getListMyAnswer, delMyAnswer } from "../../../actions/myAnswerAction";
 import axios from "axios";
 
 const MyAnswer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  let items = [];
   const [options, setOptions] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [valSearch, setValSearch] = useState("");
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
-  const { getListMyAnswerResult, getListMyAnswerLoading, getListMyAnswerError } = useSelector((state) => state.MyAnswerReducer);
-  let items = Array.from(getListMyAnswerResult);
+  const { getListMyAnswerResult, getListMyAnswerLoading, getListMyAnswerError, statusResponse } = useSelector((state) => state.MyAnswerReducer);
   const showModalEdit = async (status, idQuans, question) => {};
+  items = Array.from(getListMyAnswerResult);
   let answer = "";
 
   useEffect(() => {
@@ -39,6 +40,15 @@ const MyAnswer = () => {
     // data = loadData.data;
     // error = loadData.error;
   }, [location, dispatch]);
+
+  const delAnswer = (idAnswer) => {
+    dispatch(delMyAnswer(idAnswer));
+    setTimeout(() => {
+      console.log(statusResponse);
+      searchParams.set("deleteStatus", statusResponse ? "SUCCESS" : "FAILED");
+      setSearchParams(searchParams);
+    }, 2000);
+  };
 
   let ItemsLoop = ({ currentItems }) => {
     return (
@@ -56,7 +66,7 @@ const MyAnswer = () => {
                   );
                 })}
 
-                <List key={item.id} id={item.id} idParent={item.id_parent} quans={parse(item.quans)} tag={quans_tag} allTag={options} editModal={showModalEdit} />
+                <List key={item.id} id={item.id} delAnswer={delAnswer} idParent={item.id_parent} quans={parse(item.quans)} tag={quans_tag} allTag={options} editModal={showModalEdit} />
               </div>
             );
           })}

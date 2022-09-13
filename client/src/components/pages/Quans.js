@@ -27,8 +27,9 @@ const Quans = () => {
   useEffect(() => {
     //call action getListQuans
     console.log("1. use effect component did mount");
-
-    dispatch(getListQuans(id));
+    setTimeout(() => {
+      dispatch(getListQuans(id));
+    }, 2000);
   }, [dispatch, location]);
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

@@ -101,29 +101,25 @@ export const addMyAnswer = (id, idUser, answer) => {
   };
 };
 
-export const delMyAnswer = (id, idUser) => {
+export const delMyAnswer = (id) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
     dispatch({
-      type: GET_LIST_MYANSWER,
+      type: DEL_MYANSWER,
       payload: {
         loading: true,
-        data: false,
-        errorMessage: false,
+        statusResponse: false,
       },
     });
 
     //get API
     axios
-      .post(
-        "http://localhost:5000/quans/deleteAnswer/",
-        {
-          id_user: `${idUser}`,
+      .delete("http://localhost:5000/quans/deleteAnswer/", {
+        data: {
           id_quans: `${id}`,
         },
-        { withCredentials: true }
-      )
+      })
       .then((response) => {
         //berhasil
         console.log("3. berhasil", response);
@@ -131,8 +127,7 @@ export const delMyAnswer = (id, idUser) => {
           type: DEL_MYANSWER,
           payload: {
             loading: false,
-            data: response.data,
-            errorMessage: false,
+            statusResponse: true,
           },
         });
       })
@@ -143,8 +138,7 @@ export const delMyAnswer = (id, idUser) => {
           type: DEL_MYANSWER,
           payload: {
             loading: false,
-            data: false,
-            errorMessage: error.message,
+            statusResponse: false,
           },
         });
       });

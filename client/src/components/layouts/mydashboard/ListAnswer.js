@@ -16,44 +16,24 @@ const ListAnswer = (props) => {
   const [show, setShow] = useState(false);
   // const [selectedOption, setSelectedOption] = useState([]);
 
-  const del = async () => {
-    // const MySwal = withReactContent(Swal);
+  const del = async (e) => {
+    e.preventDefault();
+    const MySwal = withReactContent(Swal);
     // let idUser = JSON.parse(localStorage.getItem("us_da_prv"));
-    // await MySwal.fire({
-    //   title: <p>are you sure to delete question?</p>,
-    //   showDenyButton: true,
-    //   confirmButtonText: "Yes",
-    //   denyButtonText: "No",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     axios
-    //       .delete("http://localhost:5000/quans/deleteQuestion/", {
-    //         // headers: {
-    //         //   Authorization: authorizationToken,
-    //         // },
-    //         data: {
-    //           id_user: `${idUser.iduser}`,
-    //           id_quans: `${id}`,
-    //         },
-    //       })
-    //       .then((response) => {
-    //         // console.log(response.data);
-    //         setSearchParams({
-    //           // s: searchParams.get("s"),
-    //           delete: response.data.msg,
-    //         });
-    //       })
-    //       .catch((error) => {
-    //         console.log(error.message);
-    //         setSearchParams({
-    //           delete: "failed",
-    //         });
-    //       });
-    //   } else {
-    //     return 0;
-    //   }
-    // });
-    // //
+    console.log(id);
+    await MySwal.fire({
+      title: <p>are you sure to delete question?</p>,
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        props.delAnswer(id);
+      } else {
+        return 0;
+      }
+    });
+    //
   };
 
   const edit = () => {

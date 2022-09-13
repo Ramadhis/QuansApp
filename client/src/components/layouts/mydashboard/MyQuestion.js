@@ -19,6 +19,7 @@ const MyQuestion = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
+  let items = [];
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   let [tagEdit, setTagEdit] = useState([]);
@@ -26,7 +27,7 @@ const MyQuestion = () => {
   const [valSearch, setValSearch] = useState("");
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const URL = urlApi();
-  let items = Array.from(getListMyQuestionResult);
+  items = Array.from(getListMyQuestionResult);
   const [options, setOptions] = useState([]);
   const [quansName, setQuans] = useState("");
   const [quansId, setQuansId] = useState(0);

@@ -4,7 +4,6 @@ const initialState = {
   getListMyAnswerResult: false,
   getListMyAnswerLoading: false,
   getListMyAnswerError: false,
-  statusResponse: false,
 };
 
 const myAnswer = (state = initialState, action) => {
@@ -18,7 +17,11 @@ const myAnswer = (state = initialState, action) => {
         getListMyAnswerError: action.payload.errorMessage,
       };
     case DEL_MYANSWER:
-      return 1;
+      return {
+        ...state,
+        getListMyAnswerLoading: action.payload.loading,
+        statusResponse: action.payload.statusResponse,
+      };
     case ADD_MYANSWER:
       return {
         ...state,

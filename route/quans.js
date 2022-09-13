@@ -252,9 +252,10 @@ router.post("/addAnswer/", async (req, res) => {
 
 router.delete("/deleteAnswer", async (req, res) => {
   try {
-    let { id_user, id_quans } = req.body;
+    console.log(req.cookies.token);
+    let { id_quans } = req.body;
     const del = await quans.destroy({
-      where: { id_parent: { [Op.ne]: "0" }, id_user: id_user, id: id_quans },
+      where: { id_parent: { [Op.ne]: "0" }, id: id_quans },
     });
     return res.status(200).json({ msg: "success" });
   } catch (error) {

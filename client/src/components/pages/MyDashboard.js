@@ -11,12 +11,12 @@ const MyDashboard = () => {
     <div className="col-lg-10 mt-5 p-4 g-0 pt-4" style={{ marginTop: `100px` }}>
       <div className="row">
         <div className="col-lg-12 mt-2">
-          <Tabs defaultActiveKey="Myquestion" id="uncontrolled-tab-example" className="mb-3">
-            <Tab eventKey="Myquestion" title="MyQuestion">
-              <MyQuestion />
-            </Tab>
+          <Tabs defaultActiveKey="Myanswer" id="uncontrolled-tab-example" className="mb-3">
             <Tab eventKey="Myanswer" title="MyAnswer">
               <MyAnswer />
+            </Tab>
+            <Tab eventKey="Myquestion" title="MyQuestion">
+              <MyQuestion />
             </Tab>
           </Tabs>
         </div>
