@@ -1,4 +1,4 @@
-import { GET_LIST_MYANSWER, DEL_MYANSWER, ADD_MYANSWER } from "../../actions/myAnswerAction";
+import { GET_LIST_MYANSWER, DEL_MYANSWER, ADD_MYANSWER, UPDATE_MYANSWER } from "../../actions/myAnswerAction";
 
 const initialState = {
   getListMyAnswerResult: false,
@@ -23,6 +23,12 @@ const myAnswer = (state = initialState, action) => {
         statusResponse: action.payload.statusResponse,
       };
     case ADD_MYANSWER:
+      return {
+        ...state,
+        getListMyAnswerLoading: action.payload.loading,
+        statusResponse: action.payload.statusResponse,
+      };
+    case UPDATE_MYANSWER:
       return {
         ...state,
         getListMyAnswerLoading: action.payload.loading,

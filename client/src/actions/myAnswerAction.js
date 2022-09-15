@@ -3,6 +3,7 @@ import axios from "axios";
 export const GET_LIST_MYANSWER = "GET_LIST_MYANSWER";
 export const DEL_MYANSWER = "DEL_MYANSWER";
 export const ADD_MYANSWER = "ADD_MYANSWER";
+export const UPDATE_MYANSWER = "UPDATE_MYANSWER";
 
 export const getListMyAnswer = (MyAnswer, idUser) => {
   console.log("2. masuk action");
@@ -136,6 +137,48 @@ export const delMyAnswer = (id) => {
         console.log("3. gagal", error.message);
         dispatch({
           type: DEL_MYANSWER,
+          payload: {
+            loading: false,
+            statusResponse: false,
+          },
+        });
+      });
+  };
+};
+
+export const updateMyAnswerAction = (id, answer) => {
+  return (dispatch) => {
+    //loading
+    dispatch({
+      type: UPDATE_MYANSWER,
+      payload: {
+        loading: true,
+        statusResponse: false,
+      },
+    });
+
+    //get API
+    axios
+      .put("http://localhost:5000/quans/editAnswer/", {
+        id_quans: `${id}`,
+        answer: `${answer}`,
+      })
+      .then((response) => {
+        //berhasil
+        console.log("3. berhasil", response);
+        dispatch({
+          type: UPDATE_MYANSWER,
+          payload: {
+            loading: false,
+            statusResponse: true,
+          },
+        });
+      })
+      .catch((error) => {
+        //gagal
+        console.log("3. gagal", error.message);
+        dispatch({
+          type: UPDATE_MYANSWER,
           payload: {
             loading: false,
             statusResponse: false,

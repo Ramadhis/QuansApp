@@ -7,6 +7,7 @@ import { useSearchParams, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ModalQuestion from "./ModalQuestion";
+import parse from "html-react-parser";
 
 const ListAnswer = (props) => {
   let id = props.id;
@@ -37,7 +38,7 @@ const ListAnswer = (props) => {
   };
 
   const edit = () => {
-    // props.editModal(true, id, props.quans);
+    props.editModal(true, id, props.quans);
   };
 
   return (
@@ -47,7 +48,7 @@ const ListAnswer = (props) => {
           <div className="row">
             <div className="col-md-11 col-10">
               <Card.Text>
-                <Link to={`/quans/?id=${idParent}`}>{props.quans}</Link>
+                <Link to={`/quans/?id=${idParent}`}>{parse(props.quans)}</Link>
               </Card.Text>
               {tag &&
                 tag.map((t, i) => {

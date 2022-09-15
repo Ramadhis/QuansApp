@@ -23,22 +23,27 @@ const Quans = () => {
   let params = new URLSearchParams(search);
   let id = params.get("id");
   let countSplice = 0;
+  let quans_par = "";
+  let quans_date = "";
+  let quans_tag = [];
+  const items = Array.from(getListQuansResult);
 
   useEffect(() => {
     //call action getListQuans
     console.log("1. use effect component did mount");
-    setTimeout(() => {
-      dispatch(getListQuans(id));
-    }, 2000);
+    quans_par = "";
+    quans_date = "";
+    quans_tag = [];
+
+    dispatch(getListQuans(id));
   }, [dispatch, location]);
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  //get data quans
 
   //buat judul question/ question pertama
   const quans_arr = Array.from(getListQuansResult);
-  let quans_par = "";
-  let quans_date = "";
-  let quans_tag = [];
+
   quans_arr.map((q) => {
     if (q.id_parent === 0) {
       quans_par = q.quans;
@@ -50,8 +55,6 @@ const Quans = () => {
     }
   });
 
-  //get data quans
-  const items = Array.from(getListQuansResult);
   //delete parent quans
   if (countSplice === 0) {
     items.splice(0, 1);
@@ -80,6 +83,9 @@ const Quans = () => {
     dispatch(addMyAnswer(id, idUser, answer));
     searchParams.set("addStatus", statusResponse ? "SUCCESS" : "FAILED");
     setSearchParams(searchParams);
+    setTimeout(() => {
+      dispatch(getListQuans(id));
+    }, 2000);
   };
   //--------------------------------------
 

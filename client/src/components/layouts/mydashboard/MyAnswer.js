@@ -6,13 +6,12 @@ import { useSearchParams, useLocation } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import List from "../mydashboard/ListAnswer";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
-import ModalQuestion from "../mydashboard/ModalQuestion";
-import ModalEditQuestion from "../mydashboard/ModalQuestion";
+import ModalAnswerEdit from "./ModalAnswer";
 import parse from "html-react-parser";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { getListMyAnswer, delMyAnswer } from "../../../actions/myAnswerAction";
+import { getListMyAnswer, delMyAnswer, updateMyAnswerAction } from "../../../actions/myAnswerAction";
 import axios from "axios";
 
 const MyAnswer = () => {
@@ -23,9 +22,11 @@ const MyAnswer = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [valSearch, setValSearch] = useState("");
+  const [newAnswer, setNewAnswer] = useState("");
+  const [idQuans, setIdQuans] = useState("");
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const { getListMyAnswerResult, getListMyAnswerLoading, getListMyAnswerError, statusResponse } = useSelector((state) => state.MyAnswerReducer);
-  const showModalEdit = async (status, idQuans, question) => {};
+  // const showModalEdit = async (status, idQuans, question) => {};
   items = Array.from(getListMyAnswerResult);
   let answer = "";
 
@@ -50,6 +51,26 @@ const MyAnswer = () => {
     }, 2000);
   };
 
+  const editAnswer = (idAnswer, answer) => {};
+
+  const showModalEdit = (status, idQuans, answer) => {
+    setNewAnswer("");
+    setIdQuans("");
+    setNewAnswer(answer);
+    setIdQuans(idQuans);
+    setShowEdit(status);
+  };
+
+  const submitUpdate = (answer) => {
+    console.log(answer);
+    dispatch(updateMyAnswerAction(idQuans, answer));
+    setSearchParams({
+      // s: searchParams.get("s"),
+      edit: statusResponse ? "SUCCESS" : "FAILED",
+    });
+    setShowEdit(false);
+  };
+
   let ItemsLoop = ({ currentItems }) => {
     return (
       <>
@@ -66,7 +87,7 @@ const MyAnswer = () => {
                   );
                 })}
 
-                <List key={item.id} id={item.id} delAnswer={delAnswer} idParent={item.id_parent} quans={parse(item.quans)} tag={quans_tag} allTag={options} editModal={showModalEdit} />
+                <List key={item.id} id={item.id} delAnswer={delAnswer} idParent={item.id_parent} quans={item.quans} tag={quans_tag} allTag={options} editModal={showModalEdit} />
               </div>
             );
           })}
@@ -107,6 +128,14 @@ const MyAnswer = () => {
       ) : (
         <p>{getListMyAnswerError ? getListMyAnswerError : "terjadi kesalahan"}</p>
       )}
+      <ModalAnswerEdit
+        show={showEdit}
+        hide={() => {
+          setShowEdit(false);
+        }}
+        answer={newAnswer}
+        submitUpdate={submitUpdate}
+      />
     </div>
   );
 };

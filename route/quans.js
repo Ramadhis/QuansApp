@@ -265,14 +265,13 @@ router.delete("/deleteAnswer", async (req, res) => {
 
 router.put("/editAnswer", async (req, res) => {
   try {
-    let { id_user, id_quans, answer } = req.body;
+    let { id_quans, answer } = req.body;
     await quans
       .update(
         { quans: answer },
         {
           where: {
             id_user: { [Op.ne]: "0" },
-            id_user: id_user,
             id: id_quans,
           },
         }
