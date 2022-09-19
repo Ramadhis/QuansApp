@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
+import { useSearchParams, useLocation } from "react-router-dom";
 
 const MyPaginate = styled(ReactPaginate).attrs({
   // You can redifine classes here, if you want.
@@ -128,6 +129,7 @@ const PaginatedItems = ({ itemsPerPage, items, ItemsLoop }) => {
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -142,6 +144,13 @@ const PaginatedItems = ({ itemsPerPage, items, ItemsLoop }) => {
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
+    console.log(event.selected);
+    // setSearchParams({
+    //   page: event.selected + 1,
+    // });
+    searchParams.set("page", event.selected + 1);
+    setSearchParams(searchParams);
+    // searchParams.set("page", event.selected + 1);
     const newOffset = (event.selected * itemsPerPage) % items.length;
     console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
     setItemOffset(newOffset);
@@ -154,7 +163,8 @@ const PaginatedItems = ({ itemsPerPage, items, ItemsLoop }) => {
         // nextClassName="page-item"
         // pageClassName="page-item"
         // className="pagination"
-        // initialPage={initPage}
+        initialPage={searchParams.get("page") - 1}
+        forcePage={searchParams.get("page") - 1}
         breakLabel="..."
         nextLabel="next"
         onPageChange={handlePageClick}

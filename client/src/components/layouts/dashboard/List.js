@@ -37,7 +37,7 @@ const List = (props) => {
             <div onClick={idUser ? likeAdd : null} className="col-md-12 text-center">
               {idUser ? props.likeCheck === 0 ? <BsHandThumbsUp className="h3" /> : <BsHandThumbsUpFill style={{ color: "#198754" }} className="h3" /> : <BsHandThumbsUp className="h3" />}
             </div>
-            <div className="col-md-12 text-center">{likeCalculating}</div>
+            <div className="col-md-12 text-center">{props.likeCount}</div>
           </div>
         </div>
       </Card.Body>

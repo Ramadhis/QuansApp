@@ -17,6 +17,7 @@ const Dashboard = () => {
   const location = useLocation();
   //get query parameter
   const [searchParams, setSearchParams] = useSearchParams();
+  const [order, setOrder] = useState("");
   const { getListSearchResult, getListSearchLoading, getListSearchError } = useSelector((state) => state.SearchReducer);
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const [valSearch, setValSearch] = useState("");
@@ -37,8 +38,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log("1. use effect component did mount");
+    if (!searchParams.get("page")) {
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+    }
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
-    dispatch(getListSearch(searchParams.get("s") ? searchParams.get("s") : "", idUser ? idUser.iduser : null));
+    dispatch(getListSearch(searchParams.get("s") ? searchParams.get("s") : "", idUser ? idUser.iduser : null, order ? order : "terbaru"));
   }, [location, dispatch]);
 
   const ItemsLoop = ({ currentItems }) => {
@@ -72,7 +77,12 @@ const Dashboard = () => {
     setArr((prev) => {
       return prev + 1;
     });
+    const page = searchParams.get("page");
+    if (page > 1) {
+      index = index + (page - 1) * 10;
+    }
     //like
+    console.log(`${id} + ${index}`);
     if (items[index]["likeCheck"] === 0) {
       try {
         items[index]["like_count"] = parseInt(items[index]["like_count"]) + 1;
@@ -122,9 +132,22 @@ const Dashboard = () => {
 
   let submitSearch = async (e) => {
     e.preventDefault();
-    setSearchParams({
-      s: valSearch,
-    });
+    // setSearchParams({
+    //   s: valSearch,
+    // });
+    searchParams.set("s", valSearch);
+    setSearchParams(searchParams);
+  };
+
+  const orderChange = (e) => {
+    e.preventDefault();
+    setOrder(e.target.value);
+    searchParams.set("orderby", e.target.value);
+    setSearchParams(searchParams);
+    // setSearchParams({
+    //   // s: searchParams.get("s"),
+    //   orderby: e.target.value,
+    // });
   };
 
   return (
@@ -156,9 +179,9 @@ const Dashboard = () => {
                 <div style={{ fontSize: "15px" }}>menampilkan total {items ? items.length : "0"} hasil pencarian</div>
               </div>
               <div className="col-md-3 col-5">
-                <Form.Select size="sm mb-3">
-                  <option>Paling sesuai</option>
-                  <option>Terbaru</option>
+                <Form.Select onChange={orderChange} size="sm mb-3">
+                  <option value="terbaru">Terbaru</option>
+                  <option value="sesuai">Paling sesuai</option>
                 </Form.Select>
               </div>
             </div>

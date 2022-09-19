@@ -27,6 +27,7 @@ const ModalAnswer = (props) => {
   const submitUpdate = (e) => {
     e.preventDefault();
     props.submitUpdate(textAr);
+
     setShow(false);
   };
 

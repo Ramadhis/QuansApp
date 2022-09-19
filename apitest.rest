@@ -62,7 +62,9 @@ POST http://localhost:5000/quans/search/
 Content-Type: application/json
 
 {
-  "search" : ""
+  "search" : "",
+  "idUser" : "8",
+  "order" : "sesuai"
 }
 
 ###

@@ -49,6 +49,10 @@ const MyQuestion = () => {
 
   useEffect(() => {
     console.log("1. use effect component did mount");
+    if (!searchParams.get("page")) {
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+    }
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
     dispatch(getListMyQuestion(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser));
     loadTag();

@@ -5,17 +5,31 @@ import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalQuestion from "../layouts/mydashboard/ModalQuestion";
 import MyQuestion from "../layouts/mydashboard/MyQuestion";
 import MyAnswer from "../layouts/mydashboard/MyAnswer";
+import { useSearchParams, useLocation } from "react-router-dom";
 
 const MyDashboard = () => {
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const question = () => {
+    searchParams.set("tab", "myQuestion");
+    setSearchParams(searchParams);
+  };
+
+  const answer = () => {
+    searchParams.set("tab", "myAnswer");
+    setSearchParams(searchParams);
+  };
+
   return (
     <div className="col-lg-10 mt-5 p-4 g-0 pt-4" style={{ marginTop: `100px` }}>
       <div className="row">
         <div className="col-lg-12 mt-2">
           <Tabs defaultActiveKey="Myanswer" id="uncontrolled-tab-example" className="mb-3">
-            <Tab eventKey="Myanswer" title="MyAnswer">
+            <Tab eventKey="Myanswer" title="MyAnswer" onClick={question}>
               <MyAnswer />
             </Tab>
-            <Tab eventKey="Myquestion" title="MyQuestion">
+            <Tab eventKey="Myquestion" title="MyQuestion" onClick={answer}>
               <MyQuestion />
             </Tab>
           </Tabs>
