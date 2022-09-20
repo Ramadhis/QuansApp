@@ -58,6 +58,7 @@ const Sidebar = () => {
                     onClick={(e) => {
                       reset();
                       isdown("bg-light border border-2 border-dark border-end-0");
+                      // window.location.reload();
                     }}
                     aria-current="page"
                     to="/quans/dashboard"
@@ -83,11 +84,11 @@ const Sidebar = () => {
                   <Link
                     className="nav-link active text-decoration-none text-dark"
                     aria-current="page"
+                    to="mydashboard"
                     onClick={(e) => {
                       reset();
                       isdown3("bg-light border border-2 border-dark border-end-0");
                     }}
-                    to="mydashboard"
                   >
                     Mydashboard
                   </Link>

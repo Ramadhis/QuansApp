@@ -6,8 +6,8 @@ import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 const List = (props) => {
   let id = props.id;
   let tag = props.tag;
+  let likeCheck = props.likeCheck;
   let [like, setLike] = useState(0);
-  let tes = "asd";
   let [likeCalculating, setLikeCalculating] = useState(props.likeCount);
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
 
@@ -33,9 +33,20 @@ const List = (props) => {
                 );
               })}
           </div>
+
           <div className="col-md-1 col-3">
             <div onClick={idUser ? likeAdd : null} className="col-md-12 text-center">
-              {idUser ? props.likeCheck === 0 ? <BsHandThumbsUp className="h3" /> : <BsHandThumbsUpFill style={{ color: "#198754" }} className="h3" /> : <BsHandThumbsUp className="h3" />}
+              {idUser ? (
+                likeCheck === 0 ? (
+                  <BsHandThumbsUp className="h3">a</BsHandThumbsUp>
+                ) : (
+                  <BsHandThumbsUpFill style={{ color: "#198754" }} className="h3">
+                    b
+                  </BsHandThumbsUpFill>
+                )
+              ) : (
+                <BsHandThumbsUp className="h3">c</BsHandThumbsUp>
+              )}
             </div>
             <div className="col-md-12 text-center">{props.likeCount}</div>
           </div>

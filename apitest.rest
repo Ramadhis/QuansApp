@@ -1,4 +1,4 @@
-get http://localhost:5000/user
+get http://localhost:5000/user/myAccount?id=8
 
 ###
 POST http://localhost:5000/
@@ -64,7 +64,7 @@ Content-Type: application/json
 {
   "search" : "",
   "idUser" : "8",
-  "order" : "sesuai"
+  "order" : "terbaru"
 }
 
 ###

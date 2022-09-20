@@ -144,11 +144,13 @@ const PaginatedItems = ({ itemsPerPage, items, ItemsLoop }) => {
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    console.log(event.selected);
+    console.log(event.selected + " data selected pagination");
     // setSearchParams({
     //   page: event.selected + 1,
     // });
-    searchParams.set("page", event.selected + 1);
+    const pageSelected = event.selected + 1;
+    searchParams.set("page", pageSelected);
+
     setSearchParams(searchParams);
     // searchParams.set("page", event.selected + 1);
     const newOffset = (event.selected * itemsPerPage) % items.length;
@@ -164,7 +166,7 @@ const PaginatedItems = ({ itemsPerPage, items, ItemsLoop }) => {
         // pageClassName="page-item"
         // className="pagination"
         initialPage={searchParams.get("page") - 1}
-        forcePage={searchParams.get("page") - 1}
+        // forcePage={searchParams.get("page") - 1}
         breakLabel="..."
         nextLabel="next"
         onPageChange={handlePageClick}

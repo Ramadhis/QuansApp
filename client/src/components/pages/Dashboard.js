@@ -38,12 +38,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log("1. use effect component did mount");
-    if (!searchParams.get("page")) {
-      searchParams.set("page", 1);
-      setSearchParams(searchParams);
-    }
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
     dispatch(getListSearch(searchParams.get("s") ? searchParams.get("s") : "", idUser ? idUser.iduser : null, order ? order : "terbaru"));
+    setTimeout(() => {
+      if (!searchParams.get("page")) {
+        searchParams.set("page", 1);
+        searchParams.set("orderby", "terbaru");
+        setSearchParams(searchParams);
+      }
+    }, 1000);
   }, [location, dispatch]);
 
   const ItemsLoop = ({ currentItems }) => {
@@ -81,15 +84,17 @@ const Dashboard = () => {
     if (page > 1) {
       index = index + (page - 1) * 10;
     }
+    // console.log(index);
     //like
-    console.log(`${id} + ${index}`);
+
     if (items[index]["likeCheck"] === 0) {
       try {
         items[index]["like_count"] = parseInt(items[index]["like_count"]) + 1;
         items[index]["likeCheck"] = 1;
       } catch (error) {
-        console.log(`${error}, error in array items`);
+        return console.log(`${error}, error in array items`);
       }
+      console.log(items[index]);
       await axios
         .post(
           URL + "/like/add",
@@ -100,18 +105,19 @@ const Dashboard = () => {
           { withCredentials: true }
         )
         .then((res) => {
-          console.log("success liked");
+          return console.log("success liked");
         })
         .catch((error) => {
-          console.log(error);
+          return console.log(error);
         });
-    } else if (items[index]["likeCheck"] === 1) {
+    } else if (items[index]["likeCheck"] >= 1) {
       try {
         items[index]["like_count"] = parseInt(items[index]["like_count"]) - 1;
         items[index]["likeCheck"] = 0;
       } catch (error) {
-        console.log(`${error}, error in array items`);
+        return console.log(`${error}, error in array items`);
       }
+      console.log(items[index]);
       //unlike
       await axios
         .delete(URL + "/like/delete", {
@@ -122,10 +128,10 @@ const Dashboard = () => {
           headers: { withCredentials: true },
         })
         .then((res) => {
-          console.log("success unlike");
+          return console.log("success unlike");
         })
         .catch((error) => {
-          console.log(error);
+          return console.log(error);
         });
     }
   };

@@ -23,9 +23,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/get", auth, async (req, res) => {
+router.get("/myAccount", async (req, res) => {
+  const id = req.query.id;
   const find = await Users.findAll({
-    attributes: ["name", "email", "createdAt"],
+    where: {
+      id: id,
+    },
+    attributes: ["name", "email", "job", "createdAt"],
   });
   res.json(find);
 });

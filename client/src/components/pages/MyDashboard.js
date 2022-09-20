@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Tabs, Tab } from "react-bootstrap";
 import List from "../layouts/mydashboard/List";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
@@ -11,26 +11,48 @@ const MyDashboard = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const question = () => {
-    searchParams.set("tab", "myQuestion");
-    setSearchParams(searchParams);
-  };
+  // const question = () => {
+  //   searchParams.set("tab", "myQuestion");
+  //   setSearchParams(searchParams);
+  // };
 
-  const answer = () => {
-    searchParams.set("tab", "myAnswer");
-    setSearchParams(searchParams);
-  };
+  // const answer = () => {
+  //   searchParams.set("tab", "myAnswer");
+  //   setSearchParams(searchParams);
+  // };
 
+  useEffect(() => {
+    if (!searchParams.get("tab")) {
+      searchParams.set("tab", "myQuestion");
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+      window.location.reload();
+    }
+  }, []);
+
+  const tab = (e) => {
+    e.preventDefault();
+    console.log(e.target.textContent);
+    if (e.target.textContent === "MyAnswer") {
+      searchParams.set("tab", "myAnswer");
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+    } else if (e.target.textContent === "MyQuestion") {
+      searchParams.set("tab", "myQuestion");
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+    }
+  };
   return (
     <div className="col-lg-10 mt-5 p-4 g-0 pt-4" style={{ marginTop: `100px` }}>
       <div className="row">
         <div className="col-lg-12 mt-2">
-          <Tabs defaultActiveKey="Myanswer" id="uncontrolled-tab-example" className="mb-3">
-            <Tab eventKey="Myanswer" title="MyAnswer" onClick={question}>
-              <MyAnswer />
-            </Tab>
-            <Tab eventKey="Myquestion" title="MyQuestion" onClick={answer}>
+          <Tabs onClick={tab} defaultActiveKey="myQuestion" id="uncontrolled-tab-example" className="mb-3">
+            <Tab eventKey="myQuestion" title="MyQuestion">
               <MyQuestion />
+            </Tab>
+            <Tab eventKey="myAnswer" title="MyAnswer">
+              <MyAnswer />
             </Tab>
           </Tabs>
         </div>
