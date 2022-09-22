@@ -1,5 +1,4 @@
 get http://localhost:5000/user/myAccount?id=8
-
 ###
 POST http://localhost:5000/
 Content-Type: application/json
@@ -10,11 +9,10 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:5000/user/editProfile
+PUT http://localhost:5000/user/myAccount
 Content-Type: application/json
 
 {
-  "id": 6,
   "name" : "zir",
   "email" : "zir@mail.com",
   "job" : "testJob"

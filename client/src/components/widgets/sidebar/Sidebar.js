@@ -4,12 +4,16 @@ import "./sidebar.css";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
+//redux
+import { getUsers } from "../../../actions/myAccountAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const Sidebar = () => {
   //let idle = "bg-light border border-2 border-dark border-end-0";
   const history = useNavigate();
   const location = useLocation();
-
+  const id = 8;
+  const dispatch = useDispatch();
   let [idle, setIdle] = useState("");
   let [down, isdown] = useState("");
   let [down2, isdown2] = useState("");
@@ -37,9 +41,10 @@ const Sidebar = () => {
     }
   };
   useEffect(() => {
+    dispatch(getUsers(id));
     getsegment1();
     window.onpopstate = () => {
-      setPress(true);
+      console.log("tes");
     };
     if (press == true) {
       getsegment1();

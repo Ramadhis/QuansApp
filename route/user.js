@@ -34,6 +34,24 @@ router.get("/myAccount", async (req, res) => {
   res.json(find);
 });
 
+router.put("/myAccount", async (req, res) => {
+  const { name, email, job } = req.body;
+  await Users.update(
+    { name: name, email: email, job: job },
+    {
+      where: {
+        id: 8, //ini tar ganti jadi id yang bener dari token
+      },
+    }
+  )
+    .then((result) => {
+      return 1;
+    })
+    .catch((err) => {
+      return res.status(404).json({ msg: "gagal" });
+    });
+});
+
 router.post("/login", async (req, res) => {
   try {
     const find = await Users.findAll({

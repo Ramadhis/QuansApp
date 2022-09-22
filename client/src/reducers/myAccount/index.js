@@ -1,4 +1,4 @@
-import { GET_USER } from "../../actions/myAccountAction";
+import { GET_USER, UPDATE_USER } from "../../actions/myAccountAction";
 const initialState = {
   getUserResult: false,
   getUserLoading: false,
@@ -15,6 +15,13 @@ const users = (state = initialState, action) => {
         getUserLoading: action.payload.loading,
         getUserError: action.payload.errorMessage,
       };
+    case UPDATE_USER: {
+      return {
+        ...state,
+        getUserLoading: action.payload.loading,
+        getUserError: action.payload.errorMessage,
+      };
+    }
     default:
       return state;
   }
