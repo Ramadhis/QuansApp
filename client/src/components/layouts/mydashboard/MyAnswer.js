@@ -4,6 +4,7 @@ import PaginatedItems from "../../widgets/pagination/PaginatedItems";
 import { urlApi } from "../../helpers/Helpers";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
+import Select from "react-select";
 import List from "../mydashboard/ListAnswer";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalAnswerEdit from "./ModalAnswer";
@@ -18,8 +19,11 @@ const MyAnswer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   let items = [];
+  const [order, setOrder] = useState("");
   const [options, setOptions] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
+  const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [valSearch, setValSearch] = useState("");
   const [newAnswer, setNewAnswer] = useState("");
@@ -27,23 +31,25 @@ const MyAnswer = () => {
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
   const { getListMyAnswerResult, getListMyAnswerLoading, getListMyAnswerError, statusResponse } = useSelector((state) => state.MyAnswerReducer);
   // const showModalEdit = async (status, idQuans, question) => {};
+  const orderOption = [
+    {
+      value: "terbaru",
+      label: "terbaru",
+    },
+    {
+      value: "sesuai",
+      label: "sesuai",
+    },
+  ];
+
   items = Array.from(getListMyAnswerResult);
   let answer = "";
 
   useEffect(() => {
     console.log("1. use effect component did mount");
-    if (!searchParams.get("page")) {
-      searchParams.set("page", 1);
-      setSearchParams(searchParams);
-    }
+    setSelectedIndex(searchParams.get("orderby") === "sesuai" ? 1 : 0);
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
-    dispatch(getListMyAnswer(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser));
-    // loadTag();
-    // setTagEdit([]);
-    // loadAxios(searchParams.get("s") ? searchParams.get("s") : "");
-    // loading = loadData.loading;
-    // data = loadData.data;
-    // error = loadData.error;
+    dispatch(getListMyAnswer(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser, searchParams.get("orderby") ? searchParams.get("orderby") : "terbaru"));
   }, [location, dispatch]);
 
   const delAnswer = (idAnswer) => {
@@ -99,6 +105,24 @@ const MyAnswer = () => {
     );
   };
 
+  const orderChange = (e) => {
+    setSelectedOption(e.map((val) => val.value));
+    // setSelectedOption(e.val.value);
+    // setOrder(e.target.value);
+    // searchParams.set("orderby", e.target.value);
+    // setSearchParams(searchParams);
+  };
+  const multiSelect = (e) => {
+    setSelectedOption(e.value);
+    searchParams.set("orderby", e.value);
+    setSearchParams(searchParams);
+    if (e.value === "terbaru") {
+      setSelectedIndex(0);
+    } else if (e.value === "sesuai") {
+      setSelectedIndex(1);
+    }
+    console.log(selectedOption);
+  };
   return (
     <div className="col-md-12 mb-2">
       <div className="row">
@@ -113,10 +137,15 @@ const MyAnswer = () => {
           </div>
         </div>
         <div className="col-md-3 col-5">
-          <Form.Select size="md mb-3">
-            <option>Paling sesuai</option>
-            <option>Terbaru</option>
-          </Form.Select>
+          {/* <Select value={orderOption.filter((obj) => selectedOption.includes(obj.value))} isMulti={false} isClearable onChange={orderChange} options={orderOption} size="md mb-3">
+            <option value="terbaru" selected={order === "terbaru" ? "selected" : ""}>
+              Terbaru
+            </option>
+            <option value="sesuai" selected={order === "terbaru" ? "selected" : ""}>
+              Paling sesuai
+            </option>
+          </Select> */}
+          <Select value={orderOption[selectedIndex]} isSearchable={false} onChange={multiSelect} defaultValue={orderOption[0]} options={orderOption}></Select>
         </div>
       </div>
       {getListMyAnswerResult ? (

@@ -5,7 +5,7 @@ export const DEL_MYANSWER = "DEL_MYANSWER";
 export const ADD_MYANSWER = "ADD_MYANSWER";
 export const UPDATE_MYANSWER = "UPDATE_MYANSWER";
 
-export const getListMyAnswer = (MyAnswer, idUser) => {
+export const getListMyAnswer = (MyAnswer, idUser, order) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
@@ -25,6 +25,7 @@ export const getListMyAnswer = (MyAnswer, idUser) => {
         {
           s: `${MyAnswer}`,
           idUser: `${idUser}`,
+          order: `${order}`,
         },
         { withCredentials: true }
       )

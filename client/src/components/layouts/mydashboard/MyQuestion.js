@@ -5,6 +5,7 @@ import { urlApi } from "../../helpers/Helpers";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import List from "../mydashboard/List";
+import Select from "react-select";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalQuestion from "../mydashboard/ModalQuestion";
 import ModalEditQuestion from "../mydashboard/ModalQuestion";
@@ -21,6 +22,9 @@ const MyQuestion = () => {
   const dispatch = useDispatch();
   let items = [];
   const [show, setShow] = useState(false);
+  const [order, setOrder] = useState("");
+  const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [showEdit, setShowEdit] = useState(false);
   let [tagEdit, setTagEdit] = useState([]);
   const { getListMyQuestionResult, getListMyQuestionLoading, getListMyQuestionError } = useSelector((state) => state.MyQuestionReducer);
@@ -31,6 +35,16 @@ const MyQuestion = () => {
   const [options, setOptions] = useState([]);
   const [quansName, setQuans] = useState("");
   const [quansId, setQuansId] = useState(0);
+  const orderOption = [
+    {
+      value: "terbaru",
+      label: "terbaru",
+    },
+    {
+      value: "sesuai",
+      label: "sesuai",
+    },
+  ];
 
   let asd = [];
   let loadTag = () => {
@@ -49,18 +63,11 @@ const MyQuestion = () => {
 
   useEffect(() => {
     console.log("1. use effect component did mount");
-    if (!searchParams.get("page")) {
-      searchParams.set("page", 1);
-      setSearchParams(searchParams);
-    }
+    setSelectedIndex(searchParams.get("orderby") === "sesuai" ? 1 : 0);
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
-    dispatch(getListMyQuestion(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser));
+    dispatch(getListMyQuestion(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser, searchParams.get("orderby") ? searchParams.get("orderby") : "terbaru"));
     loadTag();
     setTagEdit([]);
-    // loadAxios(searchParams.get("s") ? searchParams.get("s") : "");
-    // loading = loadData.loading;
-    // data = loadData.data;
-    // error = loadData.error;
   }, [location, dispatch]);
 
   const showModalEdit = async (status, idQuans, question) => {
@@ -125,9 +132,8 @@ const MyQuestion = () => {
   let submitSearch = (e) => {
     e.preventDefault();
     try {
-      setSearchParams({
-        s: valSearch,
-      });
+      searchParams.set("s", valSearch);
+      setSearchParams(searchParams);
     } catch (error) {
       console.log(error);
     }
@@ -143,17 +149,14 @@ const MyQuestion = () => {
       .then((response) => {
         // console.log(response.data);
         setShow(false);
-        setSearchParams({
-          // s: searchParams.get("s"),
-          add: "success",
-        });
-        window.location.reload();
+        searchParams.set("add", "success");
+        setSearchParams(searchParams);
+        // window.location.reload();
       })
       .catch((error) => {
         console.log(error.message);
-        setSearchParams({
-          add: "failed",
-        });
+        searchParams.set("add", "failed");
+        setSearchParams(searchParams);
       });
 
     // dispatch(addMyQuestion(idUser.iduser, textAr));
@@ -173,19 +176,33 @@ const MyQuestion = () => {
       )
       .then((response) => {
         // console.log(response.data);
-        setSearchParams({
-          // s: searchParams.get("s"),
-          edit: response.data.msg,
-        });
+        searchParams.set("edit", response.data.msg);
+        setSearchParams(searchParams);
       })
       .catch((error) => {
         console.log(error.message);
-        setSearchParams({
-          edit: "failed",
-        });
+        searchParams.set("edit", "failed");
+        setSearchParams(searchParams);
       });
   };
 
+  const orderChange = (e) => {
+    e.preventDefault();
+    setOrder(e.target.value);
+    searchParams.set("orderby", e.target.value);
+    setSearchParams(searchParams);
+  };
+  const multiSelect = (e) => {
+    setSelectedOption(e.value);
+    searchParams.set("orderby", e.value);
+    setSearchParams(searchParams);
+    if (e.value === "terbaru") {
+      setSelectedIndex(0);
+    } else if (e.value === "sesuai") {
+      setSelectedIndex(1);
+    }
+    console.log(selectedOption);
+  };
   return (
     <div className="col-md-12 mb-2">
       {/* {console.log(tagEdit)} */}
@@ -211,10 +228,15 @@ const MyQuestion = () => {
           </form>
         </div>
         <div className="col-md-3 col-5">
-          <Form.Select size="md mb-3">
-            <option>Paling sesuai</option>
-            <option>Terbaru</option>
-          </Form.Select>
+          {/* <Form.Select onChange={orderChange} size="md mb-3" defaultValue={"terbaru"}>
+            <option value="terbaru" selected={order === "terbaru" ? "selected" : ""}>
+              Terbaru
+            </option>
+            <option value="sesuai" selected={order === "terbaru" ? "selected" : ""}>
+              Paling sesuai
+            </option>
+          </Form.Select> */}
+          <Select value={orderOption[selectedIndex]} isSearchable={false} onChange={multiSelect} defaultValue={orderOption[0]} options={orderOption}></Select>
         </div>
         <div className="col-md-12 mb-2">
           <Button

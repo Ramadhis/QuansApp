@@ -130,6 +130,14 @@ router.post("/myQuestion", async (req, res) => {
   let q = req.body.s.trim();
   let filter = req.body.filter;
   let idUser = req.body.idUser;
+  let order = req.body.order;
+  let orderBy = [];
+  if (order === "terbaru") {
+    orderBy = ["id", "desc"];
+  } else if (order === "sesuai") {
+    orderBy = [Sequelize.literal("like_count"), "desc"];
+  }
+
   let a;
   try {
     a = await quans.findAll({
@@ -141,7 +149,7 @@ router.post("/myQuestion", async (req, res) => {
         ],
       },
       include: [{ model: tag_quans, include: [{ model: tag }] }],
-      order: [["id", "DESC"]],
+      order: [orderBy],
     });
     return res.json(a);
   } catch (error) {
@@ -228,6 +236,13 @@ router.post("/myAnswer", async (req, res) => {
     let q = req.body.s.trim();
     let filter = req.body.filter;
     let idUser = req.body.idUser;
+    let order = req.body.order;
+    let orderBy = [];
+    if (order === "terbaru") {
+      orderBy = ["id", "desc"];
+    } else if (order === "sesuai") {
+      orderBy = [Sequelize.literal("like_count"), "desc"];
+    }
     let a;
     a = await quans.findAll({
       where: { [Op.and]: { quans: { [Op.like]: `%${q}%` }, id_parent: { [Op.ne]: "0" }, id_user: { [Op.eq]: idUser } } },
@@ -239,7 +254,7 @@ router.post("/myAnswer", async (req, res) => {
         ],
       },
       include: [{ model: tag_quans, include: [{ model: tag }] }],
-      order: [["id", "DESC"]],
+      order: [orderBy],
     });
     return res.json(a);
   } catch (error) {

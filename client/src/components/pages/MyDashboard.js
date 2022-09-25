@@ -25,6 +25,7 @@ const MyDashboard = () => {
     if (!searchParams.get("tab")) {
       searchParams.set("tab", "myQuestion");
       searchParams.set("page", 1);
+      searchParams.set("orderby", "terbaru");
       setSearchParams(searchParams);
       window.location.reload();
     }
@@ -36,10 +37,12 @@ const MyDashboard = () => {
     if (e.target.textContent === "MyAnswer") {
       searchParams.set("tab", "myAnswer");
       searchParams.set("page", 1);
+      searchParams.set("orderby", "terbaru");
       setSearchParams(searchParams);
     } else if (e.target.textContent === "MyQuestion") {
       searchParams.set("tab", "myQuestion");
       searchParams.set("page", 1);
+      searchParams.set("orderby", "terbaru");
       setSearchParams(searchParams);
     }
   };

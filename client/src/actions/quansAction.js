@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export const GET_LIST_QUANS = "GET_LIST_QUANS";
+export const LIKE_QUANS = "LIKE_QUANS";
 
 export const getListQuans = (id) => {
-  console.log("2. masuk action");
   return (dispatch) => {
     //loading
     dispatch({
@@ -23,7 +23,6 @@ export const getListQuans = (id) => {
     })
       .then((response) => {
         //berhasil
-        console.log("3. berhasil", response);
         dispatch({
           type: GET_LIST_QUANS,
           payload: {
@@ -35,12 +34,51 @@ export const getListQuans = (id) => {
       })
       .catch((error) => {
         //gagal
-        console.log("3. gagal", error.message);
         dispatch({
           type: GET_LIST_QUANS,
           payload: {
             loading: false,
             data: false,
+            errorMessage: error.message,
+          },
+        });
+      });
+  };
+};
+
+export const likeQuans = (id, idUser) => {
+  return (dispatch) => {
+    //loading
+    dispatch({
+      type: LIKE_QUANS,
+      payload: {
+        loading: true,
+        errorMessage: false,
+      },
+    });
+
+    //get API
+    axios
+      .post("http://localhost:5000/like/add/", {
+        id_user: idUser,
+        id_quans: id,
+      })
+      .then((response) => {
+        //berhasil
+        dispatch({
+          type: LIKE_QUANS,
+          payload: {
+            loading: false,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((error) => {
+        //gagal
+        dispatch({
+          type: LIKE_QUANS,
+          payload: {
+            loading: false,
             errorMessage: error.message,
           },
         });

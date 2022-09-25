@@ -84,7 +84,6 @@ const Dashboard = () => {
     if (page > 1) {
       index = index + (page - 1) * 10;
     }
-    // console.log(index);
     //like
 
     if (items[index]["likeCheck"] === 0) {
@@ -138,9 +137,6 @@ const Dashboard = () => {
 
   let submitSearch = async (e) => {
     e.preventDefault();
-    // setSearchParams({
-    //   s: valSearch,
-    // });
     searchParams.set("s", valSearch);
     setSearchParams(searchParams);
   };
@@ -150,10 +146,6 @@ const Dashboard = () => {
     setOrder(e.target.value);
     searchParams.set("orderby", e.target.value);
     setSearchParams(searchParams);
-    // setSearchParams({
-    //   // s: searchParams.get("s"),
-    //   orderby: e.target.value,
-    // });
   };
 
   return (
