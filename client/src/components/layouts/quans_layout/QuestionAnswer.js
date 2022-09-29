@@ -14,6 +14,17 @@ const Question = (props) => {
             <div className="col-md-1 col-1 d-flex align-content-center flex-wrap">
               <div className="col-md-12 text-center">
                 <BsHandThumbsUp className="h3" />
+                {/* {idUser ? (
+                  likeCheck === 0 ? (
+                    <BsHandThumbsUp className="h3">a</BsHandThumbsUp>
+                  ) : (
+                    <BsHandThumbsUpFill style={{ color: "#198754" }} className="h3">
+                      b
+                    </BsHandThumbsUpFill>
+                  )
+                ) : (
+                  <BsHandThumbsUp className="h3">c</BsHandThumbsUp>
+                )} */}
               </div>
 
               <div className="col-md-12 text-center">{props.count_like}</div>

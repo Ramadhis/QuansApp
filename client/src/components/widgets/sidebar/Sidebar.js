@@ -12,6 +12,8 @@ const Sidebar = () => {
   //let idle = "bg-light border border-2 border-dark border-end-0";
   const history = useNavigate();
   const location = useLocation();
+  const getLocalData = JSON.parse(localStorage.getItem("us_da_prv"));
+  const user = getLocalData ? getLocalData.iduser : null;
   const id = 8;
   const dispatch = useDispatch();
   let [idle, setIdle] = useState("");
@@ -85,19 +87,23 @@ const Sidebar = () => {
                     Tag
                   </Link>
                 </li>
-                <li className={`nav-item ${down3}`}>
-                  <Link
-                    className="nav-link active text-decoration-none text-dark"
-                    aria-current="page"
-                    to="mydashboard"
-                    onClick={(e) => {
-                      reset();
-                      isdown3("bg-light border border-2 border-dark border-end-0");
-                    }}
-                  >
-                    Mydashboard
-                  </Link>
-                </li>
+                {user ? (
+                  <li className={`nav-item ${down3}`}>
+                    <Link
+                      className="nav-link active text-decoration-none text-dark"
+                      aria-current="page"
+                      to="mydashboard"
+                      onClick={(e) => {
+                        reset();
+                        isdown3("bg-light border border-2 border-dark border-end-0");
+                      }}
+                    >
+                      Mydashboard
+                    </Link>
+                  </li>
+                ) : (
+                  ""
+                )}
                 <li className="nav-item d-flex align-items-end">
                   {/* <Card className="me-1 ">
               <Card.Body>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
+import { Nav, Container, Navbar, NavDropdown, Button } from "react-bootstrap";
 import { urlApi } from "../helpers/Helpers";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Profile_card from "./Profile_card";
 import About from "../pages/About";
@@ -35,20 +36,35 @@ const Header = () => {
           <Nav className="me-auto">
             <About />
           </Nav>
-          <Nav>
-            {/* <Nav.Link href="#deets">More deets</Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
-              Dank memes
-            </Nav.Link> */}
-            <NavDropdown title={name} id="collasible-nav-dropdown" align="end">
-              {/* <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item> */}
-              <Profile_card />
-              {/* <NavDropdown.Item href="#action/3.2">My Question</NavDropdown.Item>
+          {localStorage.getItem("us_da_prv") ? (
+            <Nav>
+              {/* <Nav.Link href="#deets">More deets</Nav.Link>
+              <Nav.Link eventKey={2} href="#memes">
+                Dank memes
+              </Nav.Link> */}
+              <NavDropdown title={name} id="collasible-nav-dropdown" align="end">
+                {/* <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item> */}
+                <Profile_card />
+                {/* <NavDropdown.Item href="#action/3.2">My Question</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">My Answer</NavDropdown.Item> */}
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          ) : (
+            <div>
+              <Link to="/login">
+                <Button variant="outline-info fw-bold" className=" me-2" size="sm">
+                  Log in
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button className="btn btn-primary me-2 fw-bold" size="sm">
+                  Sign up
+                </Button>
+              </Link>
+            </div>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

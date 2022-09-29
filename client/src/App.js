@@ -15,7 +15,7 @@ import MainContentsearch from "./components/layouts/searchQuansLayout/index";
 import Notfound from "./components/pages/404page";
 import Tag from "./components/pages/Tag";
 import MyDashboard from "./components/pages/MyDashboard";
-
+import ProtectedRoute from "./components/helpers/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -35,7 +35,16 @@ function App() {
           <Route path="dashboard" element={<Outlet />}>
             <Route path="" element={<Dashboard />} />
           </Route>
-          <Route path="mydashboard" element={<MyDashboard />} />
+
+          <Route
+            path="mydashboard"
+            element={
+              <ProtectedRoute>
+                <MyDashboard />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="Tag" element={<Tag />}></Route>
           <Route index element={<Quans />} />
           <Route path="*" element={<Notfound />} />

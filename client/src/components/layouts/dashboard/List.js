@@ -20,7 +20,7 @@ const List = (props) => {
         <div className="row">
           <div className="col-md-11 col-9">
             <Card.Text>
-              <Link style={{ textDecoration: "none", color: "black" }} to={`/quans/?id=${id}`}>
+              <Link style={{ textDecoration: "none", color: "black", width: "12rem" }} to={`/quans/?id=${id}`}>
                 {props.question}{" "}
               </Link>
             </Card.Text>
