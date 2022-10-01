@@ -1,10 +1,17 @@
 import React from "react";
 import { Card, Row } from "react-bootstrap";
-import { BsHandThumbsUp } from "react-icons/bs";
+import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 
 const Question = (props) => {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const date = new Date(props.date);
+  let likeCheck = props.likeCheck;
+  let id = props.id;
+  const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
+
+  const likeAdd = () => {
+    return props.addLike(id, props.index);
+  };
   return (
     <div>
       {/*Answer.Component.js*/}
@@ -12,9 +19,9 @@ const Question = (props) => {
         <div className="col-md-12">
           <div className="row">
             <div className="col-md-1 col-1 d-flex align-content-center flex-wrap">
-              <div className="col-md-12 text-center">
-                <BsHandThumbsUp className="h3" />
-                {/* {idUser ? (
+              <div onClick={likeAdd} className="col-md-12 text-center">
+                {/* <BsHandThumbsUp className="h3" /> */}
+                {idUser ? (
                   likeCheck === 0 ? (
                     <BsHandThumbsUp className="h3">a</BsHandThumbsUp>
                   ) : (
@@ -24,7 +31,7 @@ const Question = (props) => {
                   )
                 ) : (
                   <BsHandThumbsUp className="h3">c</BsHandThumbsUp>
-                )} */}
+                )}
               </div>
 
               <div className="col-md-12 text-center">{props.count_like}</div>

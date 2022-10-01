@@ -48,7 +48,7 @@ export const getUsers = (id) => {
   };
 };
 
-export const updateUsers = (name, email, job) => {
+export const updateUsers = (id, name, email, job) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
@@ -62,7 +62,8 @@ export const updateUsers = (name, email, job) => {
 
     //get API
     axios
-      .put("http://localhost:5000/user/myAccount/", {
+      .put("http://localhost:5000/user/profile/", {
+        id: `${id}`,
         name: `${name}`,
         email: `${email}`,
         job: `${job}`,

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Profile_card = () => {
   const [show, setShow] = useState(false);
-  const id = 8;
+  const id = JSON.parse(localStorage.getItem("us_da_prv"));
   const dispatch = useDispatch();
   const { getUserResult, getUserLoading, getUserError } = useSelector((state) => state.MyAccountReducer);
   const [textAr, setTextAr] = useState({ name: "-", job: "-", email: "-" });
@@ -25,7 +25,7 @@ const Profile_card = () => {
 
   const updateProfile = (e) => {
     e.preventDefault();
-    dispatch(updateUsers(textAr.name, textAr.email, textAr.job));
+    dispatch(updateUsers(id.iduser, textAr.name, textAr.email, textAr.job));
     console.log(textAr);
   };
   return (

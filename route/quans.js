@@ -17,8 +17,9 @@ router.get("/", async (req, res) => {
   return res.json(a);
 });
 
-router.get("/showquans/", async (req, res) => {
-  let id = req.query.id;
+router.post("/showquans/", async (req, res) => {
+  let id = req.body.id;
+  let idUser = req.body.idUser;
   if (id === "" || id === "null" || id === null) {
     return res.status(404).json({ msg: "data yang dicari tidak ada" });
   }
@@ -31,6 +32,7 @@ router.get("/showquans/", async (req, res) => {
         include: [
           [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"],
           [Sequelize.literal(`(SELECT name FROM user where user.id = quans.id_user)`), "user_name"],
+          [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where (like_log.id_quans = quans.id) AND (like_log.id_user = ${idUser}))`), "likeCheck"],
         ],
       },
       include: [{ model: tag_quans, include: [{ model: tag }] }],

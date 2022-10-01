@@ -6,11 +6,17 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Profile_card from "./Profile_card";
 import About from "../pages/About";
+//redux
+import { getUsers } from "../../actions/myAccountAction";
+import { useDispatch, useSelector } from "react-redux";
 const Header = () => {
   const URL = urlApi();
+  const id = localStorage.getItem("us_da_prv") ? JSON.parse(localStorage.getItem("us_da_prv")) : 0;
   const history = useNavigate();
+  const dispatch = useDispatch();
   let [name, setName] = useState("-");
   useEffect(() => {
+    dispatch(getUsers(id.iduser));
     try {
       setName(JSON.parse(localStorage.getItem("us_da_prv")).name);
     } catch (error) {

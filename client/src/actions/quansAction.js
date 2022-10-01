@@ -3,7 +3,7 @@ import axios from "axios";
 export const GET_LIST_QUANS = "GET_LIST_QUANS";
 export const LIKE_QUANS = "LIKE_QUANS";
 
-export const getListQuans = (id) => {
+export const getListQuans = (id, idUser) => {
   return (dispatch) => {
     //loading
     dispatch({
@@ -16,11 +16,16 @@ export const getListQuans = (id) => {
     });
 
     //get API
-    axios({
-      method: "GET",
-      url: "http://localhost:5000/quans/showquans/?id=" + id,
-      timeout: 120000,
-    })
+    // axios({
+    //   method: "GET",
+    //   url: "http://localhost:5000/quans/showquans/?id=" + id,
+    //   timeout: 120000,
+    // })
+    axios
+      .post("http://localhost:5000/quans/showquans", {
+        id: id,
+        idUser: idUser,
+      })
       .then((response) => {
         //berhasil
         dispatch({

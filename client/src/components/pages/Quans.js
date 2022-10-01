@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Card, Badge, Button } from "react-bootstrap";
+import axios from "axios";
 //layout
 import QA from "../layouts/quans_layout/QuestionAnswer";
 import Rightsidebar from "../widgets/Rightsidebar";
@@ -12,20 +13,24 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getListQuans } from "../../actions/quansAction";
 import { addMyAnswer } from "../../actions/myAnswerAction";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
+import { urlApi } from "../helpers/Helpers";
 import parse from "html-react-parser";
 
 const Quans = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const idUser = localStorage.getItem("us_da_prv") ? JSON.parse(localStorage.getItem("us_da_prv")).iduser : 0;
   const { getListQuansResult, getListQuansLoading, getListQuansError, statusResponse } = useSelector((state) => state.QuansReducer);
   let search = window.location.search;
   let params = new URLSearchParams(search);
   let id = params.get("id");
+  let [arr, setArr] = useState(1);
   let countSplice = 0;
   let quans_par = "";
   let quans_date = "";
   let quans_tag = [];
+  const URL = urlApi();
   const items = Array.from(getListQuansResult);
 
   useEffect(() => {
@@ -35,7 +40,7 @@ const Quans = () => {
     quans_date = "";
     quans_tag = [];
 
-    dispatch(getListQuans(id));
+    dispatch(getListQuans(id, idUser));
   }, [dispatch, location]);
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -72,11 +77,72 @@ const Quans = () => {
             <div className="my-1" key={i}>
               {/* <List /> */}
               {/* <h3>Item #{q.user_name}</h3> */}
-              <QA key={q.id} name_creator={q.user_name} answer={parse(q.quans)} count_like={q.like_count} date={q.createdAt} />
+              <QA key={q.id} index={i} addLike={addLike} id={q.id} name_creator={q.user_name} answer={parse(q.quans)} count_like={q.like_count} date={q.createdAt} likeCheck={q.likeCheck} />
             </div>
           ))}
       </>
     );
+  };
+
+  //like function
+  const addLike = async (id, index) => {
+    const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
+    setArr((prev) => {
+      return prev + 1;
+    });
+    const page = searchParams.get("page");
+    if (page > 1) {
+      index = index + (page - 1) * 10;
+    }
+    //like
+
+    if (items[index]["likeCheck"] === 0) {
+      try {
+        items[index]["like_count"] = parseInt(items[index]["like_count"]) + 1;
+        items[index]["likeCheck"] = 1;
+      } catch (error) {
+        return console.log(`${error}, error in array items`);
+      }
+      console.log(items[index]);
+      await axios
+        .post(
+          URL + "/like/add",
+          {
+            id_user: idUser.iduser,
+            id_quans: id,
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          return console.log("success liked");
+        })
+        .catch((error) => {
+          return console.log(error);
+        });
+    } else if (items[index]["likeCheck"] >= 1) {
+      try {
+        items[index]["like_count"] = parseInt(items[index]["like_count"]) - 1;
+        items[index]["likeCheck"] = 0;
+      } catch (error) {
+        return console.log(`${error}, error in array items`);
+      }
+      console.log(items[index]);
+      //unlike
+      await axios
+        .delete(URL + "/like/delete", {
+          data: {
+            id_user: idUser.iduser,
+            id_quans: id,
+          },
+          headers: { withCredentials: true },
+        })
+        .then((res) => {
+          return console.log("success unlike");
+        })
+        .catch((error) => {
+          return console.log(error);
+        });
+    }
   };
 
   const addAnswer = (id, idUser, answer) => {
@@ -84,7 +150,7 @@ const Quans = () => {
     searchParams.set("addStatus", statusResponse ? "SUCCESS" : "FAILED");
     setSearchParams(searchParams);
     setTimeout(() => {
-      dispatch(getListQuans(id));
+      dispatch(getListQuans(id, idUser.iduser));
     }, 2000);
   };
   //--------------------------------------

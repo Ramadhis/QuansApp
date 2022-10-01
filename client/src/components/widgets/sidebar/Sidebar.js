@@ -43,7 +43,6 @@ const Sidebar = () => {
     }
   };
   useEffect(() => {
-    dispatch(getUsers(id));
     getsegment1();
     window.onpopstate = () => {
       console.log("tes");

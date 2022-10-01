@@ -127,7 +127,7 @@ router.get("/profile", async (req, res) => {
   }
 });
 
-router.put("/editProfile", async (req, res) => {
+router.put("/profile", async (req, res) => {
   try {
     const { id, name, email, job } = req.body;
     Users.update({ name: name, email: email, job: job }, { where: { id: id } });
