@@ -1,4 +1,10 @@
 import axios from "axios";
+import { urlApi } from "../components/helpers/Helpers";
+const BASE_URL = urlApi();
+const axiosCreate = axios.create({
+  withCredentials: true,
+  baseURL: BASE_URL,
+});
 
 export const GET_LIST_QUANS = "GET_LIST_QUANS";
 export const LIKE_QUANS = "LIKE_QUANS";
@@ -21,8 +27,8 @@ export const getListQuans = (id, idUser) => {
     //   url: "http://localhost:5000/quans/showquans/?id=" + id,
     //   timeout: 120000,
     // })
-    axios
-      .post("http://localhost:5000/quans/showquans", {
+    axiosCreate
+      .post("/quans/showquans", {
         id: id,
         idUser: idUser,
       })
@@ -63,7 +69,7 @@ export const likeQuans = (id, idUser) => {
     });
 
     //get API
-    axios
+    axiosCreate
       .post("http://localhost:5000/like/add/", {
         id_user: idUser,
         id_quans: id,

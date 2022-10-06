@@ -18,6 +18,8 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/showquans/", async (req, res) => {
+  const refreshToken = req.cookies.tokent;
+  console.log(refreshToken);
   let id = req.body.id;
   let idUser = req.body.idUser;
   if (id === "" || id === "null" || id === null) {

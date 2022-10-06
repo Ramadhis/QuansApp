@@ -165,7 +165,7 @@ const PaginatedItems = ({ itemsPerPage, items, ItemsLoop }) => {
         // nextClassName="page-item"
         // pageClassName="page-item"
         // className="pagination"
-        initialPage={searchParams.get("page") - 1}
+        initialPage={(searchParams.get("page") ? searchParams.get("page") : 1) - 1}
         // forcePage={searchParams.get("page") - 1}
         breakLabel="..."
         nextLabel="next"

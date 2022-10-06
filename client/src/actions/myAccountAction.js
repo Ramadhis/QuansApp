@@ -1,4 +1,10 @@
 import axios from "axios";
+import { urlApi } from "../components/helpers/Helpers";
+const BASE_URL = urlApi();
+const axiosCreate = axios.create({
+  withCredentials: true,
+  baseURL: BASE_URL,
+});
 
 export const GET_USER = "GET_USER";
 export const UPDATE_USER = "UPDATE_USER";
@@ -17,7 +23,7 @@ export const getUsers = (id) => {
     });
 
     //get API
-    axios({
+    axiosCreate({
       method: "GET",
       url: "http://localhost:5000/user/myAccount/?id=" + id,
       timeout: 120000,
@@ -61,7 +67,7 @@ export const updateUsers = (id, name, email, job) => {
     });
 
     //get API
-    axios
+    axiosCreate
       .put("http://localhost:5000/user/profile/", {
         id: `${id}`,
         name: `${name}`,

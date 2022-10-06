@@ -36,11 +36,20 @@ const Quans = () => {
   useEffect(() => {
     //call action getListQuans
     console.log("1. use effect component did mount");
+    dispatch(getListQuans(id, idUser));
     quans_par = "";
     quans_date = "";
     quans_tag = [];
 
-    dispatch(getListQuans(id, idUser));
+    // setTimeout(() => {
+    //   if (!searchParams.get("page")) {
+    //     searchParams.set("page", 1);
+    //     // searchParams.set("orderby", "terbaru");
+    //     setSearchParams(searchParams);
+    //   }
+    //   //sort array desc in like_count
+    //   // items.sort((a, b) => b["like_count"] - a["like_count"]);
+    // }, 1000);
   }, [dispatch, location]);
 
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -60,14 +69,13 @@ const Quans = () => {
     }
   });
 
-  //delete parent quans
-  if (countSplice === 0) {
-    items.splice(0, 1);
-    countSplice = 1;
-  }
+  // //delete parent quans
+  // if (countSplice === 0) {
+  //   console.log(`count splice ${countSplice}`);
+  //   items.splice(0, 1);
+  //   countSplice += 1;
+  // }
 
-  //sort array desc in like_count
-  items.sort((a, b) => b["like_count"] - a["like_count"]);
   console.log(items);
   const ItemsLoop = ({ currentItems }) => {
     return (
@@ -91,6 +99,7 @@ const Quans = () => {
       return prev + 1;
     });
     const page = searchParams.get("page");
+    console.log(index);
     if (page > 1) {
       index = index + (page - 1) * 10;
     }
@@ -149,9 +158,9 @@ const Quans = () => {
     dispatch(addMyAnswer(id, idUser, answer));
     searchParams.set("addStatus", statusResponse ? "SUCCESS" : "FAILED");
     setSearchParams(searchParams);
-    setTimeout(() => {
-      dispatch(getListQuans(id, idUser.iduser));
-    }, 2000);
+    // setTimeout(() => {
+    //   dispatch(getListQuans(id, idUser));
+    // }, 2000);
   };
   //--------------------------------------
 

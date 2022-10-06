@@ -40,13 +40,13 @@ const Dashboard = () => {
     console.log("1. use effect component did mount");
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
     dispatch(getListSearch(searchParams.get("s") ? searchParams.get("s") : "", idUser ? idUser.iduser : null, order ? order : "terbaru"));
-    setTimeout(() => {
-      if (!searchParams.get("page")) {
-        searchParams.set("page", 1);
-        searchParams.set("orderby", "terbaru");
-        setSearchParams(searchParams);
-      }
-    }, 1000);
+    // setTimeout(() => {
+    //   if (!searchParams.get("page")) {
+    //     searchParams.set("page", 1);
+    //     searchParams.set("orderby", "terbaru");
+    //     setSearchParams(searchParams);
+    //   }
+    // }, 1000);
   }, [location, dispatch]);
 
   const ItemsLoop = ({ currentItems }) => {

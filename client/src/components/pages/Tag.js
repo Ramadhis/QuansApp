@@ -71,10 +71,10 @@ const Tag = () => {
 
   useEffect(() => {
     console.log("1. use effect component did mount");
-    if (!searchParams.get("page")) {
-      searchParams.set("page", 1);
-      setSearchParams(searchParams);
-    }
+    // if (!searchParams.get("page")) {
+    //   searchParams.set("page", 1);
+    //   setSearchParams(searchParams);
+    // }
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
     dispatch(getListTag(searchParams.get("s") ? searchParams.get("s") : ""));
     console.log(getListTagResult);

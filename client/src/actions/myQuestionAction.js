@@ -1,4 +1,10 @@
 import axios from "axios";
+import { urlApi } from "../components/helpers/Helpers";
+const BASE_URL = urlApi();
+const axiosCreate = axios.create({
+  withCredentials: true,
+  baseURL: BASE_URL,
+});
 
 export const GET_LIST_MYQUESTION = "GET_LIST_MYQUESTION";
 
@@ -16,7 +22,7 @@ export const getListMyQuestion = (MyQuestion, idUser, order) => {
     });
 
     //get API
-    axios
+    axiosCreate
       .post("http://localhost:5000/quans/myQuestion/", {
         s: `${MyQuestion}`,
         idUser: `${idUser}`,
@@ -53,7 +59,7 @@ export const addMyQuestion = (idUser, quans) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //get API
-    axios
+    axiosCreate
       .post("http://localhost:5000/quans/addQuestion/", {
         id_user: `${idUser}`,
         question: `${quans}`,

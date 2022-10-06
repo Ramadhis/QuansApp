@@ -1,4 +1,10 @@
 import axios from "axios";
+import { urlApi } from "../components/helpers/Helpers";
+const BASE_URL = urlApi();
+const axiosCreate = axios.create({
+  withCredentials: true,
+  baseURL: BASE_URL,
+});
 
 export const GET_LIST_MYANSWER = "GET_LIST_MYANSWER";
 export const DEL_MYANSWER = "DEL_MYANSWER";
@@ -19,7 +25,7 @@ export const getListMyAnswer = (MyAnswer, idUser, order) => {
     });
 
     //get API
-    axios
+    axiosCreate
       .post(
         "http://localhost:5000/quans/myAnswer/",
         {
@@ -68,7 +74,7 @@ export const addMyAnswer = (id, idUser, answer) => {
       },
     });
 
-    axios
+    axiosCreate
       .post(
         "http://localhost:5000/quans/addAnswer/",
         {
@@ -116,7 +122,7 @@ export const delMyAnswer = (id) => {
     });
 
     //get API
-    axios
+    axiosCreate
       .delete("http://localhost:5000/quans/deleteAnswer/", {
         data: {
           id_quans: `${id}`,
@@ -159,7 +165,7 @@ export const updateMyAnswerAction = (id, answer) => {
     });
 
     //get API
-    axios
+    axiosCreate
       .put("http://localhost:5000/quans/editAnswer/", {
         id_quans: `${id}`,
         answer: `${answer}`,
