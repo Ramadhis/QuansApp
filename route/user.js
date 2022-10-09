@@ -72,7 +72,7 @@ router.post("/login", async (req, res) => {
 
     let token = jwt.sign({ iduser: find[0].id, name: find[0].name, email: find[0].email }, process.env.token, { expiresIn: "1d" });
 
-    res.cookie("tokent", token, {
+    res.cookie("token", token, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 100,
       secure: false,

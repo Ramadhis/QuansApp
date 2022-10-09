@@ -5,6 +5,7 @@ import { urlApi } from "../helpers/Helpers";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { Card, Form } from "react-bootstrap";
+import Loading from "../widgets/Loading";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { getListTag } from "../../actions/tagAction";
@@ -133,7 +134,7 @@ const Tag = () => {
                 <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} />
               )
             ) : getListTagLoading ? (
-              <p>loading</p>
+              <Loading />
             ) : (
               <p>{getListTagError ? getListTagError : "terjadi kesalahan"}</p>
             )}

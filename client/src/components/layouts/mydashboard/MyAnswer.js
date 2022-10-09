@@ -9,7 +9,7 @@ import List from "../mydashboard/ListAnswer";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalAnswerEdit from "./ModalAnswer";
 import parse from "html-react-parser";
-
+import Loading from "../../widgets/Loading";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { getListMyAnswer, delMyAnswer, updateMyAnswerAction } from "../../../actions/myAnswerAction";
@@ -157,7 +157,7 @@ const MyAnswer = () => {
           <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} />
         )
       ) : getListMyAnswerLoading ? (
-        <p>loading</p>
+        <Loading />
       ) : (
         <p>{getListMyAnswerError ? getListMyAnswerError : "terjadi kesalahan"}</p>
       )}

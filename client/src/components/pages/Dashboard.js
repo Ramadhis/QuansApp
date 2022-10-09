@@ -6,6 +6,8 @@ import List from "../layouts/dashboard/List";
 import { BsSearch } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
+import Loading from "../widgets/Loading";
+
 import { urlApi } from "../helpers/Helpers";
 import { useSearchParams, useLocation } from "react-router-dom";
 //redux
@@ -193,7 +195,7 @@ const Dashboard = () => {
               <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} />
             )
           ) : getListSearchLoading ? (
-            <p>loading</p>
+            <Loading />
           ) : (
             <p>{getListSearchError ? getListSearchError : "terjadi kesalahan"}</p>
           )}

@@ -9,7 +9,7 @@ import Select from "react-select";
 import { BsSearch, AiTwotoneDelete, AiTwotoneEdit } from "react-icons/bs";
 import ModalQuestion from "../mydashboard/ModalQuestion";
 import ModalEditQuestion from "../mydashboard/ModalQuestion";
-
+import Loading from "../../widgets/Loading";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { getListMyQuestion } from "../../../actions/myQuestionAction";
@@ -282,7 +282,7 @@ const MyQuestion = () => {
                 <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} />
               )
             ) : getListMyQuestionLoading ? (
-              <p>loading</p>
+              <Loading />
             ) : (
               <p>{getListMyQuestionError ? getListMyQuestionError : "terjadi kesalahan"}</p>
             )}
