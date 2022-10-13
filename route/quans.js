@@ -51,6 +51,7 @@ router.get("/popular/", async (req, res) => {
   try {
     a = await quans.findAll({
       limit: 10,
+      where: { id_parent: { [Op.eq]: "0" } },
       order: [["id", "desc"]],
       attributes: { include: [[Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"]] },
       include: [{ model: tag_quans, attributes: { exclude: ["createdAt", "updatedAt"] }, include: [{ model: tag, attributes: { exclude: ["createdAt", "updatedAt"] } }] }],

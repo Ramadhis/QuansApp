@@ -1,6 +1,7 @@
 import axios from "axios";
 import { urlApi } from "../components/helpers/Helpers";
 const BASE_URL = urlApi();
+
 const axiosCreate = axios.create({
   withCredentials: true,
   baseURL: BASE_URL,
@@ -21,9 +22,20 @@ export const getListMyQuestion = (MyQuestion, idUser, order) => {
       },
     });
 
+    // axiosCreate.interceptors.request.use(
+    //   (config) => {
+    //     const response = axiosCreate.get("/token/refreshToken");
+    //     localStorage.setItem("authorization", JSON.stringify(response.data));
+    //     return config;
+    //   },
+    //   (error) => {
+    //     return Promise.reject;
+    //   }
+    // );
+
     //get API
     axiosCreate
-      .post("http://localhost:5000/quans/myQuestion/", {
+      .post("/quans/myQuestion/", {
         s: `${MyQuestion}`,
         idUser: `${idUser}`,
         order: `${order}`,

@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import axios from "axios";
 
 const Rightsidebar = () => {
+  const [popu, setPopu] = useState([]);
+  useEffect(() => {
+    setTimeout(() => {
+      axios
+        .get("http://localhost:5000/quans/popular")
+        .then((response) => {
+          setPopu(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+      console.log(popu);
+    }, 3000);
+  }, []);
+
   return (
     <div className="col-lg-3 mt-4 mt-md-1">
       <h5>Popular this Month</h5>

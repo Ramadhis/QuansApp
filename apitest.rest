@@ -1,5 +1,7 @@
 get http://localhost:5000/user/myAccount?id=8
 ###
+get http://localhost:5000/quans/popular
+###
 POST http://localhost:5000/
 Content-Type: application/json
 
