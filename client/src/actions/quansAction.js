@@ -8,6 +8,7 @@ const axiosCreate = axios.create({
 
 export const GET_LIST_QUANS = "GET_LIST_QUANS";
 export const LIKE_QUANS = "LIKE_QUANS";
+export const GET_POPULAR_QUANS = "GET_POPULAR_QUANS";
 
 export const getListQuans = (id, idUser) => {
   return (dispatch) => {
@@ -70,7 +71,7 @@ export const likeQuans = (id, idUser) => {
 
     //get API
     axiosCreate
-      .post("http://localhost:5000/like/add/", {
+      .post("/like/add/", {
         id_user: idUser,
         id_quans: id,
       })
@@ -90,6 +91,51 @@ export const likeQuans = (id, idUser) => {
           type: LIKE_QUANS,
           payload: {
             loading: false,
+            errorMessage: error.message,
+          },
+        });
+      });
+  };
+};
+
+export const getPopularQuans = () => {
+  return (dispatch) => {
+    //loading
+    dispatch({
+      type: GET_POPULAR_QUANS,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+
+    //get API
+    // axios({
+    //   method: "GET",
+    //   url: "http://localhost:5000/quans/showquans/?id=" + id,
+    //   timeout: 120000,
+    // })
+    axiosCreate
+      .get("/quans/popular")
+      .then((response) => {
+        //berhasil
+        dispatch({
+          type: GET_POPULAR_QUANS,
+          payload: {
+            loading: false,
+            data: response.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((error) => {
+        //gagal
+        dispatch({
+          type: GET_POPULAR_QUANS,
+          payload: {
+            loading: false,
+            data: false,
             errorMessage: error.message,
           },
         });

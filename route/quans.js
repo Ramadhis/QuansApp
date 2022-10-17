@@ -55,6 +55,7 @@ router.get("/popular/", async (req, res) => {
       order: [["id", "desc"]],
       attributes: { include: [[Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"]] },
       include: [{ model: tag_quans, attributes: { exclude: ["createdAt", "updatedAt"] }, include: [{ model: tag, attributes: { exclude: ["createdAt", "updatedAt"] } }] }],
+      order: [[Sequelize.literal("like_count"), "desc"]],
     });
   } catch (error) {
     return res.status(404).json({ msg: error });

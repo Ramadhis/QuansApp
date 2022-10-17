@@ -1,4 +1,4 @@
-import { GET_LIST_QUANS } from "../../actions/quansAction";
+import { GET_LIST_QUANS, GET_POPULAR_QUANS } from "../../actions/quansAction";
 const initialState = {
   getListQuansResult: false,
   getListQuansLoading: false,
@@ -14,6 +14,13 @@ const quans = (state = initialState, action) => {
         getListQuansResult: action.payload.data,
         getListQuansLoading: action.payload.loading,
         getListQuansError: action.payload.errorMessage,
+      };
+    case GET_POPULAR_QUANS:
+      return {
+        ...state,
+        getPopularResult: action.payload.data,
+        getPopularLoading: action.payload.loading,
+        getPopularError: action.payload.errorMessage,
       };
     default:
       return state;

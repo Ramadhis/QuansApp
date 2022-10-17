@@ -14,16 +14,14 @@ const List = (props) => {
   const likeAdd = () => {
     return props.addLike(props.id, props.index);
   };
+
   return (
     <Card>
       <Card.Body>
         <div className="row">
-          <div className="col-md-11 col-9">
-            <Card.Text>
-              <Link style={{ textDecoration: "none", color: "black", width: "12rem" }} to={`/quans/?id=${id}`}>
-                {props.question}{" "}
-              </Link>
-            </Card.Text>
+          <Link to={`/quans/?id=${id}`} className="col-md-11 col-9">
+            <Card.Text style={{ textDecoration: "none", color: "black", width: "12rem", fontSize: "14px", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{props.question} </Card.Text>
+
             {tag &&
               tag.map((t, i) => {
                 return (
@@ -32,8 +30,7 @@ const List = (props) => {
                   </Badge>
                 );
               })}
-          </div>
-
+          </Link>
           <div className="col-md-1 col-3">
             <div onClick={idUser ? likeAdd : null} className="col-md-12 text-center">
               {idUser ? (
