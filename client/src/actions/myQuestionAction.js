@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "../components/helpers/axiosInstance";
 import { urlApi } from "../components/helpers/Helpers";
 const BASE_URL = urlApi();
 
@@ -10,7 +11,6 @@ const axiosCreate = axios.create({
 export const GET_LIST_MYQUESTION = "GET_LIST_MYQUESTION";
 
 export const getListMyQuestion = (MyQuestion, idUser, order) => {
-  console.log("2. masuk action");
   return (dispatch) => {
     //loading
     dispatch({
@@ -34,7 +34,7 @@ export const getListMyQuestion = (MyQuestion, idUser, order) => {
     // );
 
     //get API
-    axiosCreate
+    axiosInstance
       .post("/quans/myQuestion/", {
         s: `${MyQuestion}`,
         idUser: `${idUser}`,
@@ -42,7 +42,7 @@ export const getListMyQuestion = (MyQuestion, idUser, order) => {
       })
       .then((response) => {
         //berhasil
-        console.log("3. berhasil", response);
+
         dispatch({
           type: GET_LIST_MYQUESTION,
           payload: {
@@ -54,7 +54,7 @@ export const getListMyQuestion = (MyQuestion, idUser, order) => {
       })
       .catch((error) => {
         //gagal
-        console.log("3. gagal", error.message);
+
         dispatch({
           type: GET_LIST_MYQUESTION,
           payload: {
@@ -72,7 +72,7 @@ export const addMyQuestion = (idUser, quans) => {
   return (dispatch) => {
     //get API
     axiosCreate
-      .post("http://localhost:5000/quans/addQuestion/", {
+      .post("/quans/addQuestion/", {
         id_user: `${idUser}`,
         question: `${quans}`,
       })

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { urlApi } from "../components/helpers/Helpers";
+import axiosInstance from "../components/helpers/axiosInstance";
 const BASE_URL = urlApi();
 const axiosCreate = axios.create({
   withCredentials: true,
@@ -12,7 +13,6 @@ export const ADD_MYANSWER = "ADD_MYANSWER";
 export const UPDATE_MYANSWER = "UPDATE_MYANSWER";
 
 export const getListMyAnswer = (MyAnswer, idUser, order) => {
-  console.log("2. masuk action");
   return (dispatch) => {
     //loading
     dispatch({
@@ -25,7 +25,7 @@ export const getListMyAnswer = (MyAnswer, idUser, order) => {
     });
 
     //get API
-    axiosCreate
+    axiosInstance
       .post(
         "http://localhost:5000/quans/myAnswer/",
         {
@@ -37,7 +37,6 @@ export const getListMyAnswer = (MyAnswer, idUser, order) => {
       )
       .then((response) => {
         //berhasil
-        console.log("3. berhasil", response);
         dispatch({
           type: GET_LIST_MYANSWER,
           payload: {
@@ -49,7 +48,6 @@ export const getListMyAnswer = (MyAnswer, idUser, order) => {
       })
       .catch((error) => {
         //gagal
-        console.log("3. gagal", error.message);
         dispatch({
           type: GET_LIST_MYANSWER,
           payload: {
@@ -74,16 +72,12 @@ export const addMyAnswer = (id, idUser, answer) => {
       },
     });
 
-    axiosCreate
-      .post(
-        "http://localhost:5000/quans/addAnswer/",
-        {
-          id_user: `${idUser}`,
-          id_parent: `${id}`,
-          answer: `${answer}`,
-        },
-        { withCredentials: true }
-      )
+    axiosInstance
+      .post("/quans/addAnswer/", {
+        id_user: `${idUser}`,
+        id_parent: `${id}`,
+        answer: `${answer}`,
+      })
       .then((response) => {
         //berhasil
         console.log("3. berhasil", response);
@@ -122,8 +116,8 @@ export const delMyAnswer = (id) => {
     });
 
     //get API
-    axiosCreate
-      .delete("http://localhost:5000/quans/deleteAnswer/", {
+    axiosInstance
+      .delete("/quans/deleteAnswer/", {
         data: {
           id_quans: `${id}`,
         },
@@ -165,8 +159,8 @@ export const updateMyAnswerAction = (id, answer) => {
     });
 
     //get API
-    axiosCreate
-      .put("http://localhost:5000/quans/editAnswer/", {
+    axiosInstance
+      .put("/quans/editAnswer/", {
         id_quans: `${id}`,
         answer: `${answer}`,
       })

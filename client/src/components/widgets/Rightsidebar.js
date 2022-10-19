@@ -16,18 +16,6 @@ const Rightsidebar = () => {
   // const items = Array.from(getPopularResult);
   useEffect(() => {
     dispatch(getPopularQuans());
-
-    // setTimeout(() => {
-    //   axios
-    //     .get("http://localhost:5000/quans/popular")
-    //     .then((response) => {
-    //       setPopu(response.data);
-    //       console.log(popu);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error.message);
-    //     });
-    // }, 1000);
   }, [dispatch]);
 
   return (

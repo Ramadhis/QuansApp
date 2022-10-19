@@ -10,7 +10,6 @@ export const GET_USER = "GET_USER";
 export const UPDATE_USER = "UPDATE_USER";
 
 export const getUsers = (id) => {
-  console.log("2. masuk action");
   return (dispatch) => {
     //loading
     dispatch({
@@ -30,7 +29,6 @@ export const getUsers = (id) => {
     })
       .then((response) => {
         //berhasil
-        console.log("3. berhasil", response);
         dispatch({
           type: GET_USER,
           payload: {
@@ -42,7 +40,6 @@ export const getUsers = (id) => {
       })
       .catch((error) => {
         //gagal
-        console.log("3. gagal", error.message);
         dispatch({
           type: GET_USER,
           payload: {

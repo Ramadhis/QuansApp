@@ -18,8 +18,8 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/showquans/", async (req, res) => {
-  const refreshToken = req.cookies.tokent;
-  console.log(refreshToken);
+  const refreshToken = req.cookies.refreshToken;
+  console.log("ini token = " + refreshToken);
   let id = req.body.id;
   let idUser = req.body.idUser;
   if (id === "" || id === "null" || id === null) {
@@ -132,7 +132,7 @@ router.get("/answerList/", async (req, res) => {
   }
 });
 
-router.post("/myQuestion", async (req, res) => {
+router.post("/myQuestion", auth, async (req, res) => {
   let q = req.body.s.trim();
   let filter = req.body.filter;
   let idUser = req.body.idUser;
@@ -237,7 +237,7 @@ router.put("/editQuestion", async (req, res) => {
   }
 });
 
-router.post("/myAnswer", async (req, res) => {
+router.post("/myAnswer", auth, async (req, res) => {
   try {
     let q = req.body.s.trim();
     let filter = req.body.filter;
@@ -268,7 +268,7 @@ router.post("/myAnswer", async (req, res) => {
   }
 });
 
-router.post("/addAnswer/", async (req, res) => {
+router.post("/addAnswer/", auth, async (req, res) => {
   let { answer, id_parent, id_user } = req.body;
   try {
     const insert = await quans.create({ id_user: id_user, id_parent: id_parent, quans: answer });
@@ -278,7 +278,7 @@ router.post("/addAnswer/", async (req, res) => {
   return res.json({ msg: "success" });
 });
 
-router.delete("/deleteAnswer", async (req, res) => {
+router.delete("/deleteAnswer", auth, async (req, res) => {
   try {
     console.log(req.cookies.token);
     let { id_quans } = req.body;
@@ -291,7 +291,7 @@ router.delete("/deleteAnswer", async (req, res) => {
   }
 });
 
-router.put("/editAnswer", async (req, res) => {
+router.put("/editAnswer", auth, async (req, res) => {
   try {
     let { id_quans, answer } = req.body;
     await quans

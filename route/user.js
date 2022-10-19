@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
         email: req.body.email,
       },
     });
-
+    // return console.log(find);
     if (!find) {
       return res.status(400).json({ msg: "email tidak terdaftar" });
     }
@@ -69,10 +69,18 @@ router.post("/login", async (req, res) => {
     if (!cek_pass) {
       return res.status(400).json({ msg: "password salah" });
     }
-
-    let token = jwt.sign({ iduser: find[0].id, name: find[0].name, email: find[0].email }, process.env.token, { expiresIn: "1d" });
-
-    res.cookie("token", token, {
+    const userId = find[0].id;
+    let token = jwt.sign({ iduser: find[0].id, name: find[0].name, email: find[0].email }, process.env.token, { expiresIn: "15s" });
+    let refreshToken = jwt.sign({ iduser: find[0].id, name: find[0].name, email: find[0].email }, process.env.refreshToken, { expiresIn: "24h" });
+    await Users.update(
+      { refreshtoken: refreshToken },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 100,
       secure: false,
@@ -80,7 +88,7 @@ router.post("/login", async (req, res) => {
     });
     res.json({ token });
   } catch (error) {
-    return res.status(400).json({ msg: "email tidak terdaftar" });
+    return res.status(400).json({ msg: "email tidak ditemukan" });
   }
 });
 

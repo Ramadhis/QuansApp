@@ -48,7 +48,7 @@ const ModalQuestion = (props) => {
         return loopArrTag.push(`${tg.tag.id}`);
       });
     }
-    console.log(loopArrTag);
+
     setSelectedOption(loopArrTag);
     // console.log(selectedOption);
   }, [props.tag]);

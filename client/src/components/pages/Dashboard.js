@@ -7,7 +7,7 @@ import { BsSearch } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PaginatedItems from "../widgets/pagination/PaginatedItems";
 import Loading from "../widgets/Loading";
-
+import Cookies from "js-cookie";
 import { urlApi } from "../helpers/Helpers";
 import { useSearchParams, useLocation } from "react-router-dom";
 //redux
@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [valSearch, setValSearch] = useState("");
   let [arr, setArr] = useState(1);
   const items = Array.from(getListSearchResult);
+  const a = Cookies.get();
   const URL = urlApi();
   //
   let quans_tag = [];
@@ -152,7 +153,7 @@ const Dashboard = () => {
 
   return (
     <div className="col-lg-10 mt-5 p-4 g-0 pt-4" style={{ marginTop: `100px` }}>
-      {/* {arr} */}
+      {console.log(a)}
       <div className="row">
         <div className="col-lg-9 mt-2">
           <div className="input-group">

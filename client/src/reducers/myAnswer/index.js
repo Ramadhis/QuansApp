@@ -9,7 +9,6 @@ const initialState = {
 const myAnswer = (state = initialState, action) => {
   switch (action.type) {
     case GET_LIST_MYANSWER:
-      console.log("4. masuk reducer", action);
       return {
         ...state,
         getListMyAnswerResult: action.payload.data,

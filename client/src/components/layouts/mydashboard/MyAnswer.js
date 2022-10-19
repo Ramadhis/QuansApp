@@ -46,7 +46,6 @@ const MyAnswer = () => {
   let answer = "";
 
   useEffect(() => {
-    console.log("1. use effect component did mount");
     setSelectedIndex(searchParams.get("orderby") === "sesuai" ? 1 : 0);
     setValSearch(searchParams.get("s") ? searchParams.get("s") : "");
     dispatch(getListMyAnswer(searchParams.get("s") ? searchParams.get("s") : "", idUser.iduser, searchParams.get("orderby") ? searchParams.get("orderby") : "terbaru"));

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
 const ProtectedRoute = ({ children }) => {
   // const { user } = useAppContext();
   const getLocalData = JSON.parse(localStorage.getItem("us_da_prv"));

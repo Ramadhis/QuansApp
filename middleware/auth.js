@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 //login checking
 const auth = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  console.log(req.headers);
+  console.log("Authorization : " + authHeader);
   const split = authHeader && authHeader.split(" ")[1];
-  if (split == null) {
+  if (!split) {
     return res.status(400).json({ msg: "token kosong" });
   }
 
@@ -12,7 +12,7 @@ const auth = (req, res, next) => {
     if (err) {
       return res.status(400).json({ msg: "token tidak valid" });
     }
-    console.log("auth oke");
+    console.log("auth Success");
   });
   next();
 };
