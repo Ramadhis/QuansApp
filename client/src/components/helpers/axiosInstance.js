@@ -8,9 +8,15 @@ const axiosInstance = axios.create({
 });
 
 const refToken = async () => {
-  return await axios.get(urlApi() + "/token/refreshToken", {
-    withCredentials: true,
-  });
+  return await axios
+    .get(urlApi() + "/token/refreshToken", {
+      withCredentials: true,
+    })
+    .catch((err) => {
+      if (err.response.status) {
+        window.location.replace("/login");
+      }
+    });
 };
 
 axiosInstance.interceptors.request.use(async (config) => {

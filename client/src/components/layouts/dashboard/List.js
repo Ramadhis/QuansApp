@@ -20,7 +20,7 @@ const List = (props) => {
       <Card.Body>
         <div className="row">
           <Link to={`/quans/?id=${id}`} className="col-md-11 col-9">
-            <Card.Text style={{ textDecoration: "none", color: "black", width: "12rem", fontSize: "14px", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{props.question} </Card.Text>
+            <Card.Text style={{ textDecoration: "none", color: "black", fontSize: "14px", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{props.question} </Card.Text>
 
             {tag &&
               tag.map((t, i) => {
