@@ -51,7 +51,7 @@ export const getUsers = (id) => {
   };
 };
 
-export const updateUsers = (id, name, email, job) => {
+export const updateUsers = (fd) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
@@ -65,12 +65,22 @@ export const updateUsers = (id, name, email, job) => {
 
     //get API
     axiosCreate
-      .put("http://localhost:5000/user/profile/", {
-        id: `${id}`,
-        name: `${name}`,
-        email: `${email}`,
-        job: `${job}`,
-      })
+      .put(
+        "/user/profile/",
+        // {
+        //   id: `${id}`,
+        //   name: `${name}`,
+        //   email: `${email}`,
+        //   job: `${job}`,
+        //   image: `${image}`,
+        // },
+        fd,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((response) => {
         //berhasil
         console.log("3. berhasil", response);

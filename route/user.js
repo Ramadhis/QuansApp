@@ -3,7 +3,9 @@ import Users from ".././model/userModel.js";
 import db from "../utils/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import multer from "multer";
 import auth from ".././middleware/auth.js";
+import path from "path";
 
 //
 import like_log from ".././model/like_logModel.js";
@@ -12,6 +14,20 @@ import tag_quans from ".././model/tag_quansModel.js";
 import tag from ".././model/tagModel.js";
 
 let router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/uploads");
+  },
+  filename: function (req, file, cb) {
+    // const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    // cb(null, file.fieldname + "-" + uniqueSuffix);
+    const uniqueSuffix = path.parse(file.originalname).name + Date.now() + path.extname(file.originalname);
+    cb(null, uniqueSuffix);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.get("/", async (req, res) => {
   try {
@@ -136,11 +152,21 @@ router.get("/profile", async (req, res) => {
   }
 });
 
-router.put("/profile", async (req, res) => {
+router.put("/profile", upload.single("image"), async (req, res) => {
   try {
     const { id, name, email, job } = req.body;
-    Users.update({ name: name, email: email, job: job }, { where: { id: id } });
+    let imageUrl = req.protocol + "://" + req.get("host") + "/uploads/" + req.file.filename;
+    Users.update({ name: name, email: email, job: job, image_profile: req.file.filename }, { where: { id: id } });
     res.json({ msg: "success" });
+  } catch (err) {
+    return res.status(404).json({ msg: err });
+  }
+});
+
+router.post("/upload", upload.single("image"), async (req, res) => {
+  try {
+    let imageUrl = req.protocol + "://" + req.get("host") + "/uploads/" + req.file.filename;
+    res.json({ status: "success", image: imageUrl });
   } catch (error) {
     return res.status(404).json({ msg: error });
   }

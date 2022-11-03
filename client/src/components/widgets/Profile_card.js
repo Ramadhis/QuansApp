@@ -6,10 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Profile_card = () => {
   const [show, setShow] = useState(false);
+  const [showImage, setShowImage] = useState();
+  const [getImage, setGetImage] = useState();
+
   const id = JSON.parse(localStorage.getItem("us_da_prv"));
   const dispatch = useDispatch();
   const { getUserResult, getUserLoading, getUserError } = useSelector((state) => state.MyAccountReducer);
-  const [textAr, setTextAr] = useState({ name: "-", job: "-", email: "-" });
+  const [textAr, setTextAr] = useState({ name: "-", job: "-", email: "-", image: "https://via.placeholder.com/100" });
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const items = Array.from(getUserResult);
@@ -25,8 +28,16 @@ const Profile_card = () => {
 
   const updateProfile = (e) => {
     e.preventDefault();
-    dispatch(updateUsers(id.iduser, textAr.name, textAr.email, textAr.job));
-    console.log(textAr);
+    let fd = new FormData();
+    fd.append("id", id.iduser);
+    fd.append("name", textAr.name);
+    fd.append("email", textAr.email);
+    fd.append("job", textAr.job);
+    fd.append("image", showImage);
+
+    console.log(fd);
+    // dispatch(updateUsers(id.iduser, textAr.name, textAr.email, textAr.job, fd));
+    dispatch(updateUsers(fd));
   };
   return (
     <>
@@ -41,9 +52,25 @@ const Profile_card = () => {
             <Modal.Title>Profile</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Card size="md" style={{ maxWidth: "180px", borderRadius: "100%" }} className="mx-auto mb-4 px-1 py-1">
-              <Card.Img style={{ borderRadius: "100%" }} variant="top" src="https://via.placeholder.com/100" />
-            </Card>
+            <div className="col-md-12 d-flex justify-content-center">
+              <div className="col-md-5">
+                <Card size="md" style={{ maxWidth: "180px", borderRadius: "100%", objectFit: "cover" }} className="mx-auto mb-4 px-1 py-1">
+                  <Card.Img style={{ borderRadius: "100%", objectFit: "cover" }} variant="top" src={textAr.image} />
+                </Card>
+                <Form.Control
+                  type="file"
+                  onChange={(e) =>
+                    setTextAr((prev) => {
+                      let getFile = e.target.files[0];
+                      let toURL = URL.createObjectURL(getFile);
+                      setShowImage(getFile);
+                      console.log(showImage);
+                      return { ...prev, image: toURL };
+                    })
+                  }
+                ></Form.Control>
+              </div>
+            </div>
 
             {getUserResult ? (
               getUserResult.length === 0 ? (
