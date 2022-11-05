@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Button, Modal, NavDropdown } from "react-bootstrap";
+import { urlImage } from "../helpers/Helpers";
+import "../pages/universal.css";
 //redux
 import { getUsers, updateUsers } from "../../actions/myAccountAction";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +26,7 @@ const Profile_card = () => {
     textAr.name = items[0]["name"];
     textAr.job = items[0]["job"];
     textAr.email = items[0]["email"];
+    textAr.image = urlImage() + items[0]["image_profile"];
   }, [dispatch]);
 
   const updateProfile = (e) => {
@@ -34,10 +37,11 @@ const Profile_card = () => {
     fd.append("email", textAr.email);
     fd.append("job", textAr.job);
     fd.append("image", showImage);
-
-    console.log(fd);
-    // dispatch(updateUsers(id.iduser, textAr.name, textAr.email, textAr.job, fd));
     dispatch(updateUsers(fd));
+    // dispatch(updateUsers(id.iduser, textAr.name, textAr.email, textAr.job, fd));
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
   return (
     <>
@@ -55,7 +59,7 @@ const Profile_card = () => {
             <div className="col-md-12 d-flex justify-content-center">
               <div className="col-md-5">
                 <Card size="md" style={{ maxWidth: "180px", borderRadius: "100%", objectFit: "cover" }} className="mx-auto mb-4 px-1 py-1">
-                  <Card.Img style={{ borderRadius: "100%", objectFit: "cover" }} variant="top" src={textAr.image} />
+                  <Card.Img className="card-img-profile" style={{ borderRadius: "100%", objectFit: "cover" }} variant="top" src={textAr.image} />
                 </Card>
                 <Form.Control
                   type="file"

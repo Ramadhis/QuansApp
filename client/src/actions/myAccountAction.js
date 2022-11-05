@@ -59,6 +59,7 @@ export const updateUsers = (fd) => {
       type: UPDATE_USER,
       payload: {
         loading: true,
+        data: false,
         errorMessage: false,
       },
     });
@@ -84,10 +85,17 @@ export const updateUsers = (fd) => {
       .then((response) => {
         //berhasil
         console.log("3. berhasil", response);
+        //update local storage data
+        let localUserData = JSON.parse(localStorage.getItem("us_da_prv"));
+        let updateUserData = { ...localUserData, email: response.data.data[0].email, name: response.data.data[0].name };
+        console.log(updateUserData);
+        localStorage.setItem("us_da_prv", JSON.stringify(updateUserData));
+        //end update local storage data
         dispatch({
           type: UPDATE_USER,
           payload: {
             loading: false,
+            data: response.data,
             errorMessage: false,
           },
         });

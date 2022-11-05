@@ -6,6 +6,7 @@ import axios from "axios";
 import QA from "../layouts/quans_layout/QuestionAnswer";
 import Rightsidebar from "../widgets/Rightsidebar";
 import ModalAnswer from "../layouts/quans_layout/ModalAnswer";
+import Loading from "../widgets/Loading";
 import { useSearchParams, useLocation } from "react-router-dom";
 //endlayout
 import { BsChatLeftDots } from "react-icons/bs";
@@ -20,8 +21,11 @@ const Quans = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useSearchParams(false);
   const idUser = localStorage.getItem("us_da_prv") ? JSON.parse(localStorage.getItem("us_da_prv")).iduser : 0;
-  const { getListQuansResult, getListQuansLoading, getListQuansError, statusResponse } = useSelector((state) => state.QuansReducer);
+  const { getListQuansResult, getListQuansLoading, getListQuansError } = useSelector((state) => state.QuansReducer);
+  const { getListMyAnswerLoading, statusResponse } = useSelector((state) => state.MyAnswerReducer);
+
   let search = window.location.search;
   let params = new URLSearchParams(search);
   let id = params.get("id");
@@ -30,17 +34,17 @@ const Quans = () => {
   let quans_par = "";
   let quans_date = "";
   let quans_tag = [];
+
   const URL = urlApi();
   const items = Array.from(getListQuansResult);
 
   useEffect(() => {
     //call action getListQuans
-    console.log("1. use effect component did mount");
     dispatch(getListQuans(id, idUser));
     quans_par = "";
     quans_date = "";
     quans_tag = [];
-
+    console.log(statusResponse);
     // setTimeout(() => {
     //   if (!searchParams.get("page")) {
     //     searchParams.set("page", 1);
@@ -85,7 +89,7 @@ const Quans = () => {
             <div className="my-1" key={i}>
               {/* <List /> */}
               {/* <h3>Item #{q.user_name}</h3> */}
-              <QA key={q.id} index={i} addLike={addLike} id={q.id} name_creator={q.user_name} answer={parse(q.quans)} count_like={q.like_count} date={q.createdAt} likeCheck={q.likeCheck} />
+              <QA key={q.id} index={i} addLike={addLike} id={q.id} name_creator={q.user_name} image={q.image_profile} answer={parse(q.quans)} count_like={q.like_count} date={q.createdAt} likeCheck={q.likeCheck} />
             </div>
           ))}
       </>
@@ -156,11 +160,11 @@ const Quans = () => {
 
   const addAnswer = (id, idUser, answer) => {
     dispatch(addMyAnswer(id, idUser, answer));
-    searchParams.set("addStatus", statusResponse ? "SUCCESS" : "FAILED");
-    setSearchParams(searchParams);
-    // setTimeout(() => {
-    //   dispatch(getListQuans(id, idUser));
-    // }, 2000);
+    setTimeout(() => {
+      dispatch(getListQuans(id, idUser));
+      // searchParams.set("addStatus", statusResponse);
+      // setSearchParams(searchParams);
+    }, 2000);
   };
   //--------------------------------------
 
@@ -211,7 +215,7 @@ const Quans = () => {
             <p>{getListQuansError ? getListQuansError : "data kosong"}</p>
           )} */}
 
-          {getListQuansResult ? <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} /> : getListQuansLoading ? <p>loading</p> : <p>{getListQuansError ? getListQuansError : "data kosong"}</p>}
+          {getListQuansResult ? <PaginatedItems itemsPerPage={10} items={items} ItemsLoop={ItemsLoop} /> : getListQuansLoading && getListMyAnswerLoading ? <Loading /> : <p>{getListQuansError ? getListQuansError : "data kosong"}</p>}
         </div>
         <Rightsidebar />
       </Row>

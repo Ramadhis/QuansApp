@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, Row } from "react-bootstrap";
 import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
-
+import { urlImage } from "../../helpers/Helpers";
+import "./../../pages/universal.css";
 const Question = (props) => {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const date = new Date(props.date);
@@ -51,7 +52,7 @@ const Question = (props) => {
                   <div className="col-md-12">
                     <Row>
                       <div className="col-md-4 col-4">
-                        <img src="https://via.placeholder.com/50" alt="" />
+                        <img className="card-img-mini" src={urlImage() + props.image} alt="" />
                       </div>
                       <div className="col-md-8 col-8 g-0">
                         <div style={{ fontSize: "15px" }}>{props.name_creator}</div>

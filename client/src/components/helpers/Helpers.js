@@ -3,6 +3,9 @@ import axios from "axios";
 export const urlApi = () => {
   return "http://localhost:5000";
 };
+export const urlImage = () => {
+  return "http://localhost:5000/uploads/";
+};
 
 export const axiosPrivate = () => {
   axios

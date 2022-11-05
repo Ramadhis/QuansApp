@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import multer from "multer";
 import auth from ".././middleware/auth.js";
 import path from "path";
-
+import fs from "fs";
 //
 import like_log from ".././model/like_logModel.js";
 import quans from ".././model/quansModel.js";
@@ -45,7 +45,7 @@ router.get("/myAccount", async (req, res) => {
     where: {
       id: id,
     },
-    attributes: ["name", "email", "job", "createdAt"],
+    attributes: ["name", "email", "job", "image_profile", "createdAt"],
   });
   res.json(find);
 });
@@ -155,11 +155,39 @@ router.get("/profile", async (req, res) => {
 router.put("/profile", upload.single("image"), async (req, res) => {
   try {
     const { id, name, email, job } = req.body;
-    let imageUrl = req.protocol + "://" + req.get("host") + "/uploads/" + req.file.filename;
-    Users.update({ name: name, email: email, job: job, image_profile: req.file.filename }, { where: { id: id } });
-    res.json({ msg: "success" });
+
+    let update = false;
+    if (req.file) {
+      let findDataUser = await Users.findAll({ where: { id: id } });
+      if (!findDataUser) {
+        return res.status(404).json({ msg: "data user tidak ditemukan" });
+      }
+
+      let checkFileExist = fs.readFile(`./public/uploads/${findDataUser[0].image_profile}`, (err) => {
+        if (err) {
+          return err;
+        }
+        fs.unlink(`./public/uploads/${findDataUser[0].image_profile}`, function (err) {
+          if (err) {
+            return err;
+          }
+          return true;
+        });
+      });
+
+      let imageUrl = req.protocol + "://" + req.get("host") + "/uploads/" + req.file.filename;
+      update = await Users.update({ name: name, email: email, job: job, image_profile: req.file.filename }, { where: { id: id } });
+    } else {
+      console.log("else data");
+      update = await Users.update({ name: name, email: email, job: job }, { where: { id: id } });
+    }
+    const getUserData = await Users.findAll({
+      where: { id: id },
+      attributes: ["name", "email", "job", "image_profile", "createdAt"],
+    });
+    res.json({ msg: update, data: getUserData });
   } catch (err) {
-    return res.status(404).json({ msg: err });
+    return res.status(404).json({ msg: err.message });
   }
 });
 

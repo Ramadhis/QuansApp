@@ -34,6 +34,7 @@ router.post("/showquans/", async (req, res) => {
         include: [
           [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"],
           [Sequelize.literal(`(SELECT name FROM user where user.id = quans.id_user)`), "user_name"],
+          [Sequelize.literal(`(SELECT image_profile FROM user where user.id = quans.id_user)`), "image_profile"],
           [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where (like_log.id_quans = quans.id) AND (like_log.id_user = ${idUser}))`), "likeCheck"],
         ],
       },
