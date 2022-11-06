@@ -27,7 +27,7 @@ const Header = () => {
   let logout = async () => {
     try {
       localStorage.clear();
-      await axios.delete(URL + "/user/logout");
+      await axios.delete(URL + "/user/logout", { withCredentials: true });
       history("/quans/dashboard", { replace: true });
     } catch (error) {
       console.log(error);

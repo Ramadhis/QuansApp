@@ -3,6 +3,8 @@ import { Card, Form, Button, Modal } from "react-bootstrap";
 import ReactQuill from "react-quill"; // ES6
 import "react-quill/dist/quill.snow.css"; // ES6
 import { useSearchParams, useLocation } from "react-router-dom";
+import ProtectedRoute from "../../helpers/ProtectedRoute";
+import { loginCheck } from "../../helpers/Helpers";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { addMyAnswer } from "../../../actions/myAnswerAction";
@@ -13,6 +15,9 @@ const ModalAnswer = (props) => {
   const [show, setShow] = useState(false);
   const [textAr, setTextAr] = useState("");
   const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
+  //for checking login user
+  const user = loginCheck();
+  //end for checking login user
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { getListMyAnswerLoading, statusResponse } = useSelector((state) => state.MyAnswerReducer);
@@ -26,9 +31,13 @@ const ModalAnswer = (props) => {
 
   return (
     <>
-      <Button className="btn btn-success btn-sm me-1 text-center" style={{ display: "inline-block" }} variant="primary" onClick={handleShow}>
-        Add Your Answer
-      </Button>
+      {user ? (
+        <Button className="btn btn-success btn-sm me-1 text-center" style={{ display: "inline-block" }} variant="primary" onClick={handleShow}>
+          Add Your Answer
+        </Button>
+      ) : (
+        ""
+      )}
 
       <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>

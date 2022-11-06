@@ -133,10 +133,30 @@ router.post("/register", async (req, res) => {
 });
 
 router.delete("/logout", async (req, res) => {
-  // const refreshToken = req.cookies.refreshToken;
-  // if (!refreshToken) {
-  //   return res.status(204).json({ msg: "no content" });
-  // }
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    return res.status(204).json({ msg: "refresh token tidak valid" });
+  }
+  const user = await Users.findAll({
+    where: {
+      refreshtoken: refreshToken,
+    },
+  });
+  if (!user[0]) {
+    return res.status(204).json({ msg: "tidak terdapat data user" });
+  }
+
+  const userId = user[0].id;
+  await Users.update(
+    { refreshtoken: null },
+    {
+      where: {
+        id: userId,
+      },
+    }
+  );
+
+  res.clearCookie("refreshToken");
   return res.json({ msg: "berhasil logout" });
 });
 

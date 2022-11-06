@@ -7,6 +7,12 @@ export const urlImage = () => {
   return "http://localhost:5000/uploads/";
 };
 
+export const loginCheck = () => {
+  const idUser = JSON.parse(localStorage.getItem("us_da_prv"));
+  const user = idUser ? idUser.iduser : null;
+  return user;
+};
+
 export const axiosPrivate = () => {
   axios
     .create({
