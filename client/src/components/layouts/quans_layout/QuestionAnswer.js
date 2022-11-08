@@ -3,6 +3,7 @@ import { Card, Row } from "react-bootstrap";
 import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 import { urlImage } from "../../helpers/Helpers";
 import "./../../pages/universal.css";
+
 const Question = (props) => {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const date = new Date(props.date);

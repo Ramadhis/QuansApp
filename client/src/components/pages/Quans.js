@@ -76,8 +76,8 @@ const Quans = () => {
   // //delete parent quans
   // if (countSplice === 0) {
   //   console.log(`count splice ${countSplice}`);
-  //   items.splice(0, 1);
-  //   countSplice += 1;
+  items.splice(0, 1);
+  countSplice += 1;
   // }
 
   console.log(items);
