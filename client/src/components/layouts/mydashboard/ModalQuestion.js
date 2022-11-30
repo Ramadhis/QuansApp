@@ -94,10 +94,11 @@ const ModalQuestion = (props) => {
             {props.edit ? (
               ""
             ) : (
-              <div className="mt-4">
-                <Form.Label>First Answer (Optional)</Form.Label>
-                <ReactQuill style={{ height: "120px" }} theme="snow" value={textAr2} onChange={setTextAr2} />
-              </div>
+              // <div className="mt-4">
+              //   <Form.Label>First Answer (Optional)</Form.Label>
+              //   <ReactQuill style={{ height: "120px" }} theme="snow" value={textAr2} onChange={setTextAr2} />
+              // </div>
+              <div></div>
             )}
 
             {/* <Form>

@@ -7,6 +7,7 @@ import multer from "multer";
 import auth from ".././middleware/auth.js";
 import path from "path";
 import fs from "fs";
+import { loginValidation, registerValidation, updateProfileValidation } from "./validation/userValidation.js";
 //
 import like_log from ".././model/like_logModel.js";
 import quans from ".././model/quansModel.js";
@@ -68,7 +69,7 @@ router.put("/myAccount", async (req, res) => {
     });
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", loginValidation, async (req, res) => {
   try {
     const find = await Users.findAll({
       where: {
@@ -108,28 +109,34 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", registerValidation, async (req, res) => {
   if (req.body.confirmpass !== req.body.password) {
     return res.status(400).json({ msg: "password dan confirm password tidak cocok" });
   }
 
   let find = null;
-  find = await Users.findAll({
-    where: {
-      email: req.body.email,
-    },
-  });
 
-  if (find.length > 0) {
-    return res.status(400).json({ msg: "email telah terpakai, coba daftar dengan email lain" });
+  try {
+    find = await Users.findAll({
+      where: {
+        email: req.body.email,
+      },
+    });
+
+    if (find.length > 0) {
+      return res.status(400).json({ msg: "email telah terpakai, coba daftar dengan email lain" });
+    }
+
+    const salt = await bcrypt.genSaltSync(10);
+    const hash = await bcrypt.hashSync(req.body.password, salt);
+
+    const insert = await Users.create({ name: req.body.name, job: req.body.job, email: req.body.email, password: hash });
+
+    return res.json(insert);
+  } catch (error) {
+    return res.status(404).json({ msg: error.message });
   }
-
-  const salt = await bcrypt.genSaltSync(10);
-  const hash = await bcrypt.hashSync(req.body.password, salt);
-
-  const insert = await Users.create({ name: req.body.name, job: req.body.job, email: req.body.email, password: hash });
-
-  console.log("User's auto-generated ID:", insert);
+  // console.log("User's auto-generated ID:", insert);
 });
 
 router.delete("/logout", async (req, res) => {
@@ -172,7 +179,7 @@ router.get("/profile", async (req, res) => {
   }
 });
 
-router.put("/profile", upload.single("image"), async (req, res) => {
+router.put("/profile", upload.single("image"), updateProfileValidation, async (req, res) => {
   try {
     const { id, name, email, job } = req.body;
 
