@@ -10,6 +10,7 @@ import like_log from ".././model/like_logModel.js";
 import quans from ".././model/quansModel.js";
 import tag_quans from ".././model/tag_quansModel.js";
 import tag from ".././model/tagModel.js";
+import user from ".././model/userModel.js";
 
 let router = express.Router();
 
@@ -17,6 +18,10 @@ router.get("/", async (req, res) => {
   try {
     await db.authenticate();
     await quans.sync();
+    await like_log.sync();
+    await tag.sync();
+    await tag_quans.sync();
+    await user.sync();
     console.log("All models were synchronized successfully.");
   } catch (error) {
     console.log(error);
