@@ -14,13 +14,16 @@ const users = (state = initialState, action) => {
         getUserLoading: action.payload.loading,
         getUserError: action.payload.errorMessage,
       };
-    case UPDATE_USER: {
+    case UPDATE_USER:
+      // let localUserData = JSON.parse(localStorage.getItem("us_da_prv"));
+      // let updateUserData = {...localUserData, }
       return {
         ...state,
+        getUserResult: action.payload.data,
         getUserLoading: action.payload.loading,
         getUserError: action.payload.errorMessage,
       };
-    }
+
     default:
       return state;
   }

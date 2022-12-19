@@ -80,7 +80,7 @@ export const addMyAnswer = (id, idUser, answer) => {
       })
       .then((response) => {
         //berhasil
-        console.log("3. berhasil", response);
+
         dispatch({
           type: ADD_MYANSWER,
           payload: {

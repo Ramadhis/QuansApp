@@ -51,7 +51,7 @@ export const getUsers = (id) => {
   };
 };
 
-export const updateUsers = (id, name, email, job) => {
+export const updateUsers = (fd) => {
   console.log("2. masuk action");
   return (dispatch) => {
     //loading
@@ -59,25 +59,43 @@ export const updateUsers = (id, name, email, job) => {
       type: UPDATE_USER,
       payload: {
         loading: true,
+        data: false,
         errorMessage: false,
       },
     });
 
     //get API
     axiosCreate
-      .put("http://localhost:5000/user/profile/", {
-        id: `${id}`,
-        name: `${name}`,
-        email: `${email}`,
-        job: `${job}`,
-      })
+      .put(
+        "/user/profile/",
+        // {
+        //   id: `${id}`,
+        //   name: `${name}`,
+        //   email: `${email}`,
+        //   job: `${job}`,
+        //   image: `${image}`,
+        // },
+        fd,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((response) => {
         //berhasil
         console.log("3. berhasil", response);
+        //update local storage data
+        let localUserData = JSON.parse(localStorage.getItem("us_da_prv"));
+        let updateUserData = { ...localUserData, email: response.data.data[0].email, name: response.data.data[0].name };
+        console.log(updateUserData);
+        localStorage.setItem("us_da_prv", JSON.stringify(updateUserData));
+        //end update local storage data
         dispatch({
           type: UPDATE_USER,
           payload: {
             loading: false,
+            data: response.data,
             errorMessage: false,
           },
         });

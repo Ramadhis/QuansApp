@@ -4,6 +4,7 @@ const initialState = {
   getListMyAnswerResult: false,
   getListMyAnswerLoading: false,
   getListMyAnswerError: false,
+  statusResponse: false,
 };
 
 const myAnswer = (state = initialState, action) => {

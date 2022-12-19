@@ -25,7 +25,9 @@ const Users = db.define(
     },
     refreshtoken: {
       type: DataTypes.TEXT,
-      // allowNull defaults to true
+    },
+    image_profile: {
+      type: DataTypes.TEXT,
     },
   },
   {

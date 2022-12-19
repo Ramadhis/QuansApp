@@ -6,7 +6,7 @@ import { Op, Sequelize } from "sequelize";
 import quans from ".././model/quansModel.js";
 import auth from ".././middleware/auth.js";
 import Tag_quans from ".././model/tag_quansModel.js";
-
+import { AddQuestionValidation, answerValidation } from "./validation/quansValidation.js";
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -34,6 +34,7 @@ router.post("/showquans/", async (req, res) => {
         include: [
           [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where like_log.id_quans = quans.id)`), "like_count"],
           [Sequelize.literal(`(SELECT name FROM user where user.id = quans.id_user)`), "user_name"],
+          [Sequelize.literal(`(SELECT image_profile FROM user where user.id = quans.id_user)`), "image_profile"],
           [Sequelize.literal(`(SELECT COUNT(*) FROM like_log where (like_log.id_quans = quans.id) AND (like_log.id_user = ${idUser}))`), "likeCheck"],
         ],
       },
@@ -163,7 +164,7 @@ router.post("/myQuestion", auth, async (req, res) => {
   }
 });
 
-router.post("/addQuestion", async (req, res) => {
+router.post("/addQuestion", AddQuestionValidation, async (req, res) => {
   let { question, id_user, tag } = req.body;
   let splitTag = tag.split(",");
   // return console.log(splitTag);
@@ -198,7 +199,7 @@ router.delete("/deleteQuestion", async (req, res) => {
   }
 });
 
-router.put("/editQuestion", async (req, res) => {
+router.put("/editQuestion", AddQuestionValidation, async (req, res) => {
   try {
     let { id_user, id_quans, question, tag } = req.body;
     await quans
@@ -268,7 +269,7 @@ router.post("/myAnswer", auth, async (req, res) => {
   }
 });
 
-router.post("/addAnswer/", auth, async (req, res) => {
+router.post("/addAnswer/", auth, answerValidation, async (req, res) => {
   let { answer, id_parent, id_user } = req.body;
   try {
     const insert = await quans.create({ id_user: id_user, id_parent: id_parent, quans: answer });
@@ -291,7 +292,7 @@ router.delete("/deleteAnswer", auth, async (req, res) => {
   }
 });
 
-router.put("/editAnswer", auth, async (req, res) => {
+router.put("/editAnswer", auth, answerValidation, async (req, res) => {
   try {
     let { id_quans, answer } = req.body;
     await quans
